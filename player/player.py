@@ -35,7 +35,7 @@ class Player:
             self.player_pos.x += 300 * dt
             self.color = "yellow"
 
-        self.attack_speed = 3000 * dt
+        self.attack_speed = 1000 * dt
         if self.keyboard_handler.space_pressed:
             self.draw_attack(self.player_pos)
 
@@ -45,12 +45,13 @@ class Player:
 
     def draw_attack(self, player_pos):
         duration_counter = 100000
-        x = player_pos.x
-        y = player_pos.y
         if self.do_it:
+            x = player_pos.x
+            y = player_pos.y
+            pos = pygame.Vector2(x, y)
+
             while duration_counter > 0:
                 duration_counter -= 1
-                pos = pygame.Vector2(x, y)
 
 
                 if self.last_moving_direction == MovingDirection.UP:
