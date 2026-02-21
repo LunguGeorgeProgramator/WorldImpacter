@@ -48,8 +48,8 @@ while running:
             )
 
     keyboard_handler.update_keys()
-    player.update_player(dt)
-    player.draw_player()
+    player.update(dt)
+    player.draw()
 
     for bullet in bullets:
         bullet.draw(screen)
