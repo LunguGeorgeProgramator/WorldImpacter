@@ -8,6 +8,7 @@ class KeyboardHandler:
     keys = []
     direction = MovingDirection.NONE
     last_stopped_moving_direction = MovingDirection.DOWN
+    last_stopped_left_right_moving_direction = MovingDirection.RIGHT
     space_pressed = False
     w_pressed = False
     s_pressed = False
@@ -38,10 +39,12 @@ class KeyboardHandler:
             self.direction = MovingDirection.LEFT
             self.a_pressed = True
             self.last_stopped_moving_direction = MovingDirection.LEFT
+            self.last_stopped_left_right_moving_direction = MovingDirection.LEFT
         if self.keys[pygame.K_d]:
             self.direction = MovingDirection.RIGHT
             self.d_pressed = True
             self.last_stopped_moving_direction = MovingDirection.RIGHT
+            self.last_stopped_left_right_moving_direction = MovingDirection.RIGHT
         if self.keys[pygame.K_SPACE]:
             self.space_pressed = True
 
@@ -51,3 +54,6 @@ class KeyboardHandler:
 
     def get_last_movement_direction(self):
         return self.last_stopped_moving_direction
+
+    def get_last_left_right_direction(self):
+        return self.last_stopped_left_right_moving_direction
