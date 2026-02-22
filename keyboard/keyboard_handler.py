@@ -18,7 +18,7 @@ class KeyboardHandler:
     def __init__(self):
         self.key = pygame.key
 
-    def update_keys(self):
+    def update(self):
         self.space_pressed = False
         self.w_pressed = False
         self.s_pressed = False
