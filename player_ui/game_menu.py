@@ -16,7 +16,7 @@ class GameMenu(pygame.sprite.Sprite):
         self.button_hover = (255, 0, 0) 
         self.button_rect = pygame.Rect(200, 150, 100, 50) 
 
-    def exit_game(self):
+    def not_exit_game(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False

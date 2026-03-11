@@ -47,7 +47,7 @@ while running:
     if enemies.enemies_dead == enemies.max_enemies:
         game_menu.draw()
 
-    running = game_menu.exit_game()
+    running = game_menu.not_exit_game()
 
     text_surface = font.render('Enemies killed: ' + str(enemies.enemies_dead), True, (255, 255, 255))
     screen.blit(text_surface, (0, 0))
