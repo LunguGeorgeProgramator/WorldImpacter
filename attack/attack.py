@@ -7,8 +7,10 @@ class Attack:
     bullets = []
     player = None
     keyboard_handler = None
+    screen = None
 
-    def __init__(self, player, keyboard_handler):
+    def __init__(self, player, keyboard_handler, screen):
+        self.screen = screen
         self.player = player
         self.keyboard_handler = keyboard_handler
 
@@ -30,3 +32,7 @@ class Attack:
                 self.bullets.append(
                     Bullet(self.player.x, self.player.y, 6, (0, 0, 0), facing)
                 )
+
+    def draw(self):
+        for bullet in self.bullets:
+            bullet.draw(self.screen)

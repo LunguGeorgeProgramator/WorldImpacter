@@ -39,3 +39,7 @@ class GameMenu(pygame.sprite.Sprite):
         # Center the text on the button
         text_rect = text_surface.get_rect(center=self.button_rect.center)
         self.screen.blit(text_surface, text_rect)
+    
+    def draw_scoring(self, scoring):
+        text_surface = self.font.render('Enemies killed: ' + str(scoring), True, (255, 255, 255))
+        self.screen.blit(text_surface, (0, 0))

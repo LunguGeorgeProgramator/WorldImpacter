@@ -19,17 +19,11 @@ font = pygame.font.SysFont('Arial', 36)
 
 keyboard_handler = KeyboardHandler()
 player = Player(screen, keyboard_handler)
-attack = Attack(player, keyboard_handler)
+attack = Attack(player, keyboard_handler, screen)
 enemies = Enemies(screen)
 game_menu = GameMenu(screen, font)
 
 while running:
-    
-    # # poll for events
-    # # pygame.QUIT event means the user clicked X to close your window
-    # for event in pygame.event.get():
-    #     if event.type == pygame.QUIT:
-    #         running = False
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("green")
@@ -41,22 +35,18 @@ while running:
 
     enemies.draw()
     player.draw()
-    for bullet in attack.bullets:
-        bullet.draw(screen)
-
+    attack.draw()
     if enemies.enemies_dead == enemies.max_enemies:
         game_menu.draw()
+    game_menu.draw_scoring(enemies.enemies_dead)
 
     running = game_menu.not_exit_game()
-
-    text_surface = font.render('Enemies killed: ' + str(enemies.enemies_dead), True, (255, 255, 255))
-    screen.blit(text_surface, (0, 0))
 
     # flip() the display to put your work on screen
     # pygame.display.flip()
     pygame.display.update()
 
-    # limits FPS to 120
+    # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
     dt = clock.tick(60) / 1000
