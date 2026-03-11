@@ -15,6 +15,9 @@ class Player:
     y = 0
     with_p = 0
     height_p = 0
+    is_player_out_of_screen = False
+    screen_x = 0
+    screen_y = 0
 
     def __init__(self, screen, keyboard_handler):
         self.screen = screen
@@ -23,18 +26,23 @@ class Player:
         self.with_p = screen.get_width() / 2
         self.height_p = screen.get_height() / 2
         self.pos = pygame.Vector2(self.player_pos.x, self.player_pos.y)
+        self.screen_x, self.screen_y = screen.get_size()
 
     def _move_vector_x_y(self, vector_pos, direction, speed):
-        if direction == MovingDirection.UP:
+        is_out_of_scrren_left = self.player_pos.x < 0
+        is_out_of_scrren_right = self.player_pos.x > self.screen_x
+        is_out_of_scrren_top = self.player_pos.y < 0
+        is_out_of_scrren_down = self.player_pos.y > self.screen_y
+        if direction == MovingDirection.UP and is_out_of_scrren_top is False:
             self.color = "black"
             vector_pos.y -= speed
-        elif direction == MovingDirection.DOWN:
+        elif direction == MovingDirection.DOWN and is_out_of_scrren_down is False:
             vector_pos.y += speed
             self.color = "blue"
-        elif direction == MovingDirection.LEFT:
+        elif direction == MovingDirection.LEFT and is_out_of_scrren_left is False:
             vector_pos.x -= speed
             self.color = "grey"
-        elif direction == MovingDirection.RIGHT:
+        elif direction == MovingDirection.RIGHT and is_out_of_scrren_right is False:
             vector_pos.x += speed
             self.color = "yellow"
         return vector_pos
