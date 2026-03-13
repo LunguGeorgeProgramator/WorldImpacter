@@ -3,6 +3,9 @@ import pygame
 
 class Enemy:
 
+    images_assets_loader = None
+    default_image_height = 0
+    default_image_width = 0
     x = 0
     y = 0
     screen_x = 0
@@ -18,7 +21,8 @@ class Enemy:
     is_alive = True
 
 
-    def __init__(self, x, y, radius, color, screen):
+    def __init__(self, x, y, radius, color, screen, images_assets_loader):
+        self.images_assets_loader = images_assets_loader
         self.x = x + 1
         self.y = y
         self.radius = radius
@@ -26,6 +30,8 @@ class Enemy:
         # self.vel = 0.5
         self.vel = 2
         self.screen_x, self.screen_y = screen.get_size()
+        self.default_image_height = radius * 2
+        self.default_image_width = radius * 2
 
     def update(self):
         if self.x < 0:
@@ -51,5 +57,5 @@ class Enemy:
 
     def draw(self, win):
         if self.is_alive:
-            pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+            self.images_assets_loader.draw(self.images_assets_loader.enemies_image, self.x, self.y, self.default_image_width, self.default_image_height)
     

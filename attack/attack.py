@@ -26,11 +26,13 @@ class Attack:
         if self.keyboard_handler.space_pressed:
             if self.player.last_moving_direction_left_right == MovingDirection.LEFT:
                 facing = -1
+                initial_x = self.player.x - 10
             else:
                 facing = 1
+                initial_x = self.player.x + 100
             if len(self.bullets) < 50:
                 self.bullets.append(
-                    Bullet(self.player.x, self.player.y, 6, (0, 0, 0), facing)
+                    Bullet(initial_x, self.player.y + 50, 6, (0, 0, 0), facing)
                 )
 
     def draw(self):

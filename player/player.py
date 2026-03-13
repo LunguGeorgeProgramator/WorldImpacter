@@ -4,6 +4,7 @@ from data_models.moving_direction import MovingDirection
 class Player:
 
     keyboard_handler = None
+    images_assets_loader = None
     color = "white"
     pos = None
     screen = None
@@ -19,7 +20,8 @@ class Player:
     screen_x = 0
     screen_y = 0
 
-    def __init__(self, screen, keyboard_handler):
+    def __init__(self, screen, keyboard_handler, images_assets_loader):
+        self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.keyboard_handler = keyboard_handler
         self.player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
@@ -57,4 +59,12 @@ class Player:
         self.y = self.player_pos.y
 
     def draw(self):
-        pygame.draw.circle(self.screen, self.color, self.player_pos, 40)
+        if self.last_moving_direction == MovingDirection.UP:
+            player_image = self.images_assets_loader.player_up_image
+        elif self.last_moving_direction == MovingDirection.DOWN:
+            player_image = self.images_assets_loader.player_down_image
+        elif self.last_moving_direction == MovingDirection.LEFT:
+            player_image = self.images_assets_loader.player_left_image
+        elif self.last_moving_direction == MovingDirection.RIGHT:
+            player_image = self.images_assets_loader.player_right_image
+        self.images_assets_loader.draw(player_image, self.player_pos.x, self.player_pos.y)

@@ -6,6 +6,7 @@ from attack.attack import Attack
 from player.player import Player
 from enemies.enemies import Enemies
 from player_ui.game_menu import GameMenu
+from assets.images_assets_loader import ImagesAssetsLoader
 
 # pygame setup
 pygame.init()
@@ -17,10 +18,11 @@ running = True
 dt = 0
 font = pygame.font.SysFont('Arial', 36)
 
+images_assets_loader = ImagesAssetsLoader(screen)
 keyboard_handler = KeyboardHandler()
-player = Player(screen, keyboard_handler)
+player = Player(screen, keyboard_handler, images_assets_loader)
 attack = Attack(player, keyboard_handler, screen)
-enemies = Enemies(screen)
+enemies = Enemies(screen, images_assets_loader)
 game_menu = GameMenu(screen, font)
 
 while running:
