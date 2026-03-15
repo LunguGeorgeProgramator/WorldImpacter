@@ -8,7 +8,7 @@ Pressing the Space key shoots black bullets to defeat small swarms of moving ene
 
 The game also includes a basic scoring system.
 
-<img src="demo_image.png" width="1392" height="864>
+![App Screenshot](demo_image.png)
 
 To run the game, use the following Python command inside the project folder:
 
