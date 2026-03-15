@@ -4,27 +4,35 @@ import random, math
 
 class Enemies:
 
+    player = None
     enemies = []
     enemies_dead = 0
-    max_enemies = 50
+    max_enemies = 250
 
-    def __init__(self, screen, images_assets_loader):
+    def __init__(self, screen, images_assets_loader, player):
         self.screen = screen
         for i in range(self.max_enemies):
+            self.player = player
             multiplier_x = i * random.randint(1, 50)
             multiplier_y = i * random.randint(1, 50)
             self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, (0, 255, 255), screen, images_assets_loader))
 
     def update(self, bullets):
+        player_colision_circle = (self.player.x, self.player.y, self.player.radius)
         for enemy in self.enemies:
             enemy.update()
+            enemy_colision_circle = (enemy.x, enemy.y, enemy.radius)
+            if self.colision_detection(enemy_colision_circle, player_colision_circle) and enemy.is_alive and self.player.is_alive:
+                self.player.health -= 1
             for bullet in bullets:
-                c1 = (bullet.x, bullet.y, bullet.radius)
-                c2 = (enemy.x, enemy.y, enemy.radius)
-                if self.colision_detection(c1, c2):
+                bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
+                if self.colision_detection(bullet_colision_circle, enemy_colision_circle):
                     if enemy.is_alive:
                         enemy.is_alive = False
                         self.enemies_dead += 1
+            if not enemy.is_alive:
+                self.enemies.remove(enemy)
+               
 
     def colision_detection(self, c1, c2):
         x1, y1, r1 = c1

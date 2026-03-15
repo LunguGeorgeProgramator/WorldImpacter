@@ -9,11 +9,10 @@ class Bullet:
     facing = 0
     vel = 0
 
-    def __init__(self, x, y, radius, color, facing):
+    def __init__(self, x, y, radius, facing):
         self.x = x + 1
         self.y = y
         self.radius = radius
-        self.color = color
         self.facing = facing
         self.vel = 8 * facing
 

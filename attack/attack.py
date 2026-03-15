@@ -32,7 +32,7 @@ class Attack:
                 initial_x = self.player.x + 100
             if len(self.bullets) < 50:
                 self.bullets.append(
-                    Bullet(initial_x, self.player.y + 50, 6, (0, 0, 0), facing)
+                    Bullet(initial_x, self.player.y + 50, 6, facing)
                 )
 
     def draw(self):

@@ -19,6 +19,10 @@ class Player:
     is_player_out_of_screen = False
     screen_x = 0
     screen_y = 0
+    radius = 50
+    health = 1000
+    max_health = 1000
+    is_alive = True
 
     def __init__(self, screen, keyboard_handler, images_assets_loader):
         self.images_assets_loader = images_assets_loader
@@ -57,6 +61,8 @@ class Player:
         # self.player_pos = self._move_vector_x_y(self.player_pos, self.direction, 300 * dt)
         self.x = self.player_pos.x
         self.y = self.player_pos.y
+        if self.health <= 0:
+            self.is_alive = False
 
     def draw(self):
         if self.last_moving_direction == MovingDirection.UP:
