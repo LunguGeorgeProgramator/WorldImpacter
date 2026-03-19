@@ -8,9 +8,11 @@ class Enemies:
     enemies = []
     enemies_dead = 0
     max_enemies = 250
+    explosion = None
 
-    def __init__(self, screen, images_assets_loader, player):
+    def __init__(self, screen, images_assets_loader, player, explosion):
         self.screen = screen
+        self.explosion = explosion
         for i in range(self.max_enemies):
             self.player = player
             multiplier_x = i * random.randint(1, 50)
@@ -22,6 +24,11 @@ class Enemies:
         for enemy in self.enemies:
             enemy.update()
             enemy_colision_circle = (enemy.x, enemy.y, enemy.radius)
+            explosion_colision_circle = (self.explosion.x, self.explosion.y, self.explosion.explosion_radius)
+            if self.colision_detection(explosion_colision_circle, enemy_colision_circle) and self.explosion.has_to_draw_explosion:
+                if enemy.is_alive:
+                    enemy.is_alive = False
+                    self.enemies_dead += 1
             if self.colision_detection(enemy_colision_circle, player_colision_circle) and enemy.is_alive and self.player.is_alive:
                 self.player.health -= 1
             for bullet in bullets:

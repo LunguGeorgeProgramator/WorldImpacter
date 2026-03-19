@@ -2,7 +2,7 @@
 import pygame
 
 from keyboard.keyboard_handler import KeyboardHandler
-from attack.attack import Attack
+from attack import attack, explosion
 from player.player import Player
 from enemies.enemies import Enemies
 from game_interface.game_interface import GameInterface
@@ -24,8 +24,9 @@ font = pygame.font.SysFont('Arial', 36)
 images_assets_loader = ImagesAssetsLoader(screen)
 keyboard_handler = KeyboardHandler()
 player = Player(screen, keyboard_handler, images_assets_loader)
-attack = Attack(player, keyboard_handler, screen)
-enemies = Enemies(screen, images_assets_loader, player)
+explosion = explosion.Explosion(images_assets_loader, 250 ,250)
+attack = attack.Attack(player, keyboard_handler, screen, images_assets_loader, explosion)
+enemies = Enemies(screen, images_assets_loader, player, explosion)
 game_interface = GameInterface(screen, font, player, enemies)
 
 while running:
@@ -41,8 +42,8 @@ while running:
         enemies.update(attack.bullets)
 
     enemies.draw()
-    player.draw()
     attack.draw()
+    player.draw()
     game_interface.draw()
 
     running = game_interface.not_exit_game()

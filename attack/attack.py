@@ -1,18 +1,31 @@
 from data_models.moving_direction import MovingDirection
 from attack.bullet import Bullet
+from attack.explosion import Explosion
+from helper.timer import Timer 
+import random, math
 
 
 class Attack:
 
     bullets = []
+    screen_width = 0
+    screen_height = 0
     player = None
     keyboard_handler = None
     screen = None
+    explosion = None
+    has_to_draw_explosion = False
+    images_assets_loader = None
+    explosion = None
 
-    def __init__(self, player, keyboard_handler, screen):
+    def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion):
+        self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.player = player
         self.keyboard_handler = keyboard_handler
+        self.explosion = explosion
+        self.screen_width = screen.get_width()
+        self.screen_height = screen.get_height()
 
     def update(self):
         for bullet in self.bullets:
@@ -35,6 +48,40 @@ class Attack:
                     Bullet(initial_x, self.player.y + 50, 6, facing)
                 )
 
+        if self.explosion.is_new_explosion:
+            player_colision_circle = (self.player.x, self.player.y, self.player.radius)
+            bomb_colision_circle = (self.explosion.x, self.explosion.y, self.explosion.bomb_radius)
+            if self.colision_detection(player_colision_circle, bomb_colision_circle) and self.explosion.has_to_draw_explosion is False:
+                self.explosion.has_to_draw_explosion = True
+
+    def colision_detection(self, c1, c2):
+        x1, y1, r1 = c1
+        x2, y2, r2 = c2
+        distance = math.hypot(x2 - x1, y2 - y1)
+        return distance <= (r1 + r2)
+
+    def destroy_explosion(self):
+        self.explosion.is_new_explosion = False
+        self.explosion.has_to_draw_explosion = False
+
+    def create_explosion(self):
+        self.explosion.is_new_explosion = True
+        self.explosion.has_to_draw_explosion = False
+        self.explosion.x = random.randint(0, self.screen_width - 100)
+        self.explosion.y = random.randint(0, self.screen_height - 100)
+
     def draw(self):
+        if self.explosion.is_new_explosion is True:
+            self.explosion.draw()
+            if self.explosion.has_to_draw_explosion:
+                # t1 = Timer(2000)
+                # if t1.is_time_up():
+                self.destroy_explosion()
+
+        if self.explosion.is_new_explosion is False:
+            # t2 = Timer(5000)
+            # if t2.is_time_up():
+            self.create_explosion()
+
         for bullet in self.bullets:
             bullet.draw(self.screen)

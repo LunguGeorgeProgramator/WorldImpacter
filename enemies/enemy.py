@@ -37,19 +37,21 @@ class Enemy:
         if self.x < 0:
             self.is_max_x_reached = False
             self.is_min_x_reached = True
-        elif self.x > self.screen_x:
+        elif self.x > self.screen_x - 50:
             self.is_max_x_reached = True
             self.is_min_x_reached = False
         if self.y < 0:
             self.is_max_y_reached = False
             self.is_min_y_reached = True
-        elif self.y > self.screen_y:
+        elif self.y > self.screen_y - 50:
             self.is_max_y_reached = True
             self.is_min_y_reached = False
+
         if self.is_min_x_reached and not self.is_max_x_reached:
             self.x += self.vel
         else:
             self.x -= self.vel
+
         if self.is_min_y_reached and not self.is_max_y_reached:
             self.y += self.vel
         else:

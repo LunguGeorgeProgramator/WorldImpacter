@@ -36,9 +36,9 @@ class Player:
 
     def _move_vector_x_y(self, vector_pos, direction, speed):
         is_out_of_scrren_left = self.player_pos.x < 0
-        is_out_of_scrren_right = self.player_pos.x > self.screen_x
+        is_out_of_scrren_right = self.player_pos.x > self.screen_x - 100
         is_out_of_scrren_top = self.player_pos.y < 0
-        is_out_of_scrren_down = self.player_pos.y > self.screen_y
+        is_out_of_scrren_down = self.player_pos.y > self.screen_y - 100
         if direction == MovingDirection.UP and is_out_of_scrren_top is False:
             self.color = "black"
             vector_pos.y -= speed
