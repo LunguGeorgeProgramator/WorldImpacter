@@ -65,6 +65,7 @@ class Enemies:
                 self.enemies.remove(enemy)
         if len(self.enemies) == 0:
             self.game_settings.state = GameState.GAME_OVER
+        self.game_settings.enemies_alive = len(self.enemies)
 
     def draw(self):
         for enemy in self.enemies:

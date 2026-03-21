@@ -73,17 +73,27 @@ class GameInterface(pygame.sprite.Sprite):
                 if self.button_next_level_rect.collidepoint(event.pos):
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.state = GameState.NEXT_LEVEL
+            if event.type == pygame.KEYDOWN:
+                # secret keys for testing
+                if event.key == pygame.K_x and (event.mod & pygame.KMOD_SHIFT):
+                    print("Exit game by pressing Shift + X key")
+                    return False
+                if event.key == pygame.K_c and (event.mod & pygame.KMOD_SHIFT):
+                    print("Continue game by pressing Shift + C key")
+                    self.game_settings.state = GameState.RUN
+                if event.key == pygame.K_n and (event.mod & pygame.KMOD_SHIFT):
+                    print("Next level by pressing Shift + N key")
+                    self.game_settings.game_level = self.game_settings.game_level + 1
+                    self.game_settings.state = GameState.NEXT_LEVEL
         return True
 
     def draw(self):
-        if  self.enemies.enemies_dead == self.enemies.max_enemies:
-            self.draw_exit_button()
-            self.draw_win()
-        if self.player.is_alive is False:
-            self.draw_exit_button()
-            self.draw_game_over()
         self.draw_health_bar()
         self.draw_scoring()
+        if  self.enemies.enemies_dead == self.enemies.max_enemies:
+            self.draw_win()
+        if self.player.is_alive is False:
+            self.draw_game_over()
         if self.game_settings.state == GameState.PAUSE:
             self.draw_pause_menu()
 
@@ -91,6 +101,7 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('pause', None, 0, 150)
         self.draw_continue_button()
         self.draw_exit_button()
+        self._set_text_on_screen('exit_key_message', None, 0, -70)
 
     def draw_next_level_button(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -120,11 +131,16 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('exit', self.button_exit_rect)
 
     def draw_win(self):
+        self._set_text_on_screen('next_level_key_message', None, 0, 180)
         self._set_text_on_screen('win')
         self.draw_next_level_button()
+        self.draw_exit_button()
+        self._set_text_on_screen('exit_key_message', None, 0, -70)
 
     def draw_game_over(self):
         self._set_text_on_screen('lose')
+        self.draw_exit_button()
+        self._set_text_on_screen('exit_key_message', None, 0, -70)
 
     def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None):
         text_surface = self.font.render(self.translator.get_message(textKey), True, self.text_color)

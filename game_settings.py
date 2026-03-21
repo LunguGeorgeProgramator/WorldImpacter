@@ -10,3 +10,4 @@ class GameSettings:
     font_name = "Arial"
     text_color = (255, 255, 255)
     game_level = 1
+    enemies_alive = 1

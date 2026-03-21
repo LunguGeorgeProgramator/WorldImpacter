@@ -8,6 +8,8 @@
     "highscore": "Scoul cel mai mare",
     "pause": "Jocul este în pauza. Apasa P pentru a relua",
     "exit": "Inchide",
+    "exit_key_message": "Apasa Shift + X pentru a iesi",
     "continue": "Continua",
-    "next_level": "Nivel urmator"
+    "next_level": "Nivel urmator",
+    "next_level_key_message": "Apasa N pentru a ajunge la urmatorul nivel"
 }

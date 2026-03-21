@@ -8,6 +8,8 @@
     "highscore": "High score",
     "pause": "Game Paused. Press P to Resume",
     "exit": "Exit",
+    "exit_key_message": "Press Shift + X to exit",
     "continue": "Continue",
-    "next_level": "Next level"
+    "next_level": "Next level",
+    "next_level_key_message": "Press N to go to the next level"
 }
