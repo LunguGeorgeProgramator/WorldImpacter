@@ -61,8 +61,7 @@ class KeyboardHandler:
         for key in self.tracked_keys:
             if self.keys[key] and not self.pressed_last[key]:
                 if key == pygame.K_p:
-                    self.p_pressed = True
-                    self.game_settings.state = GameState.PAUSE if self.p_pressed and self.game_settings.state == GameState.RUN else GameState.RUN
+                    self.game_settings.state = GameState.PAUSE if self.game_settings.state == GameState.RUN else GameState.RUN
             self.pressed_last[key] = self.keys[key]
 
     def get_movement_direction(self):
