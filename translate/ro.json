@@ -1,6 +1,6 @@
 {
     "title": "Impact global",
-    "scoring": "Inamici ucisi: %d, inamici ramasi: %d",
+    "scoring": "Inamici ucisi: %d, inamici ramasi: %d, nivel: %d",
     "win": "Ai castigat",
     "lose": "Ai pierdut",
     "score": "Scor",
@@ -8,5 +8,6 @@
     "highscore": "Scoul cel mai mare",
     "pause": "Jocul este în pauza. Apasa P pentru a relua",
     "exit": "Inchide",
-    "continue": "Continua"
+    "continue": "Continua",
+    "next_level": "Nivel urmator"
 }

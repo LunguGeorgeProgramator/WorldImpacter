@@ -35,7 +35,7 @@ keyboard_handler = KeyboardHandler(game_settings)
 player = Player(screen, keyboard_handler, images_assets_loader, game_settings)
 explosion = explosion.Explosion(images_assets_loader)
 attack = attack.Attack(player, keyboard_handler, screen, images_assets_loader, explosion)
-enemies = Enemies(screen, images_assets_loader, player, explosion, game_settings)
+enemies = Enemies(screen, images_assets_loader, player, attack, explosion, game_settings)
 game_interface = GameInterface(screen, font, player, enemies, translator, game_settings)
 
 game_settings.state = GameState.PAUSE # initial state
@@ -47,10 +47,14 @@ while running:
 
     keyboard_handler.update()
 
+    if game_settings.state == GameState.NEXT_LEVEL:
+        enemies.next_level()
+        game_settings.state = GameState.RUN
+
     if game_settings.state not in [GameState.PAUSE, GameState.GAME_OVER]:
         player.update(dt)
         attack.update()
-        enemies.update(attack.bullets)
+        enemies.update()
 
     enemies.draw()
     attack.draw()

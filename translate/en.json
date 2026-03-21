@@ -1,6 +1,6 @@
 {
     "title": "World Impacter",
-    "scoring": "Enemies killed: %d, enemies alive: %d",
+    "scoring": "Enemies killed: %d, enemies alive: %d, level: %d",
     "win": "You win",
     "lose": "You lose",
     "score": "Score",
@@ -8,5 +8,6 @@
     "highscore": "High score",
     "pause": "Game Paused. Press P to Resume",
     "exit": "Exit",
-    "continue": "Continue"
+    "continue": "Continue",
+    "next_level": "Next level"
 }

@@ -8,3 +8,4 @@ class GameState(Enum):
     GAME_OVER = 4
     OPEN_MENU = 5
     OPEN_INVENTORY = 6
+    NEXT_LEVEL = 7

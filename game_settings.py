@@ -9,3 +9,4 @@ class GameSettings:
     text_size = 36
     font_name = "Arial"
     text_color = (255, 255, 255)
+    game_level = 1

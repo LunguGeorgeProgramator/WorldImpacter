@@ -19,6 +19,8 @@ class Attack:
     images_assets_loader = None
     explosion = None
     colision_detection = None
+    bullet_radius = 6
+    max_bullets_per_attack = 2
 
     def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion):
         self.images_assets_loader = images_assets_loader
@@ -32,9 +34,10 @@ class Attack:
 
     def update(self):
         for bullet in self.bullets:
-            if bullet.x < (self.player.x + 500) and bullet.x > (self.player.x + 0):
+            max_range = bullet.bullet_max_range
+            if   bullet.x > self.player.x and bullet.x < (self.player.x + max_range):
                 bullet.x += bullet.vel
-            elif bullet.x < self.player.x and bullet.x > (self.player.x - 500):
+            elif bullet.x < self.player.x and bullet.x > (self.player.x + (self.player.radius * 2) - max_range):
                 bullet.x += bullet.vel
             else:
                 self.bullets.pop(self.bullets.index(bullet))
@@ -42,13 +45,13 @@ class Attack:
         if self.keyboard_handler.space_pressed:
             if self.player.last_moving_direction_left_right == MovingDirection.LEFT:
                 facing = -1
-                initial_x = self.player.x - 10
+                initial_x = self.player.x
             else:
                 facing = 1
-                initial_x = self.player.x + 100
-            if len(self.bullets) < 50:
+                initial_x = self.player.x + (self.player.radius * 2)
+            if len(self.bullets) < self.max_bullets_per_attack:
                 self.bullets.append(
-                    Bullet(initial_x, self.player.y + 50, 6, facing)
+                    Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, facing)
                 )
 
         if self.explosion.is_new_explosion:

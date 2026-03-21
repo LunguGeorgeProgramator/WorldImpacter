@@ -30,6 +30,11 @@ class GameInterface(pygame.sprite.Sprite):
     button_continue_h = 50
     button_continue_x = -200
     button_continue_y = -75
+    button_next_level_rect = None
+    button_next_level_w = 170
+    button_next_level_h = 50
+    button_next_level_x = -200
+    button_next_level_y = -125
     font = None
     screen_width = None
     screen_height = None
@@ -43,13 +48,18 @@ class GameInterface(pygame.sprite.Sprite):
         self.screen = screen
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
-        self.button_exit_y = self.button_exit_y +self.screen_height / 2
-        self.button_exit_rect = pygame.Rect(self.button_exit_x, self.button_exit_y, self.button_exit_w, self.button_exit_h)
-        self.button_continue_y =  self.button_continue_y + self.screen_height / 2
-        self.button_continue_rect = pygame.Rect(self.button_continue_x, self.button_continue_y, self.button_continue_w, self.button_continue_h)
         self.translator = translator
         self.text_color = game_settings.text_color
         self.health_x = self.screen_width - self.bar_width - self.health_x
+        self._create_menu_buttons()
+
+    def _create_menu_buttons(self):
+        self.button_exit_y = self.button_exit_y + self.screen_height / 2
+        self.button_continue_y =  self.button_continue_y + self.screen_height / 2
+        self.button_next_level_y =  self.button_next_level_y + self.screen_height / 2
+        self.button_exit_rect = pygame.Rect(self.button_exit_x, self.button_exit_y, self.button_exit_w, self.button_exit_h)
+        self.button_continue_rect = pygame.Rect(self.button_continue_x, self.button_continue_y, self.button_continue_w, self.button_continue_h)
+        self.button_next_level_rect = pygame.Rect(self.button_next_level_x, self.button_next_level_y, self.button_next_level_w, self.button_next_level_h)
 
     def not_exit_game(self):
         for event in pygame.event.get():
@@ -60,6 +70,9 @@ class GameInterface(pygame.sprite.Sprite):
                     return False
                 if self.button_continue_rect.collidepoint(event.pos):
                     self.game_settings.state = GameState.RUN
+                if self.button_next_level_rect.collidepoint(event.pos):
+                    self.game_settings.game_level = self.game_settings.game_level + 1
+                    self.game_settings.state = GameState.NEXT_LEVEL
         return True
 
     def draw(self):
@@ -76,8 +89,17 @@ class GameInterface(pygame.sprite.Sprite):
 
     def draw_pause_menu(self):
         self._set_text_on_screen('pause', None, 0, 150)
-        self.draw_exit_button()
         self.draw_continue_button()
+        self.draw_exit_button()
+
+    def draw_next_level_button(self):
+        mouse_pos = pygame.mouse.get_pos()
+        if self.button_next_level_rect.collidepoint(mouse_pos):
+            color = self.button_hover
+        else:
+            color = self.button_color
+        pygame.draw.rect(self.screen, color, self.button_next_level_rect)
+        self._set_text_on_screen('next_level', self.button_next_level_rect)
 
     def draw_continue_button(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -99,6 +121,7 @@ class GameInterface(pygame.sprite.Sprite):
 
     def draw_win(self):
         self._set_text_on_screen('win')
+        self.draw_next_level_button()
 
     def draw_game_over(self):
         self._set_text_on_screen('lose')
@@ -121,5 +144,5 @@ class GameInterface(pygame.sprite.Sprite):
         pygame.draw.rect(self.screen, self.health_colors_dict["border"], (x, y, self.bar_width, self.bar_height), 2)
 
     def draw_scoring(self):
-        text_surface = self.font.render(self.translator.get_message('scoring') % (self.enemies.enemies_dead, (self.enemies.max_enemies - self.enemies.enemies_dead)), True, self.text_color)
+        text_surface = self.font.render(self.translator.get_message('scoring') % (self.enemies.enemies_dead, (self.enemies.max_enemies - self.enemies.enemies_dead), self.game_settings.game_level), True, self.text_color)
         self.screen.blit(text_surface, (0, 0))
