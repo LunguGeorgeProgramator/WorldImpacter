@@ -9,7 +9,7 @@ class Enemies:
     player = None
     enemies = []
     enemies_dead = 0
-    max_enemies = 1
+    max_enemies = 250
     explosion = None
     colision_detection = None
     images_assets_loader = None
