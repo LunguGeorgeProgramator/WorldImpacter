@@ -21,8 +21,8 @@ class ImagesAssetsLoader:
         self.player_left_image = pygame.image.load("assets/player/player-left.png")
         self.player_right_image = pygame.image.load("assets/player/player-right.png")
         self.enemies_image = pygame.image.load("assets/enemies/evil-sphere.png")
-        self.explosion = pygame.image.load("assets/attacks/explosion.png")
-        self.bomb = pygame.image.load("assets/attacks/bomb.png")
+        self.explosion = pygame.image.load("assets/attacks/explosion-s.png")
+        self.bomb = pygame.image.load("assets/attacks/red-bomb.png")
 
     def draw(self, loaded_image, x = 0, y = 0, width = None, height = None):
         width = width if width else self.default_image_width

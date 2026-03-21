@@ -1,9 +1,10 @@
 from data_models.moving_direction import MovingDirection
 from attack.bullet import Bullet
 from attack.explosion import Explosion
-# from helper.timer import Timer 
+from helper.timer import Timer 
 from helper.collision_checker import CollisionChecKer
 import random, math
+from datetime import datetime
 
 
 class Attack:
@@ -21,6 +22,7 @@ class Attack:
     colision_detection = None
     bullet_radius = 6
     max_bullets_per_attack = 2
+    five_seconds_timer = None
 
     def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion):
         self.images_assets_loader = images_assets_loader
@@ -31,6 +33,7 @@ class Attack:
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
         self.colision_detection = CollisionChecKer().colision_detection
+        self.five_seconds_timer = Timer(20)
 
     def update(self):
         for bullet in self.bullets:
@@ -56,32 +59,28 @@ class Attack:
 
         if self.explosion.is_new_explosion:
             player_colision_circle = (self.player.x, self.player.y, self.player.radius)
-            bomb_colision_circle = (self.explosion.x, self.explosion.y, self.explosion.bomb_radius)
+            bomb_colision_circle = (self.explosion.x - self.explosion.bomb_width, self.explosion.y - self.explosion.bomb_height, self.explosion.bomb_radius)
             if self.colision_detection(player_colision_circle, bomb_colision_circle) and self.explosion.has_to_draw_explosion is False:
                 self.explosion.has_to_draw_explosion = True
+                self.five_seconds_timer.start_time = True
 
-    def destroy_explosion(self):
-        self.explosion.is_new_explosion = False
-        self.explosion.has_to_draw_explosion = False
-
-    def create_explosion(self):
-        self.explosion.is_new_explosion = True
-        self.explosion.has_to_draw_explosion = False
-        self.explosion.x = random.randint(0, self.screen_width - 100)
-        self.explosion.y = random.randint(0, self.screen_height - 100)
+    def move_explosion_to_random_position(self):
+        self.explosion.x = random.randint(0 + 100, self.screen_width - 100) # -100 just to not create the explosion too close to the edge of the screen
+        self.explosion.y = random.randint(0 + 100, self.screen_height - 100)
 
     def draw(self):
-        if self.explosion.is_new_explosion is True:
-            self.explosion.draw()
-            if self.explosion.has_to_draw_explosion:
-                # t1 = Timer(2000)
-                # if t1.is_time_up():
-                self.destroy_explosion()
+        wait_for_timer_to_finish = self.five_seconds_timer.check_cronometer()
 
-        if self.explosion.is_new_explosion is False:
-            # t2 = Timer(5000)
-            # if t2.is_time_up():
-            self.create_explosion()
+        if self.explosion.is_new_explosion:
+            self.explosion.draw_bomb()
+
+        if self.explosion.has_to_draw_explosion and wait_for_timer_to_finish:
+            self.explosion.draw_explosion()
+        else:
+            self.explosion.has_to_draw_explosion = False
+            
+        if self.five_seconds_timer.trigger_action_at_the_end:
+            self.move_explosion_to_random_position()
 
         for bullet in self.bullets:
             bullet.draw(self.screen)
