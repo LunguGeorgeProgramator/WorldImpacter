@@ -10,8 +10,26 @@ class GameInterface(pygame.sprite.Sprite):
     continue_button_color = (0, 255, 0)
     button_color = (200, 0, 0)
     button_hover = (255, 0, 0)
+    health_colors_dict = {
+        "full_health": (100, 0, 0),
+        "low_health": (0, 200, 0),
+        "border": (255,255,255)
+    }
+    bar_width = 200
+    bar_height = 20
+    health_x = 20
+    health_y = 20
+    text_color = None
     button_exit_rect = None
+    button_exit_w = 120
+    button_exit_h = 50
+    button_exit_x = -200
+    button_exit_y = 0
     button_continue_rect = None
+    button_continue_w = 170
+    button_continue_h = 50
+    button_continue_x = -200
+    button_continue_y = -75
     font = None
     screen_width = None
     screen_height = None
@@ -25,9 +43,13 @@ class GameInterface(pygame.sprite.Sprite):
         self.screen = screen
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
-        self.button_exit_rect = pygame.Rect(-200, self.screen_height / 2, 120, 50)
-        self.button_continue_rect = pygame.Rect(-200, self.screen_height / 2 - 75, 170, 50)
+        self.button_exit_y = self.button_exit_y +self.screen_height / 2
+        self.button_exit_rect = pygame.Rect(self.button_exit_x, self.button_exit_y, self.button_exit_w, self.button_exit_h)
+        self.button_continue_y =  self.button_continue_y + self.screen_height / 2
+        self.button_continue_rect = pygame.Rect(self.button_continue_x, self.button_continue_y, self.button_continue_w, self.button_continue_h)
         self.translator = translator
+        self.text_color = game_settings.text_color
+        self.health_x = self.screen_width - self.bar_width - self.health_x
 
     def not_exit_game(self):
         for event in pygame.event.get():
@@ -82,7 +104,7 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('lose')
 
     def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None):
-        text_surface = self.font.render(self.translator.get_message(textKey), True, (255, 255, 255))
+        text_surface = self.font.render(self.translator.get_message(textKey), True, self.text_color)
         text_x = (self.screen_width / 2 - text_surface.get_width() / 2) + (x if x else 0)
         text_y = self.screen_height / 2 - (y if y else 60)
         if inside_rect:
@@ -91,15 +113,13 @@ class GameInterface(pygame.sprite.Sprite):
         self.screen.blit(text_surface, text_rect if inside_rect else (text_x, text_y))
 
     def draw_health_bar(self):
-        bar_width = 200
-        bar_height = 20
-        x = self.screen_width - bar_width - 20
-        y = 20
+        x = self.health_x
+        y = self.health_y
         ratio = self.player.health / self.player.max_health
-        pygame.draw.rect(self.screen, (100, 0, 0), (x, y, bar_width, bar_height))
-        pygame.draw.rect(self.screen, (0, 200, 0), (x, y, bar_width * ratio, bar_height))
-        pygame.draw.rect(self.screen, (255,255,255), (x, y, bar_width, bar_height), 2)
+        pygame.draw.rect(self.screen, self.health_colors_dict["full_health"], (x, y, self.bar_width, self.bar_height))
+        pygame.draw.rect(self.screen, self.health_colors_dict["low_health"], (x, y, self.bar_width * ratio, self.bar_height))
+        pygame.draw.rect(self.screen, self.health_colors_dict["border"], (x, y, self.bar_width, self.bar_height), 2)
 
     def draw_scoring(self):
-        text_surface = self.font.render(self.translator.get_message('scoring') % (self.enemies.enemies_dead, (self.enemies.max_enemies - self.enemies.enemies_dead)), True, (255, 255, 255))
+        text_surface = self.font.render(self.translator.get_message('scoring') % (self.enemies.enemies_dead, (self.enemies.max_enemies - self.enemies.enemies_dead)), True, self.text_color)
         self.screen.blit(text_surface, (0, 0))

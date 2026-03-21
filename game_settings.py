@@ -8,3 +8,4 @@ class GameSettings:
     height = 720
     text_size = 36
     font_name = "Arial"
+    text_color = (255, 255, 255)

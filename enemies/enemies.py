@@ -28,7 +28,7 @@ class Enemies:
         for i in range(self.max_enemies):
             multiplier_x = random.randint(0, self.screen.get_width())
             multiplier_y = random.randint(0, self.screen.get_height())
-            self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, (0, 255, 255), self.screen, self.images_assets_loader))
+            self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, self.screen, self.images_assets_loader))
 
     def update(self, bullets):
         player_colision_circle = (self.player.x, self.player.y, self.player.radius)

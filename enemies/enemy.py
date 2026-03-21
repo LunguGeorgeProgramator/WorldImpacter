@@ -11,7 +11,6 @@ class Enemy:
     screen_x = 0
     screen_y = 0
     radius = 5
-    color = (255, 0, 0)
     facing = 0
     vel = 0
     is_max_x_reached = False
@@ -21,12 +20,11 @@ class Enemy:
     is_alive = True
 
 
-    def __init__(self, x, y, radius, color, screen, images_assets_loader):
+    def __init__(self, x, y, radius, screen, images_assets_loader):
         self.images_assets_loader = images_assets_loader
         self.x = x + 1
         self.y = y
         self.radius = radius
-        self.color = color
         # self.vel = 0.5
         self.vel = 2
         self.screen_x, self.screen_y = screen.get_size()
