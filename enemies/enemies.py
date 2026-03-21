@@ -1,5 +1,5 @@
 from enemies.enemy import Enemy
-from helper.collision_checker import ColisionChecler
+from helper.collision_checker import CollisionChecKer
 from data_models.game_state import GameState
 import random, math
 
@@ -9,7 +9,7 @@ class Enemies:
     player = None
     enemies = []
     enemies_dead = 0
-    max_enemies = 250
+    max_enemies = 300
     explosion = None
     colision_detection = None
     images_assets_loader = None
@@ -21,13 +21,13 @@ class Enemies:
         self.screen = screen
         self.explosion = explosion
         self._crete_enemy_swarm()
-        self.colision_detection = ColisionChecler().colision_detection
+        self.colision_detection = CollisionChecKer().colision_detection
         self.player = player
 
     def _crete_enemy_swarm(self):
         for i in range(self.max_enemies):
-            multiplier_x = i * random.randint(1, 50)
-            multiplier_y = i * random.randint(1, 50)
+            multiplier_x = random.randint(0, self.screen.get_width())
+            multiplier_y = random.randint(0, self.screen.get_height())
             self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, (0, 255, 255), self.screen, self.images_assets_loader))
 
     def update(self, bullets):

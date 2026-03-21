@@ -2,7 +2,7 @@ from data_models.moving_direction import MovingDirection
 from attack.bullet import Bullet
 from attack.explosion import Explosion
 # from helper.timer import Timer 
-from helper.collision_checker import ColisionChecler
+from helper.collision_checker import CollisionChecKer
 import random, math
 
 
@@ -28,7 +28,7 @@ class Attack:
         self.explosion = explosion
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
-        self.colision_detection = ColisionChecler().colision_detection
+        self.colision_detection = CollisionChecKer().colision_detection
 
     def update(self):
         for bullet in self.bullets:

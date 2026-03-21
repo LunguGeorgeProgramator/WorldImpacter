@@ -1,7 +1,7 @@
 import math
 
 
-class ColisionChecler:
+class CollisionChecKer:
 
     def __init__(self):
         pass
