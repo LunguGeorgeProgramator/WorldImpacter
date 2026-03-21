@@ -1,7 +1,8 @@
 from data_models.moving_direction import MovingDirection
 from attack.bullet import Bullet
 from attack.explosion import Explosion
-from helper.timer import Timer 
+# from helper.timer import Timer 
+from helper.collision_checker import ColisionChecler
 import random, math
 
 
@@ -17,6 +18,7 @@ class Attack:
     has_to_draw_explosion = False
     images_assets_loader = None
     explosion = None
+    colision_detection = None
 
     def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion):
         self.images_assets_loader = images_assets_loader
@@ -26,6 +28,7 @@ class Attack:
         self.explosion = explosion
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
+        self.colision_detection = ColisionChecler().colision_detection
 
     def update(self):
         for bullet in self.bullets:
@@ -53,12 +56,6 @@ class Attack:
             bomb_colision_circle = (self.explosion.x, self.explosion.y, self.explosion.bomb_radius)
             if self.colision_detection(player_colision_circle, bomb_colision_circle) and self.explosion.has_to_draw_explosion is False:
                 self.explosion.has_to_draw_explosion = True
-
-    def colision_detection(self, c1, c2):
-        x1, y1, r1 = c1
-        x2, y2, r2 = c2
-        distance = math.hypot(x2 - x1, y2 - y1)
-        return distance <= (r1 + r2)
 
     def destroy_explosion(self):
         self.explosion.is_new_explosion = False

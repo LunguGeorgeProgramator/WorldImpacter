@@ -1,3 +1,6 @@
+import os
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+
 # Example file showing a circle moving on screen
 import pygame
 
@@ -7,6 +10,7 @@ from player.player import Player
 from enemies.enemies import Enemies
 from game_interface.game_interface import GameInterface
 from assets.images_assets_loader import ImagesAssetsLoader
+from translate.translator import Translator
 
 # pygame setup
 pygame.init()
@@ -15,7 +19,9 @@ screen = pygame.display.set_mode((1280, 720))
 bg_image = pygame.image.load("assets/fire_pit.png").convert()
 bg_image = pygame.transform.scale(bg_image, (1280, 720))
 
-pygame.display.set_caption("World Impacter")
+translator = Translator('en')  # ro - romanian, en - english
+
+pygame.display.set_caption(translator.get_message('title'))
 clock = pygame.time.Clock()
 running = True
 dt = 0
@@ -27,7 +33,7 @@ player = Player(screen, keyboard_handler, images_assets_loader)
 explosion = explosion.Explosion(images_assets_loader, 250 ,250)
 attack = attack.Attack(player, keyboard_handler, screen, images_assets_loader, explosion)
 enemies = Enemies(screen, images_assets_loader, player, explosion)
-game_interface = GameInterface(screen, font, player, enemies)
+game_interface = GameInterface(screen, font, player, enemies, translator)
 
 while running:
 

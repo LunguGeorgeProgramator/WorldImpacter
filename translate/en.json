@@ -1,0 +1,10 @@
+{
+    "title": "World Impacter",
+    "scoring": "Enemies killed: %d, enemies alive: %d",
+    "win": "You win",
+    "lose": "You lose",
+    "score": "Score",
+    "restart": "Restart",
+    "highscore": "High score",
+    "exit": "Exit"
+}

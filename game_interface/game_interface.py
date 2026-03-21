@@ -1,27 +1,28 @@
 import pygame
+from translate.translator import Translator
 
 class GameInterface(pygame.sprite.Sprite):
 
     player = None
     enemies = None
     screen = None
-    button_color = None
-    button_hover = None
+    button_color = (200, 0, 0)
+    button_hover = (255, 0, 0) 
     button_rect = None
     font = None
     screen_width = None
     screen_height = None
+    translator = None
     
-    def __init__(self, screen, font, player, enemies):
+    def __init__(self, screen, font, player, enemies, translator):
         self.enemies = enemies
         self.player = player
         self.font = font
         self.screen = screen
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
-        self.button_color = (200, 0, 0)
-        self.button_hover = (255, 0, 0) 
-        self.button_rect = pygame.Rect(self.screen_width / 2 - 70, self.screen_height / 2 - 100, 100, 50) 
+        self.button_rect = pygame.Rect(-200, self.screen_height / 2, 120, 50) 
+        self.translator = translator
 
     def not_exit_game(self):
         for event in pygame.event.get():
@@ -49,17 +50,22 @@ class GameInterface(pygame.sprite.Sprite):
         else:
             color = self.button_color
         pygame.draw.rect(self.screen, color, self.button_rect)
-        text_surface = self.font.render("Exit", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=self.button_rect.center)
-        self.screen.blit(text_surface, text_rect)
+        self._set_text_on_screen('exit', True)
 
     def draw_win(self):
-        text_surface = self.font.render('You Win', True, (255, 255, 255))
-        self.screen.blit(text_surface, (self.screen_width / 2 - 80, self.screen_height / 2))
+        self._set_text_on_screen('win')
 
     def draw_game_over(self):
-        text_surface = self.font.render('Game Over', True, (255, 255, 255))
-        self.screen.blit(text_surface, (self.screen_width / 2 - 100, self.screen_height / 2))
+        self._set_text_on_screen('lose')
+    
+    def _set_text_on_screen(self, textKey, inside_rect = False, x = None, y = None):
+        text_surface = self.font.render(self.translator.get_message(textKey), True, (255, 255, 255))
+        text_x = (self.screen_width / 2 - text_surface.get_width() / 2) + (x if x else 0)
+        text_y = self.screen_height / 2 - (y if y else 60)
+        if inside_rect:
+            text_rect = text_surface.get_rect(center=self.button_rect.center)
+            self.button_rect.x = self.screen_width / 2 - self.button_rect.width / 2
+        self.screen.blit(text_surface, text_rect if inside_rect else (text_x, text_y))
 
     def draw_health_bar(self):
         bar_width = 200
@@ -72,5 +78,5 @@ class GameInterface(pygame.sprite.Sprite):
         pygame.draw.rect(self.screen, (255,255,255), (x, y, bar_width, bar_height), 2)
 
     def draw_scoring(self):
-        text_surface = self.font.render('Enemies killed: ' + str(self.enemies.enemies_dead) + ", enemies alive: " + str(self.enemies.max_enemies - self.enemies.enemies_dead), True, (255, 255, 255))
+        text_surface = self.font.render(self.translator.get_message('scoring') % (self.enemies.enemies_dead, (self.enemies.max_enemies - self.enemies.enemies_dead)), True, (255, 255, 255))
         self.screen.blit(text_surface, (0, 0))

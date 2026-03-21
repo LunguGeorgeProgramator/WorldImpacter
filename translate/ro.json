@@ -1,0 +1,10 @@
+{
+    "title": "Impact global",
+    "scoring": "Inamici ucisi: %d, inamici ramasi: %d",
+    "win": "Ai castigat",
+    "lose": "Ai pierdut",
+    "score": "Scor",
+    "restart": "Incearca din nou",
+    "highscore": "Scoul cel mai mare",
+    "exit": "Inchide"
+}

@@ -1,4 +1,5 @@
 from enemies.enemy import Enemy
+from helper.collision_checker import ColisionChecler
 import random, math
 
 
@@ -7,17 +8,24 @@ class Enemies:
     player = None
     enemies = []
     enemies_dead = 0
-    max_enemies = 250
+    max_enemies = 1500
     explosion = None
+    colision_detection = None
+    images_assets_loader = None
 
     def __init__(self, screen, images_assets_loader, player, explosion):
+        self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.explosion = explosion
+        self._crete_enemy_swarm()
+        self.colision_detection = ColisionChecler().colision_detection
+        self.player = player
+
+    def _crete_enemy_swarm(self):
         for i in range(self.max_enemies):
-            self.player = player
             multiplier_x = i * random.randint(1, 50)
             multiplier_y = i * random.randint(1, 50)
-            self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, (0, 255, 255), screen, images_assets_loader))
+            self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, (0, 255, 255), self.screen, self.images_assets_loader))
 
     def update(self, bullets):
         player_colision_circle = (self.player.x, self.player.y, self.player.radius)
@@ -39,13 +47,6 @@ class Enemies:
                         self.enemies_dead += 1
             if not enemy.is_alive:
                 self.enemies.remove(enemy)
-               
-
-    def colision_detection(self, c1, c2):
-        x1, y1, r1 = c1
-        x2, y2, r2 = c2
-        distance = math.hypot(x2 - x1, y2 - y1)
-        return distance <= (r1 + r2)
 
     def draw(self):
         for enemy in self.enemies:
