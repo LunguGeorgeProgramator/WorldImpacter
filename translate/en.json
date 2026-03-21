@@ -6,5 +6,7 @@
     "score": "Score",
     "restart": "Restart",
     "highscore": "High score",
-    "exit": "Exit"
+    "pause": "Game Paused. Press P to Resume",
+    "exit": "Exit",
+    "continue": "Continue"
 }

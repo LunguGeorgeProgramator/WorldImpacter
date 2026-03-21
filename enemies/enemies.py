@@ -1,5 +1,6 @@
 from enemies.enemy import Enemy
 from helper.collision_checker import ColisionChecler
+from data_models.game_state import GameState
 import random, math
 
 
@@ -8,12 +9,14 @@ class Enemies:
     player = None
     enemies = []
     enemies_dead = 0
-    max_enemies = 1500
+    max_enemies = 1
     explosion = None
     colision_detection = None
     images_assets_loader = None
+    game_settings = None
 
-    def __init__(self, screen, images_assets_loader, player, explosion):
+    def __init__(self, screen, images_assets_loader, player, explosion, game_settings):
+        self.game_settings = game_settings
         self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.explosion = explosion
@@ -47,6 +50,8 @@ class Enemies:
                         self.enemies_dead += 1
             if not enemy.is_alive:
                 self.enemies.remove(enemy)
+        if len(self.enemies) == 0:
+            self.game_settings.state = GameState.GAME_OVER
 
     def draw(self):
         for enemy in self.enemies:

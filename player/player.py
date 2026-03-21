@@ -1,5 +1,6 @@
 import pygame
 from data_models.moving_direction import MovingDirection
+from data_models.game_state import GameState
 
 class Player:
 
@@ -23,12 +24,16 @@ class Player:
     health = 1000
     max_health = 1000
     is_alive = True
+    game_settings = None
 
-    def __init__(self, screen, keyboard_handler, images_assets_loader):
+    def __init__(self, screen, keyboard_handler, images_assets_loader, game_settings):
+        self.game_settings = game_settings
         self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.keyboard_handler = keyboard_handler
-        self.player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+        half_of_player_image_width = self.images_assets_loader.default_image_width / 2
+        half_of_player_image_height = self.images_assets_loader.default_image_height / 2
+        self.player_pos = pygame.Vector2(screen.get_width() / 2 - half_of_player_image_width, screen.get_height() / 2 - half_of_player_image_height)
         self.with_p = screen.get_width() / 2
         self.height_p = screen.get_height() / 2
         self.pos = pygame.Vector2(self.player_pos.x, self.player_pos.y)
@@ -63,6 +68,7 @@ class Player:
         self.y = self.player_pos.y
         if self.health <= 0:
             self.is_alive = False
+            self.game_settings.state = GameState.GAME_OVER
 
     def draw(self):
         if self.last_moving_direction == MovingDirection.UP:
@@ -73,4 +79,6 @@ class Player:
             player_image = self.images_assets_loader.player_left_image
         elif self.last_moving_direction == MovingDirection.RIGHT:
             player_image = self.images_assets_loader.player_right_image
+        else:
+            player_image = self.images_assets_loader.player_down_image
         self.images_assets_loader.draw(player_image, self.player_pos.x, self.player_pos.y)

@@ -6,5 +6,7 @@
     "score": "Scor",
     "restart": "Incearca din nou",
     "highscore": "Scoul cel mai mare",
-    "exit": "Inchide"
+    "pause": "Jocul este în pauza. Apasa P pentru a relua",
+    "exit": "Inchide",
+    "continue": "Continua"
 }
