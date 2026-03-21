@@ -10,14 +10,14 @@ class Explosion:
     bomb_whidth = 50
     images_assets_loader = None
     bomb_radius = 25
-    explosion_radius = 75
+    explosion_radius = 200
     x = 0
     y = 0
     is_new_explosion = True
     has_to_draw_explosion = False
 
 
-    def __init__(self, images_assets_loader, x, y):
+    def __init__(self, images_assets_loader, x = 250, y = 250):
         self.x = x
         self.y = y
         self.images_assets_loader = images_assets_loader
