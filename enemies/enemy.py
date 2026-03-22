@@ -1,4 +1,5 @@
 import pygame
+from assets.images_animation_loader import ImagesAnimationLoader
 
 
 class Enemy:
@@ -19,6 +20,7 @@ class Enemy:
     is_min_y_reached = False
     is_alive = True
     damage_to_player = 1
+    images_animation_loader = ImagesAnimationLoader()
 
 
     def __init__(self, x, y, radius, screen, images_assets_loader):
@@ -31,6 +33,11 @@ class Enemy:
         self.screen_x, self.screen_y = screen.get_size()
         self.default_image_height = radius * 2
         self.default_image_width = radius * 2
+        self.images_animation_loader.set_frames_assets([
+            self.images_assets_loader.enemies_image, 
+            self.images_assets_loader.enemies_image_frame_two
+        ])
+        self.images_animation_loader.set_animation_speed(200)
 
     def update(self):
         if self.x < 0:
@@ -55,8 +62,10 @@ class Enemy:
             self.y += self.vel
         else:
             self.y -= self.vel
+        self.images_animation_loader.update_frame()
 
     def draw(self, win):
         if self.is_alive:
-            self.images_assets_loader.draw(self.images_assets_loader.enemies_image, self.x, self.y, self.default_image_width, self.default_image_height)
+            image_asset = self.images_animation_loader.get_frame()
+            self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
     

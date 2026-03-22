@@ -1,5 +1,6 @@
 import pygame
 from enemies.enemy import Enemy
+from assets.images_animation_loader import ImagesAnimationLoader
 
 
 class EnemyBoss(Enemy):
@@ -15,14 +16,21 @@ class EnemyBoss(Enemy):
     max_health = 1000
     screen = None
     damage_to_player = 5
+    images_animation_loader = ImagesAnimationLoader()
 
     def __init__(self, x, y, radius, screen, images_assets_loader):
         super().__init__(x, y, radius, screen, images_assets_loader)
+        self.images_animation_loader.set_frames_assets([
+            self.images_assets_loader.enemy_boss_image, 
+            self.images_assets_loader.enemy_boss_frame_two_image
+        ])
+        self.images_animation_loader.set_animation_speed(20)
         self.screen = screen
 
     def draw(self, win):
         if self.is_alive:
-            self.images_assets_loader.draw(self.images_assets_loader.enemy_boss_image, self.x, self.y, self.default_image_width, self.default_image_height)
+            image_asset = self.images_animation_loader.get_frame()
+            self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
             self._draw_health_bar()
     
     def _draw_health_bar(self):
