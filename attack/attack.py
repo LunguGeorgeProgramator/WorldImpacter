@@ -23,8 +23,9 @@ class Attack:
     bullet_radius = 6
     max_bullets_per_attack = 2
     five_seconds_timer = None
+    game_settings = None
 
-    def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion):
+    def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion, game_settings):
         self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.player = player
@@ -34,6 +35,7 @@ class Attack:
         self.screen_height = screen.get_height()
         self.colision_detection = CollisionChecKer().colision_detection
         self.five_seconds_timer = Timer(20)
+        self.game_settings = game_settings
 
     def update(self):
         for bullet in self.bullets:
@@ -57,7 +59,7 @@ class Attack:
                     Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, facing)
                 )
 
-        if self.explosion.is_new_explosion:
+        if self.explosion.is_new_explosion and self.game_settings.game_level not in self.game_settings.eneny_boss_levels:
             player_colision_circle = (self.player.x, self.player.y, self.player.radius)
             bomb_colision_circle = (self.explosion.x - self.explosion.bomb_width, self.explosion.y - self.explosion.bomb_height, self.explosion.bomb_radius)
             if self.colision_detection(player_colision_circle, bomb_colision_circle) and self.explosion.has_to_draw_explosion is False:
@@ -69,18 +71,19 @@ class Attack:
         self.explosion.y = random.randint(0 + 100, self.screen_height - 100)
 
     def draw(self):
-        wait_for_timer_to_finish = self.five_seconds_timer.check_cronometer()
+        if self.game_settings.game_level not in self.game_settings.eneny_boss_levels:
+            wait_for_timer_to_finish = self.five_seconds_timer.check_cronometer()
 
-        if self.explosion.is_new_explosion:
-            self.explosion.draw_bomb()
+            if self.explosion.is_new_explosion:
+                self.explosion.draw_bomb()
 
-        if self.explosion.has_to_draw_explosion and wait_for_timer_to_finish:
-            self.explosion.draw_explosion()
-        else:
-            self.explosion.has_to_draw_explosion = False
-            
-        if self.five_seconds_timer.trigger_action_at_the_end:
-            self.move_explosion_to_random_position()
+            if self.explosion.has_to_draw_explosion and wait_for_timer_to_finish:
+                self.explosion.draw_explosion()
+            else:
+                self.explosion.has_to_draw_explosion = False
+                
+            if self.five_seconds_timer.trigger_action_at_the_end:
+                self.move_explosion_to_random_position()
 
         for bullet in self.bullets:
             bullet.draw(self.screen)

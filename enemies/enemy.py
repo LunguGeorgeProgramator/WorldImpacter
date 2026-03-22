@@ -18,6 +18,7 @@ class Enemy:
     is_max_y_reached = False
     is_min_y_reached = False
     is_alive = True
+    damage_to_player = 1
 
 
     def __init__(self, x, y, radius, screen, images_assets_loader):
@@ -35,13 +36,13 @@ class Enemy:
         if self.x < 0:
             self.is_max_x_reached = False
             self.is_min_x_reached = True
-        elif self.x > self.screen_x - 50:
+        elif self.x > self.screen_x - self.radius * 2:
             self.is_max_x_reached = True
             self.is_min_x_reached = False
         if self.y < 0:
             self.is_max_y_reached = False
             self.is_min_y_reached = True
-        elif self.y > self.screen_y - 50:
+        elif self.y > self.screen_y - self.radius * 2:
             self.is_max_y_reached = True
             self.is_min_y_reached = False
 

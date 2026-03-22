@@ -34,7 +34,7 @@ images_assets_loader = ImagesAssetsLoader(screen)
 keyboard_handler = KeyboardHandler(game_settings)
 player = Player(screen, keyboard_handler, images_assets_loader, game_settings)
 explosion = explosion.Explosion(images_assets_loader)
-attack = attack.Attack(player, keyboard_handler, screen, images_assets_loader, explosion)
+attack = attack.Attack(player, keyboard_handler, screen, images_assets_loader, explosion, game_settings)
 enemies = Enemies(screen, images_assets_loader, player, attack, explosion, game_settings)
 game_interface = GameInterface(screen, font, player, enemies, translator, game_settings)
 

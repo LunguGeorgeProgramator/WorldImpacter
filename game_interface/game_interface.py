@@ -90,7 +90,7 @@ class GameInterface(pygame.sprite.Sprite):
     def draw(self):
         self.draw_health_bar()
         self.draw_scoring()
-        if  self.enemies.enemies_dead == self.enemies.max_enemies:
+        if  self.enemies.enemies_dead == self.enemies.max_enemies or self.enemies.enemy_boss.is_alive is False:
             self.draw_win()
         if self.player.is_alive is False:
             self.draw_game_over()

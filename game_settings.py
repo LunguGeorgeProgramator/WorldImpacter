@@ -11,3 +11,5 @@ class GameSettings:
     text_color = (255, 255, 255)
     game_level = 1
     enemies_alive = 1
+    eneny_boss_levels = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    enemy_boss_alive = True

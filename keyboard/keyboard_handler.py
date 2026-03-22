@@ -61,6 +61,10 @@ class KeyboardHandler:
                 if key == pygame.K_n and self.game_settings.enemies_alive == 0:
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.state = GameState.NEXT_LEVEL
+                if key == pygame.K_n and self.game_settings.enemy_boss_alive == False and self.game_settings.game_level in self.game_settings.eneny_boss_levels:
+                    self.game_settings.state = GameState.NEXT_LEVEL
+                    self.game_settings.game_level = self.game_settings.game_level + 1
+                    self.game_settings.enemy_boss_alive = True
             self.pressed_last[key] = self.keys[key]
 
     def get_movement_direction(self):
