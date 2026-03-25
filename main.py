@@ -19,8 +19,6 @@ pygame.init()
 game_settings = GameSettings()
 
 screen = pygame.display.set_mode((game_settings.width, game_settings.height))
-bg_image = pygame.image.load("assets/fire_pit.png").convert()
-bg_image = pygame.transform.scale(bg_image, (game_settings.width, game_settings.height))
 
 translator = Translator('en')  # ro - romanian, en - english
 
@@ -43,6 +41,10 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     # screen.fill("green")
+    if game_settings.game_level in game_settings.haven_levels:
+        bg_image = images_assets_loader.haven_bg
+    else:
+        bg_image = images_assets_loader.fire_pit_bg
     screen.blit(bg_image, (0, 0))
 
     keyboard_handler.update()

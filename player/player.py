@@ -66,6 +66,13 @@ class Player:
             self.game_settings.state = GameState.GAME_OVER
 
     def draw(self):
+        if self.game_settings.game_level in self.game_settings.haven_levels:
+            player_image = self._get_player_grim_image()
+        else:
+            player_image = self._get_player_default_image()
+        self.images_assets_loader.draw(player_image, self.player_pos.x, self.player_pos.y)
+
+    def _get_player_default_image(self):
         if self.last_moving_direction == MovingDirection.UP:
             player_image = self.images_assets_loader.player_up_image
         elif self.last_moving_direction == MovingDirection.DOWN:
@@ -76,4 +83,22 @@ class Player:
             player_image = self.images_assets_loader.player_right_image
         else:
             player_image = self.images_assets_loader.player_down_image
-        self.images_assets_loader.draw(player_image, self.player_pos.x, self.player_pos.y)
+        return player_image
+
+    def _get_player_grim_image(self):
+        print(self.last_moving_direction_left_right)
+        if self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.LEFT:
+            player_image = self.images_assets_loader.grim_player_down_left_image
+        elif self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.RIGHT:
+            player_image = self.images_assets_loader.grim_player_down_right_image
+        elif self.last_moving_direction == MovingDirection.LEFT:
+            player_image = self.images_assets_loader.grim_player_up_left_image
+        elif self.last_moving_direction == MovingDirection.RIGHT:
+            player_image = self.images_assets_loader.grim_player_up_right_image
+        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.LEFT:
+            player_image = self.images_assets_loader.grim_player_up_left_image
+        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.RIGHT:
+            player_image = self.images_assets_loader.grim_player_up_right_image
+        else:
+            player_image = self.images_assets_loader.grim_player_up_right_image
+        return player_image
