@@ -4,27 +4,16 @@ from assets.images_animation_loader import ImagesAnimationLoader
 
 class Enemy:
 
-    images_assets_loader = None
-    default_image_height = 0
-    default_image_width = 0
-    x = 0
-    y = 0
-    screen_x = 0
-    screen_y = 0
-    radius = 5
-    facing = 0
-    vel = 0
-    is_max_x_reached = False
-    is_min_x_reached = False
-    is_max_y_reached = False
-    is_min_y_reached = False
-    is_alive = True
-    damage_to_player = 1
-    images_animation_loader = ImagesAnimationLoader()
-
-
-    def __init__(self, x, y, radius, screen, images_assets_loader):
+    def __init__(self, x = 0, y = 0, radius = 5, screen = None, images_assets_loader = None):
         self.images_assets_loader = images_assets_loader
+        self.facing = 0
+        self.is_max_x_reached = False
+        self.is_min_x_reached = False
+        self.is_max_y_reached = False
+        self.is_min_y_reached = False
+        self.is_alive = True
+        self.damage_to_player = 1
+        self.images_animation_loader = ImagesAnimationLoader()
         self.x = x + 1
         self.y = y
         self.radius = radius
@@ -37,7 +26,7 @@ class Enemy:
             self.images_assets_loader.enemies_image, 
             self.images_assets_loader.enemies_image_frame_two
         ])
-        self.images_animation_loader.set_animation_speed(200)
+        self.images_animation_loader.set_animation_speed(30)
 
     def update(self):
         if self.x < 0:

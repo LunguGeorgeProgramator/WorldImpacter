@@ -1,12 +1,11 @@
 
 class ImagesAnimationLoader:
 
-    frames = []
-    animation_frame = 0
-    counter = 0
-    animation_speed = 10
-
     def __init__(self, animation_speed = 10):
+        self.frames = []
+        self.animation_frame = 0
+        self.counter = 0
+        self.animation_speed = 10
         self.animation_speed = animation_speed
     
     def set_animation_speed(self, speed): 

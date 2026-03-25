@@ -4,29 +4,24 @@ from data_models.game_state import GameState
 
 class Player:
 
-    keyboard_handler = None
-    images_assets_loader = None
-    color = "white"
-    pos = None
-    screen = None
-    keyPressed = None
-    direction = None
-    last_moving_direction = None
-    last_moving_direction_left_right = None
-    x = 0
-    y = 0
-    with_p = 0
-    height_p = 0
-    is_player_out_of_screen = False
-    screen_x = 0
-    screen_y = 0
-    radius = 50
-    health = 1000
-    max_health = 1000
-    is_alive = True
-    game_settings = None
-
     def __init__(self, screen, keyboard_handler, images_assets_loader, game_settings):
+        self.color = "white"
+        self.pos = None
+        self.keyPressed = None
+        self.direction = None
+        self.last_moving_direction = None
+        self.last_moving_direction_left_right = None
+        self.x = 0
+        self.y = 0
+        self.with_p = 0
+        self.height_p = 0
+        self.is_player_out_of_screen = False
+        self.screen_x = 0
+        self.screen_y = 0
+        self.radius = 50
+        self.health = 1000
+        self.max_health = 1000
+        self.is_alive = True
         self.game_settings = game_settings
         self.images_assets_loader = images_assets_loader
         self.screen = screen

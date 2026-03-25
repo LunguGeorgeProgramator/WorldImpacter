@@ -5,21 +5,18 @@ from data_models.game_state import GameState
 
 class KeyboardHandler:
 
-    key = []
-    keys = []
-    game_settings = None
-    direction = MovingDirection.NONE
-    last_stopped_moving_direction = MovingDirection.DOWN
-    last_stopped_left_right_moving_direction = MovingDirection.RIGHT
-    tracked_keys = [pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i]
-    pressed_last = {key: False for key in tracked_keys}
-    space_pressed = False
-    w_pressed = False
-    s_pressed = False
-    a_pressed = False
-    d_pressed = False
-
     def __init__(self, game_settings):
+        self.keys = []
+        self.direction = MovingDirection.NONE
+        self.last_stopped_moving_direction = MovingDirection.DOWN
+        self.last_stopped_left_right_moving_direction = MovingDirection.RIGHT
+        self.tracked_keys = [pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i]
+        self.pressed_last = {key: False for key in self.tracked_keys}
+        self.space_pressed = False
+        self.w_pressed = False
+        self.s_pressed = False
+        self.a_pressed = False
+        self.d_pressed = False
         self.key = pygame.key
         self.game_settings = game_settings
 

@@ -3,22 +3,9 @@ import pygame
 
 class ImagesAssetsLoader:
 
-    default_image_height = 100
-    default_image_width = 100
-    player_up_image = None
-    player_down_image = None
-    player_left_image = None
-    player_right_image = None
-    enemies_image = None
-    enemies_image_frame_two = None
-    enemy_boss_image = None
-    enemy_boss_frame_two_image = None
-    screen = None
-    explosion = None
-    bomb = None
-
-
     def __init__(self, screen):
+        self.default_image_height = 100
+        self.default_image_width = 100
         self.screen = screen
         self.player_up_image = pygame.image.load("assets/player/player-up.png")
         self.player_down_image = pygame.image.load("assets/player/player-down.png")
@@ -26,8 +13,10 @@ class ImagesAssetsLoader:
         self.player_right_image = pygame.image.load("assets/player/player-right.png")
         self.enemies_image = pygame.image.load("assets/enemies/evil-sphere.png")
         self.enemies_image_frame_two = pygame.image.load("assets/enemies/evil-sphere-frame-two.png")
-        self.enemy_boss_image = pygame.image.load("assets/enemies/evil-sphere-boss.png")
-        self.enemy_boss_frame_two_image = pygame.image.load("assets/enemies/evil-sphere-boss-frame-two.png")
+        self.enemy_boss_image = pygame.image.load("assets/enemies/boos-shere-1.png")
+        self.enemy_boss_frame_two_image = pygame.image.load("assets/enemies/boos-shere-2.png")
+        self.enemy_boss_frame_three_image = pygame.image.load("assets/enemies/boos-shere-3.png")
+        self.enemy_boss_frame_four_image = pygame.image.load("assets/enemies/boos-shere-4.png")
         self.explosion = pygame.image.load("assets/attacks/explosion-s.png")
         self.bomb = pygame.image.load("assets/attacks/red-bomb.png")
 

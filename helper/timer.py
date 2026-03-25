@@ -1,12 +1,9 @@
 
 class Timer:
 
-    duration = 0
-    duration_increment = 0
-    start_time = False
-    trigger_action_at_the_end = False
-
-    def __init__(self, duration):
+    def __init__(self, duration = 10):
+        self.start_time = False
+        self.trigger_action_at_the_end = False
         self.duration = duration
         self.duration_increment = duration
 

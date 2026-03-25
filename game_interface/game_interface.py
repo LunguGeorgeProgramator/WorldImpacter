@@ -4,43 +4,31 @@ from data_models.game_state import GameState
 
 class GameInterface(pygame.sprite.Sprite):
 
-    player = None
-    enemies = None
-    screen = None
-    continue_button_color = (0, 255, 0)
-    button_color = (200, 0, 0)
-    button_hover = (255, 0, 0)
-    health_colors_dict = {
-        "full_health": (100, 0, 0),
-        "low_health": (0, 200, 0),
-        "border": (255,255,255)
-    }
-    bar_width = 200
-    bar_height = 20
-    health_x = 20
-    health_y = 20
-    text_color = None
-    button_exit_rect = None
-    button_exit_w = 120
-    button_exit_h = 50
-    button_exit_x = -200
-    button_exit_y = 0
-    button_continue_rect = None
-    button_continue_w = 170
-    button_continue_h = 50
-    button_continue_x = -200
-    button_continue_y = -75
-    button_next_level_rect = None
-    button_next_level_w = 170
-    button_next_level_h = 50
-    button_next_level_x = -200
-    button_next_level_y = -125
-    font = None
-    screen_width = None
-    screen_height = None
-    translator = None
-
     def __init__(self, screen, font, player, enemies, translator, game_settings):
+        self.continue_button_color = (0, 255, 0)
+        self.button_color = (200, 0, 0)
+        self.button_hover = (255, 0, 0)
+        self.health_colors_dict = {
+            "full_health": (100, 0, 0),
+            "low_health": (0, 200, 0),
+            "border": (255,255,255)
+        }
+        self.bar_width = 200
+        self.bar_height = 20
+        self.health_x = 20
+        self.health_y = 20
+        self.button_exit_w = 120
+        self.button_exit_h = 50
+        self.button_exit_x = -200
+        self.button_exit_y = 0
+        self.button_continue_w = 170
+        self.button_continue_h = 50
+        self.button_continue_x = -200
+        self.button_continue_y = -75
+        self.button_next_level_w = 170
+        self.button_next_level_h = 50
+        self.button_next_level_x = -200
+        self.button_next_level_y = -125
         self.game_settings = game_settings
         self.enemies = enemies
         self.player = player

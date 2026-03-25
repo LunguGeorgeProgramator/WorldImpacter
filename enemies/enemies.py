@@ -8,19 +8,11 @@ import pygame
 
 class Enemies:
 
-    player = None
-    attack = None
-    enemy_boss = None
-    enemies = []
-    enemies_dead = 0
-    max_enemies = 300
-    max_enemies_per_level = 10
-    explosion = None
-    colision_detection = None
-    images_assets_loader = None
-    game_settings = None
-
     def __init__(self, screen, images_assets_loader, player, attack, explosion, game_settings):
+        self.enemies = []
+        self.enemies_dead = 0
+        self.max_enemies = 300
+        self.max_enemies_per_level = 10
         self.game_settings = game_settings
         self.attack = attack
         self.images_assets_loader = images_assets_loader

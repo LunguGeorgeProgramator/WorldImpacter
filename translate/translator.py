@@ -2,11 +2,9 @@ import json
 
 class Translator:
 
-    locale = None
-    lang = {}
-    lang_json_path = "translate/%s.json"
-
     def __init__(self, locale):
+        self.lang = {}
+        self.lang_json_path = "translate/%s.json"
         self.locale = locale
         self._load_locale()
 

@@ -9,23 +9,11 @@ from datetime import datetime
 
 class Attack:
 
-    bullets = []
-    screen_width = 0
-    screen_height = 0
-    player = None
-    keyboard_handler = None
-    screen = None
-    explosion = None
-    has_to_draw_explosion = False
-    images_assets_loader = None
-    explosion = None
-    colision_detection = None
-    bullet_radius = 6
-    max_bullets_per_attack = 2
-    five_seconds_timer = None
-    game_settings = None
-
     def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion, game_settings):
+        self.bullets = []
+        self.has_to_draw_explosion = False
+        self.bullet_radius = 6
+        self.max_bullets_per_attack = 2
         self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.player = player

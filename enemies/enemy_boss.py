@@ -22,7 +22,10 @@ class EnemyBoss(Enemy):
         super().__init__(x, y, radius, screen, images_assets_loader)
         self.images_animation_loader.set_frames_assets([
             self.images_assets_loader.enemy_boss_image, 
-            self.images_assets_loader.enemy_boss_frame_two_image
+            self.images_assets_loader.enemy_boss_frame_two_image,
+            self.images_assets_loader.enemy_boss_frame_three_image,
+            self.images_assets_loader.enemy_boss_frame_four_image
+            
         ])
         self.images_animation_loader.set_animation_speed(20)
         self.screen = screen

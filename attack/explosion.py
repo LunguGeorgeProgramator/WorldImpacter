@@ -3,21 +3,16 @@ import pygame
 
 class Explosion:
 
-    radius = 25
-    explosion_height = 400
-    explosion_width = 400
-    bomb_height = 50
-    bomb_width = 50
-    images_assets_loader = None
-    bomb_radius = 25
-    explosion_radius = 200
-    x = 0
-    y = 0
-    is_new_explosion = True
-    has_to_draw_explosion = False
-
-
     def __init__(self, images_assets_loader, x = 250, y = 250):
+        self.radius = 25
+        self.explosion_height = 400
+        self.explosion_width = 400
+        self.bomb_height = 50
+        self.bomb_width = 50
+        self.bomb_radius = 25
+        self.explosion_radius = 200
+        self.is_new_explosion = True
+        self.has_to_draw_explosion = False
         self.x = x
         self.y = y
         self.images_assets_loader = images_assets_loader
