@@ -17,18 +17,6 @@ class GameInterface(pygame.sprite.Sprite):
         self.bar_height = 20
         self.health_x = 20
         self.health_y = 20
-        self.button_exit_w = 120
-        self.button_exit_h = 50
-        self.button_exit_x = -200
-        self.button_exit_y = 0
-        self.button_continue_w = 170
-        self.button_continue_h = 50
-        self.button_continue_x = -200
-        self.button_continue_y = -75
-        self.button_next_level_w = 170
-        self.button_next_level_h = 50
-        self.button_next_level_x = -200
-        self.button_next_level_y = -125
         self.game_settings = game_settings
         self.enemies = enemies
         self.player = player
@@ -42,12 +30,13 @@ class GameInterface(pygame.sprite.Sprite):
         self._create_menu_buttons()
 
     def _create_menu_buttons(self):
-        self.button_exit_y = self.button_exit_y + self.screen_height / 2
-        self.button_continue_y =  self.button_continue_y + self.screen_height / 2
-        self.button_next_level_y =  self.button_next_level_y + self.screen_height / 2
-        self.button_exit_rect = pygame.Rect(self.button_exit_x, self.button_exit_y, self.button_exit_w, self.button_exit_h)
-        self.button_continue_rect = pygame.Rect(self.button_continue_x, self.button_continue_y, self.button_continue_w, self.button_continue_h)
-        self.button_next_level_rect = pygame.Rect(self.button_next_level_x, self.button_next_level_y, self.button_next_level_w, self.button_next_level_h)
+        self.button_exit_rect = self._create_menu_button(-200, 0, 120, 50)
+        self.button_continue_rect = self._create_menu_button(-200, -75, 170, 50)
+        self.button_next_level_rect = self._create_menu_button(-200, -125, 170, 50)
+
+    def _create_menu_button(self, position_x, position_y, width, height):
+        final_possition_y =  position_y + self.screen_height / 2
+        return pygame.Rect(position_x, final_possition_y, width, height)
 
     def not_exit_game(self):
         for event in pygame.event.get():
@@ -69,7 +58,7 @@ class GameInterface(pygame.sprite.Sprite):
                 if event.key == pygame.K_c and (event.mod & pygame.KMOD_SHIFT):
                     print("Continue game by pressing Shift + C key")
                     self.game_settings.state = GameState.RUN
-                if event.key == pygame.K_n and (event.mod & pygame.KMOD_SHIFT):
+                if event.key == pygame.K_n and (event.mod & pygame.KMOD_SHIFT) and self.game_settings.state != GameState.GAME_OVER:
                     print("Next level by pressing Shift + N key")
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.state = GameState.NEXT_LEVEL

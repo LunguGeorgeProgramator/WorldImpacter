@@ -39,6 +39,7 @@ class Enemies:
 
     def next_level(self):
         self.attack.bullets = []
+        self.enemies = []
         self.player.x = self.screen.get_width() / 2
         self.player.y = self.screen.get_height() / 2
         self.player.health = self.player.max_health

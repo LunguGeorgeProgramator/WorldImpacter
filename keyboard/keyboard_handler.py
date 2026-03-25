@@ -53,7 +53,7 @@ class KeyboardHandler:
         # good for open/close game menus with the same key
         for key in self.tracked_keys:
             if self.keys[key] and not self.pressed_last[key]:
-                if key == pygame.K_p:
+                if key == pygame.K_p and self.game_settings.state != GameState.GAME_OVER:
                     self.game_settings.state = GameState.PAUSE if self.game_settings.state == GameState.RUN else GameState.RUN
                 if key == pygame.K_n and self.game_settings.enemies_alive == 0:
                     self.game_settings.game_level = self.game_settings.game_level + 1
