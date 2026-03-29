@@ -24,10 +24,15 @@ class Attack:
         self.colision_detection = CollisionChecKer().colision_detection
         self.five_seconds_timer = Timer(20)
         self.game_settings = game_settings
+        self.percentage_of_bullets_number_per_level = 10
+        self.percentage_of_bullets_range_per_level = 120
+
+    def _level_attack_multiplier(self, percentage = 10):
+        return  self.game_settings.game_level * (percentage / 100)
 
     def update(self):
         for bullet in self.bullets:
-            max_range = bullet.bullet_max_range
+            max_range = bullet.bullet_max_range + self._level_attack_multiplier(self.percentage_of_bullets_range_per_level)
             if   bullet.x > self.player.x and bullet.x < (self.player.x + max_range):
                 bullet.x += bullet.vel
             elif bullet.x < self.player.x and bullet.x > (self.player.x + (self.player.radius * 2) - max_range):
@@ -42,7 +47,7 @@ class Attack:
             else:
                 facing = 1
                 initial_x = self.player.x + (self.player.radius * 2)
-            if len(self.bullets) < self.max_bullets_per_attack:
+            if len(self.bullets) < self.max_bullets_per_attack * self._level_attack_multiplier(self.percentage_of_bullets_number_per_level):
                 self.bullets.append(
                     Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, facing)
                 )
