@@ -115,12 +115,21 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('exit_key_message', None, 0, -70)
 
     def draw_game_over(self):
+        self._set_text_on_screen('total_enemies_defeated', None, 0, 120, [self.game_settings.total_enemies_defeated])
         self._set_text_on_screen('lose')
         self.draw_exit_button()
         self._set_text_on_screen('exit_key_message', None, 0, -70)
 
-    def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None):
-        text_surface = self.font.render(self.translator.get_message(textKey), True, self.text_color)
+    def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None, text_params = []):
+        if text_params:
+            text = self.translator.get_message(textKey).format(*text_params)
+        else:
+            text = self.translator.get_message(textKey)
+        if self.game_settings.game_level in self.game_settings.haven_levels:
+            text_color = self.game_settings.haven_level_text_color
+        else:
+            text_color = self.text_color
+        text_surface = self.font.render(text, True, text_color)
         text_x = (self.screen_width / 2 - text_surface.get_width() / 2) + (x if x else 0)
         text_y = self.screen_height / 2 - (y if y else 60)
         if inside_rect:

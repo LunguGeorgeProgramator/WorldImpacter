@@ -85,6 +85,7 @@ class Enemies:
                 if enemy.is_alive:
                     enemy.is_alive = False
                     self.enemies_dead += 1
+                    self.game_settings.total_enemies_defeated += 1
             if self.colision_detection(enemy_colision_circle, player_colision_circle) and enemy.is_alive and self.player.is_alive:
                 self.player.health -= enemy.damage_to_player
             for bullet in self.attack.bullets:
@@ -93,6 +94,7 @@ class Enemies:
                     if enemy.is_alive:
                         enemy.is_alive = False
                         self.enemies_dead += 1
+                        self.game_settings.total_enemies_defeated += 1
                         # if bullet is removed at collision that will make the fire rate faster at close range, makes the game easyer
                         # self.attack.bullets.remove(bullet) 
             if not enemy.is_alive:
