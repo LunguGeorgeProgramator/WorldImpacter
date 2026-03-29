@@ -18,8 +18,8 @@ class EnemyBoss(Enemy):
     damage_to_player = 5
     images_animation_loader = ImagesAnimationLoader()
 
-    def __init__(self, x, y, radius, screen, images_assets_loader):
-        super().__init__(x, y, radius, screen, images_assets_loader)
+    def __init__(self, x, y, radius, screen, images_assets_loader, game_settings):
+        super().__init__(x, y, radius, screen, images_assets_loader, game_settings)
         self.images_animation_loader.set_frames_assets([
             self.images_assets_loader.enemy_boss_image, 
             self.images_assets_loader.enemy_boss_frame_two_image,

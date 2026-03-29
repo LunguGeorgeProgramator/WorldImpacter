@@ -22,14 +22,14 @@ class Enemies:
         self._crete_enemy_swarm()
         self.colision_detection = CollisionChecKer().colision_detection
         self.player = player
-        self.enemy_boss = EnemyBoss(400, 400, 100, self.screen, self.images_assets_loader)
+        self.enemy_boss = EnemyBoss(400, 400, 100, self.screen, self.images_assets_loader, self.game_settings)
 
     def _crete_enemy_swarm(self):
         if self.game_settings.game_level not in self.game_settings.eneny_boss_levels:
             for i in range(self.max_enemies):
                 multiplier_x = random.randint(0, self.screen.get_width())
                 multiplier_y = random.randint(0, self.screen.get_height())
-                self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, self.screen, self.images_assets_loader))
+                self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, self.screen, self.images_assets_loader, self.game_settings))
 
     def _increase_max_enemies_by_level(self):
         if self.game_settings.game_level not in self.game_settings.eneny_boss_levels:

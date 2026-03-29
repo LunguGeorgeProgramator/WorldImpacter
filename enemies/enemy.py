@@ -4,8 +4,9 @@ from assets.images_animation_loader import ImagesAnimationLoader
 
 class Enemy:
 
-    def __init__(self, x = 0, y = 0, radius = 5, screen = None, images_assets_loader = None):
+    def __init__(self, x = 0, y = 0, radius = 5, screen = None, images_assets_loader = None, game_settings = None):
         self.images_assets_loader = images_assets_loader
+        self.game_settings = game_settings
         self.facing = 0
         self.is_max_x_reached = False
         self.is_min_x_reached = False
@@ -14,6 +15,7 @@ class Enemy:
         self.is_alive = True
         self.damage_to_player = 1
         self.images_animation_loader = ImagesAnimationLoader()
+        self.haven_images_animation_loader = ImagesAnimationLoader()
         self.x = x + 1
         self.y = y
         self.radius = radius
@@ -27,6 +29,14 @@ class Enemy:
             self.images_assets_loader.enemies_image_frame_two
         ])
         self.images_animation_loader.set_animation_speed(30)
+        self.haven_images_animation_loader.set_frames_assets([
+            self.images_assets_loader.haven_enemies_image, 
+            self.images_assets_loader.haven_enemies_image_frame_two,
+            self.images_assets_loader.haven_enemies_image_frame_three,
+            self.images_assets_loader.haven_enemies_image_frame_four
+        ])
+        self.haven_images_animation_loader.set_animation_speed(10)
+        
 
     def update(self):
         if self.x < 0:
@@ -51,10 +61,17 @@ class Enemy:
             self.y += self.vel
         else:
             self.y -= self.vel
-        self.images_animation_loader.update_frame()
+            
+        if self.game_settings.game_level in self.game_settings.haven_levels:
+            self.haven_images_animation_loader.update_frame()
+        else:
+            self.images_animation_loader.update_frame()
 
     def draw(self, win):
         if self.is_alive:
-            image_asset = self.images_animation_loader.get_frame()
+            if self.game_settings.game_level in self.game_settings.haven_levels:
+                image_asset = self.haven_images_animation_loader.get_frame()
+            else:
+                image_asset = self.images_animation_loader.get_frame()
             self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
     

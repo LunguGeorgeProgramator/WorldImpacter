@@ -86,7 +86,6 @@ class Player:
         return player_image
 
     def _get_player_grim_image(self):
-        print(self.last_moving_direction_left_right)
         if self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.LEFT:
             player_image = self.images_assets_loader.grim_player_down_left_image
         elif self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.RIGHT:
