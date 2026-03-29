@@ -27,7 +27,9 @@ class ImagesAssetsLoader:
         self.enemy_boss_frame_three_image = pygame.image.load("assets/enemies/boos-shere-3.png")
         self.enemy_boss_frame_four_image = pygame.image.load("assets/enemies/boos-shere-4.png")
         self.explosion = pygame.image.load("assets/attacks/explosion-s.png")
+        self.haven_explosion = pygame.image.load("assets/attacks/holly_explosion_mini.png")
         self.bomb = pygame.image.load("assets/attacks/red-bomb.png")
+        self.haven_bomb = pygame.image.load("assets/attacks/gold-bomb.png")
         self.fire_pit_bg = self.draw_game_background("assets/fire-pit-bg.png")
         self.haven_bg = self.draw_game_background("assets/haven-bg.png")
 
