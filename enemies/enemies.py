@@ -93,7 +93,8 @@ class Enemies:
                     if enemy.is_alive:
                         enemy.is_alive = False
                         self.enemies_dead += 1
-                        self.attack.bullets.remove(bullet)
+                        # if we want to remove the bullet after collision will make the fire reate faster at close range, makes the game easyer
+                        # self.attack.bullets.remove(bullet) 
             if not enemy.is_alive:
                 self.enemies.remove(enemy)
         if len(self.enemies) == 0:
