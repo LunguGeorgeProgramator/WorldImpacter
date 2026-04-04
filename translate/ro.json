@@ -12,5 +12,6 @@
     "continue": "Continua",
     "next_level": "Nivel urmator",
     "next_level_key_message": "Apasa N pentru a ajunge la urmatorul nivel",
-    "total_enemies_defeated": "Scorul final al inamicilor ucisi: {}"
+    "total_enemies_defeated": "Scorul final al inamicilor ucisi: {}",
+    "inventory_title": "Inventar de obiecte:"
 }

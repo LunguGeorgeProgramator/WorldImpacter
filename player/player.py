@@ -4,8 +4,9 @@ from data_models.game_state import GameState
 
 class Player:
 
-    def __init__(self, screen, keyboard_handler, images_assets_loader, game_settings):
+    def __init__(self, screen, keyboard_handler, images_assets_loader, game_settings, player_inventory):
         self.color = "white"
+        self.player_inventory = player_inventory
         self.pos = None
         self.keyPressed = None
         self.direction = None

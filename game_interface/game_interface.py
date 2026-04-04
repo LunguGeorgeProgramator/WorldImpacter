@@ -28,6 +28,9 @@ class GameInterface(pygame.sprite.Sprite):
         self.text_color = game_settings.text_color
         self.health_x = self.screen_width - self.bar_width - self.health_x
         self._create_menu_buttons()
+        self.inventory_overlay = surface = pygame.Surface((100, 50), pygame.SRCALPHA)
+        self.inventory_overlay.fill((255, 0, 0, 128)) # color with 50% transparency, red
+        self.inventory_window = pygame.Rect(50, 100, 300, 200)
 
     def _create_menu_buttons(self):
         self.button_exit_rect = self._create_menu_button(-200, 0, 120, 50)
@@ -73,6 +76,25 @@ class GameInterface(pygame.sprite.Sprite):
             self.draw_game_over()
         if self.game_settings.state == GameState.PAUSE:
             self.draw_pause_menu()
+        self.draw_player_inventory()
+
+    def draw_player_inventory(self):
+        if self.game_settings.state != GameState.OPEN_INVENTORY:
+            return
+        items_on_screen = self.player.player_inventory.inventory_items
+        self.inventory_window.height = 100 + (len(items_on_screen) * 50)
+        self.inventory_overlay = pygame.transform.smoothscale(
+            self.inventory_overlay, 
+            (self.inventory_window.width, self.inventory_window.height)
+        )
+        r_x = self.inventory_window.x
+        r_y = self.inventory_window.y
+        scaled_surface = pygame.transform.scale(self.inventory_overlay, (self.inventory_window.width, self.inventory_window.height))
+        self.screen.blit(scaled_surface, self.inventory_window.topleft)
+        self._set_text_on_screen('inventory_title', None, r_x + 10, r_y, [], False)
+        for i, item in enumerate(items_on_screen):
+            text_surface = self.game_settings.game_text_font.render(item.name + " " + str(item.count), True, self.game_settings.text_color)
+            self.screen.blit(text_surface, (r_x + 10, r_y + ((i + 1) * 50)))
 
     def draw_pause_menu(self):
         self._set_text_on_screen('pause', None, 0, 150)
@@ -120,7 +142,7 @@ class GameInterface(pygame.sprite.Sprite):
         self.draw_exit_button()
         self._set_text_on_screen('exit_key_message', None, 0, -70)
 
-    def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None, text_params = []):
+    def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None, text_params = [], use_screen_dimensions = True):
         if text_params:
             text = self.translator.get_message(textKey).format(*text_params)
         else:
@@ -130,8 +152,12 @@ class GameInterface(pygame.sprite.Sprite):
         else:
             text_color = self.text_color
         text_surface = self.font.render(text, True, text_color)
-        text_x = (self.screen_width / 2 - text_surface.get_width() / 2) + (x if x else 0)
-        text_y = self.screen_height / 2 - (y if y else 60)
+        if use_screen_dimensions:
+            text_x = (self.screen_width / 2 - text_surface.get_width() / 2) + (x if x else 0)
+            text_y = self.screen_height / 2 - (y if y else 60)
+        else:
+            text_x = x
+            text_y = y
         if inside_rect:
             text_rect = text_surface.get_rect(center=inside_rect.center)
             inside_rect.x = self.screen_width / 2 - inside_rect.width / 2

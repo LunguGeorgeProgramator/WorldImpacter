@@ -13,6 +13,7 @@ from assets.images_assets_loader import ImagesAssetsLoader
 from translate.translator import Translator
 from data_models.game_state import GameState
 from game_settings import GameSettings
+from inventory.inventory import Inventory
 
 # pygame setup
 pygame.init()
@@ -26,15 +27,17 @@ pygame.display.set_caption(translator.get_message('title'))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-font = pygame.font.SysFont(game_settings.font_name, game_settings.text_size)
+game_settings.game_text_font = pygame.font.SysFont(game_settings.font_name, game_settings.text_size)
 
+player_inventory = Inventory()
 images_assets_loader = ImagesAssetsLoader(screen)
 keyboard_handler = KeyboardHandler(game_settings)
-player = Player(screen, keyboard_handler, images_assets_loader, game_settings)
+player = Player(screen, keyboard_handler, images_assets_loader, game_settings, player_inventory)
 explosion = explosion.Explosion(game_settings, images_assets_loader)
 attack = attack.Attack(player, keyboard_handler, screen, images_assets_loader, explosion, game_settings)
 enemies = Enemies(screen, images_assets_loader, player, attack, explosion, game_settings)
-game_interface = GameInterface(screen, font, player, enemies, translator, game_settings)
+game_interface = GameInterface(screen, game_settings.game_text_font, player, enemies, translator, game_settings)
+
 
 game_settings.state = GameState.PAUSE # initial state
 while running:

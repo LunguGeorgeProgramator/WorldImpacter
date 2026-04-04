@@ -12,5 +12,6 @@
     "continue": "Continue",
     "next_level": "Next level",
     "next_level_key_message": "Press N to go to the next level",
-    "total_enemies_defeated": "Final score of enemies defeated: {}"
+    "total_enemies_defeated": "Final score of enemies defeated: {}",
+    "inventory_title": "Inventory items:"
 }
