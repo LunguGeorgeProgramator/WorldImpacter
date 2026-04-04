@@ -6,12 +6,20 @@
     "score": "Scor",
     "restart": "Incearca din nou",
     "highscore": "Scoul cel mai mare",
-    "pause": "Jocul este în pauza. Apasa P pentru a relua",
+    "pause": "Apasa P pentru a pune pauza sau relua jocul",
     "exit": "Inchide",
     "exit_key_message": "Apasa Shift + X pentru a iesi",
     "continue": "Continua",
     "next_level": "Nivel urmator",
     "next_level_key_message": "Apasa N pentru a ajunge la urmatorul nivel",
     "total_enemies_defeated": "Scorul final al inamicilor ucisi: {}",
-    "inventory_title": "Inventar de obiecte:"
+    "inventory_title": "Inventar de obiecte:",
+    "help_title": "Instructiuni de utilizare:",
+    "how_to_access_help": "Apasa H pentru ajutor",
+    "how_to_close_help": "Apasa H din nou pentru a inchide ajutorul",
+    "how_to_open_inventory": "Apasa I pentru a deschide/inchide inventarul",
+    "how_to_move": "Apasa WASD pentru a te deplasa",
+    "how_to_shoot": "Apasa SPACE pentru a trage",
+    "interact_with_bombs": "Mai jos pe o bomba pentru a o detonati",
+    "how_to_use_buttons": "Foloseste mouse pentru a apasa butoanele"
 }

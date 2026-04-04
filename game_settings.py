@@ -4,6 +4,7 @@ from data_models.game_state import GameState
 class GameSettings:
 
     state = GameState.RUN
+    player_action = None
     width = 1280
     height = 720
     text_size = 36

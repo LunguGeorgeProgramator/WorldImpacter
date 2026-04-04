@@ -6,12 +6,20 @@
     "score": "Score",
     "restart": "Restart",
     "highscore": "High score",
-    "pause": "Game Paused. Press P to Resume",
+    "pause": "Press P to Pause/Resume",
     "exit": "Exit",
     "exit_key_message": "Press Shift + X to exit",
     "continue": "Continue",
     "next_level": "Next level",
     "next_level_key_message": "Press N to go to the next level",
     "total_enemies_defeated": "Final score of enemies defeated: {}",
-    "inventory_title": "Inventory items:"
+    "inventory_title": "Inventory items:",
+    "help_title": "How to play:",
+    "how_to_access_help": "Press H for help",
+    "how_to_close_help": "Press H again to close help",
+    "how_to_open_inventory": "Press I to Open/Close inventory",
+    "how_to_move": "Press WASD to move",
+    "how_to_shoot": "Press SPACE to fire",
+    "interact_with_bombs": "Move over a bomb to detonate it",
+    "how_to_use_buttons": "Use mouse to press buttons"
 }

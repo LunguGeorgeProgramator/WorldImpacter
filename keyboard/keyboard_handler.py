@@ -2,6 +2,7 @@ import pygame
 
 from data_models.moving_direction import MovingDirection
 from data_models.game_state import GameState
+from data_models.entities_actions import EntitiesActions
 
 class KeyboardHandler:
 
@@ -10,7 +11,7 @@ class KeyboardHandler:
         self.direction = MovingDirection.NONE
         self.last_stopped_moving_direction = MovingDirection.DOWN
         self.last_stopped_left_right_moving_direction = MovingDirection.RIGHT
-        self.tracked_keys = [pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i]
+        self.tracked_keys = [pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i, pygame.K_h]
         self.pressed_last = {key: False for key in self.tracked_keys}
         self.space_pressed = False
         self.w_pressed = False
@@ -62,9 +63,10 @@ class KeyboardHandler:
                     self.game_settings.state = GameState.NEXT_LEVEL
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.enemy_boss_alive = True
-                if key == pygame.K_i and self.game_settings.state in [GameState.RUN, GameState.OPEN_INVENTORY]:
-                    self.game_settings.state = GameState.OPEN_INVENTORY if self.game_settings.state == GameState.RUN else GameState.RUN
-
+                if key == pygame.K_i and self.game_settings.state == GameState.RUN and self.game_settings.player_action in [EntitiesActions.OPEN_INVENTORY, None]:
+                    self.game_settings.player_action = EntitiesActions.OPEN_INVENTORY if self.game_settings.player_action != EntitiesActions.OPEN_INVENTORY else None
+                if key == pygame.K_h:
+                    self.game_settings.player_action = EntitiesActions.OPEN_HELP if self.game_settings.player_action != EntitiesActions.OPEN_HELP else None
             self.pressed_last[key] = self.keys[key]
 
     def get_movement_direction(self):

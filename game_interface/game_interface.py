@@ -1,6 +1,7 @@
 import pygame
 from translate.translator import Translator
 from data_models.game_state import GameState
+from data_models.entities_actions import EntitiesActions
 
 class GameInterface(pygame.sprite.Sprite):
 
@@ -31,6 +32,10 @@ class GameInterface(pygame.sprite.Sprite):
         self.inventory_overlay = surface = pygame.Surface((100, 50), pygame.SRCALPHA)
         self.inventory_overlay.fill((255, 0, 0, 128)) # color with 50% transparency, red
         self.inventory_window = pygame.Rect(50, 100, 300, 200)
+
+        self.help_overlay = surface = pygame.Surface((self.screen_width / 2, self.screen_height), pygame.SRCALPHA)
+        self.help_overlay.fill((255, 0, 0, 204)) # color with 50% transparency, red
+        self.help_window = pygame.Rect(self.screen_width / 2 / 2, 0, self.screen_width / 2, self.screen_height)
 
     def _create_menu_buttons(self):
         self.button_exit_rect = self._create_menu_button(-200, 0, 120, 50)
@@ -77,9 +82,26 @@ class GameInterface(pygame.sprite.Sprite):
         if self.game_settings.state == GameState.PAUSE:
             self.draw_pause_menu()
         self.draw_player_inventory()
+        self.draw_help_window()
+
+    def draw_help_window(self):
+        if self.game_settings.player_action != EntitiesActions.OPEN_HELP:
+            return
+        self.screen.blit(self.help_overlay, self.help_window.topleft)
+        half_screen_h = self.screen_height / 2
+        self._set_text_on_screen('help_title', None, 0, half_screen_h)
+        self._set_text_on_screen('exit_key_message', None, 0, half_screen_h - 50)
+        self._set_text_on_screen('pause', None, 0, half_screen_h - 100)
+        self._set_text_on_screen('next_level_key_message', None, 0, half_screen_h - 150)
+        self._set_text_on_screen('how_to_close_help', None, 0, half_screen_h - 200)
+        self._set_text_on_screen('how_to_open_inventory', None, 0, half_screen_h - 250)
+        self._set_text_on_screen('how_to_move', None, 0, half_screen_h - 300)
+        self._set_text_on_screen('how_to_shoot', None, 0, half_screen_h - 350)
+        self._set_text_on_screen('interact_with_bombs', None, 0, half_screen_h - 400)
+        self._set_text_on_screen('how_to_use_buttons', None, 0, half_screen_h - 450)  
 
     def draw_player_inventory(self):
-        if self.game_settings.state != GameState.OPEN_INVENTORY:
+        if self.game_settings.player_action != EntitiesActions.OPEN_INVENTORY:
             return
         items_on_screen = self.player.player_inventory.inventory_items
         self.inventory_window.height = 100 + (len(items_on_screen) * 50)
@@ -97,10 +119,9 @@ class GameInterface(pygame.sprite.Sprite):
             self.screen.blit(text_surface, (r_x + 10, r_y + ((i + 1) * 50)))
 
     def draw_pause_menu(self):
-        self._set_text_on_screen('pause', None, 0, 150)
+        self._set_text_on_screen('how_to_access_help', None, 0, 150)
         self.draw_continue_button()
         self.draw_exit_button()
-        self._set_text_on_screen('exit_key_message', None, 0, -70)
 
     def draw_next_level_button(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -130,17 +151,15 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('exit', self.button_exit_rect)
 
     def draw_win(self):
-        self._set_text_on_screen('next_level_key_message', None, 0, 180)
+        self._set_text_on_screen('how_to_access_help', None, 0, 180)
         self._set_text_on_screen('win')
         self.draw_next_level_button()
         self.draw_exit_button()
-        self._set_text_on_screen('exit_key_message', None, 0, -70)
 
     def draw_game_over(self):
         self._set_text_on_screen('total_enemies_defeated', None, 0, 120, [self.game_settings.total_enemies_defeated])
         self._set_text_on_screen('lose')
         self.draw_exit_button()
-        self._set_text_on_screen('exit_key_message', None, 0, -70)
 
     def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None, text_params = [], use_screen_dimensions = True):
         if text_params:
