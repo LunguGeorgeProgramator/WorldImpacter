@@ -49,6 +49,18 @@ class Enemies:
         self.enemy_boss.is_alive = True
         self.enemy_boss.health = self.enemy_boss.max_health
 
+    def retry_level(self):
+        self.attack.bullets = []
+        self.enemies = []
+        self.player.x = self.screen.get_width() / 2
+        self.player.y = self.screen.get_height() / 2
+        self.player.health = self.player.max_health
+        self.player.is_alive = True
+        self.enemies_dead = 0
+        self._crete_enemy_swarm()
+        self.enemy_boss.health = self.enemy_boss.max_health
+        self.enemy_boss.is_alive = True
+
     def update(self):
         player_colision_circle = (self.player.x + self.player.radius, self.player.y + self.player.radius, self.player.radius)
         # pygame.draw.circle(self.screen, (255, 0, 0), (self.player.x + self.player.radius, self.player.y + self.player.radius), self.player.radius)

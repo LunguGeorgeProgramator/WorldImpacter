@@ -7,7 +7,8 @@ class GameSettings:
     player_action = None
     width = 1280
     height = 720
-    text_size = 36
+    text_size = 35
+    text_size_small = 30
     font_name = "Arial"
     text_color = (255, 255, 255)
     haven_level_text_color = (58, 51, 38) 
@@ -19,3 +20,4 @@ class GameSettings:
     enemy_boss_alive = True
     total_enemies_defeated = 0
     game_text_font = None
+    player_is_alive = True

@@ -64,6 +64,7 @@ class Player:
         self.y = self.player_pos.y
         if self.health <= 0:
             self.is_alive = False
+            self.game_settings.player_is_alive = False
             self.game_settings.state = GameState.GAME_OVER
 
     def draw(self):

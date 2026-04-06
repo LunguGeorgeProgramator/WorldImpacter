@@ -41,6 +41,7 @@ class GameInterface(pygame.sprite.Sprite):
         self.button_exit_rect = self._create_menu_button(-200, 0, 120, 50)
         self.button_continue_rect = self._create_menu_button(-200, -75, 170, 50)
         self.button_next_level_rect = self._create_menu_button(-200, -125, 170, 50)
+        self.button_retry_rect = self._create_menu_button(-200, -75, 170, 50)
 
     def _create_menu_button(self, position_x, position_y, width, height):
         final_possition_y =  position_y + self.screen_height / 2
@@ -58,6 +59,8 @@ class GameInterface(pygame.sprite.Sprite):
                 if self.button_next_level_rect.collidepoint(event.pos):
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.state = GameState.NEXT_LEVEL
+                if self.button_retry_rect.collidepoint(event.pos):
+                    self.game_settings.state = GameState.GameState.RETRY_LEVEL
             if event.type == pygame.KEYDOWN:
                 # secret keys for testing
                 if event.key == pygame.K_x and (event.mod & pygame.KMOD_SHIFT):
@@ -131,6 +134,15 @@ class GameInterface(pygame.sprite.Sprite):
             color = self.button_color
         pygame.draw.rect(self.screen, color, self.button_next_level_rect)
         self._set_text_on_screen('next_level', self.button_next_level_rect)
+    
+    def draw_retry_button(self):
+        mouse_pos = pygame.mouse.get_pos()
+        if self.button_retry_rect.collidepoint(mouse_pos):
+            color = self.button_hover
+        else:
+            color = self.button_color
+        pygame.draw.rect(self.screen, color, self.button_retry_rect)
+        self._set_text_on_screen('retry_level', self.button_retry_rect)
 
     def draw_continue_button(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -157,8 +169,9 @@ class GameInterface(pygame.sprite.Sprite):
         self.draw_exit_button()
 
     def draw_game_over(self):
-        self._set_text_on_screen('total_enemies_defeated', None, 0, 120, [self.game_settings.total_enemies_defeated])
+        self._set_text_on_screen('total_enemies_defeated', None, 0, 180, [self.game_settings.total_enemies_defeated])
         self._set_text_on_screen('lose')
+        self.draw_retry_button()
         self.draw_exit_button()
 
     def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None, text_params = [], use_screen_dimensions = True):

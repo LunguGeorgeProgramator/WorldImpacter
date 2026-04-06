@@ -11,6 +11,7 @@
     "exit_key_message": "Apasa Shift + X pentru a iesi",
     "continue": "Continua",
     "next_level": "Nivel urmator",
+    "retry_level": "Incearca din nou",
     "next_level_key_message": "Apasa N pentru a ajunge la urmatorul nivel",
     "total_enemies_defeated": "Scorul final al inamicilor ucisi: {}",
     "inventory_title": "Inventar de obiecte:",
