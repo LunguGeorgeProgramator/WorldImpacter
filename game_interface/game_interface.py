@@ -41,7 +41,7 @@ class GameInterface(pygame.sprite.Sprite):
         self.button_exit_rect = self._create_menu_button(-200, 0, 120, 50)
         self.button_continue_rect = self._create_menu_button(-200, -75, 170, 50)
         self.button_next_level_rect = self._create_menu_button(-200, -125, 170, 50)
-        self.button_retry_rect = self._create_menu_button(-200, -75, 170, 50)
+        self.button_retry_rect = self._create_menu_button(-200, -125, 170, 50)
 
     def _create_menu_button(self, position_x, position_y, width, height):
         final_possition_y =  position_y + self.screen_height / 2
@@ -102,6 +102,7 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('how_to_shoot', None, 0, half_screen_h - 350)
         self._set_text_on_screen('interact_with_bombs', None, 0, half_screen_h - 400)
         self._set_text_on_screen('how_to_use_buttons', None, 0, half_screen_h - 450)  
+        self._set_text_on_screen('retry_level_key_message', None, 0, half_screen_h - 500)
 
     def draw_player_inventory(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_INVENTORY:

@@ -13,6 +13,7 @@
     "next_level": "Nivel urmator",
     "retry_level": "Incearca din nou",
     "next_level_key_message": "Apasa N pentru a ajunge la urmatorul nivel",
+    "retry_level_key_message": "Apasa R pentru a reincepe nivelul",
     "total_enemies_defeated": "Scorul final al inamicilor ucisi: {}",
     "inventory_title": "Inventar de obiecte:",
     "help_title": "Instructiuni de utilizare:",

@@ -52,6 +52,8 @@ class Enemies:
     def retry_level(self):
         self.attack.bullets = []
         self.enemies = []
+        enemies_dead_remainng = self.game_settings.total_enemies_defeated - self.enemies_dead
+        self.game_settings.total_enemies_defeated = 0 if str(enemies_dead_remainng)[0] == '-' and len(str(enemies_dead_remainng)) > 1 else enemies_dead_remainng
         self.player.x = self.screen.get_width() / 2
         self.player.y = self.screen.get_height() / 2
         self.player.health = self.player.max_health
