@@ -7,8 +7,8 @@ class GameSettings:
     player_action = None
     width = 1280
     height = 720
-    text_size = 35
-    text_size_small = 30
+    text_size = 27
+    text_size_small = 27
     font_name = "Arial"
     text_color = (255, 255, 255)
     haven_level_text_color = (58, 51, 38) 

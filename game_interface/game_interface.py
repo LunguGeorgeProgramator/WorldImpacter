@@ -110,6 +110,7 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('how_to_use_buttons', None, 0, half_screen_h - 450)  
         self._set_text_on_screen('retry_level_key_message', None, 0, half_screen_h - 500)
         self._set_text_on_screen('how_to_open_shop', None, 0, half_screen_h - 550)
+        self._set_text_on_screen('how_to_buy_health_potions', None, 0, half_screen_h - 600)
 
     def draw_shop_window(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_SHOP:
