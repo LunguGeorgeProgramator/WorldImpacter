@@ -17,11 +17,15 @@
     "total_enemies_defeated": "Scorul final al inamicilor ucisi: {}",
     "inventory_title": "Inventar de obiecte:",
     "help_title": "Instructiuni de utilizare:",
+    "shop_title": "Magazin inventar:",
     "how_to_access_help": "Apasa H pentru ajutor",
     "how_to_close_help": "Apasa H din nou pentru a inchide ajutorul",
     "how_to_open_inventory": "Apasa I pentru a deschide/inchide inventarul",
+    "how_to_open_shop": "Apasa S pentru a deschide/inchide magazinul",
     "how_to_move": "Apasa WASD pentru a te deplasa",
     "how_to_shoot": "Apasa SPACE pentru a trage",
     "interact_with_bombs": "Mai jos pe o bomba pentru a o detonati",
-    "how_to_use_buttons": "Foloseste mouse pentru a apasa butoanele"
+    "how_to_use_buttons": "Foloseste mouse pentru a apasa butoanele",
+    "player_coins": "Monede: {}",
+    "health_potions": "Elexire de sanatate pret: {} nr: {}"
 }

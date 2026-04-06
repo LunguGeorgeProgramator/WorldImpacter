@@ -20,8 +20,12 @@
     "how_to_access_help": "Press H for help",
     "how_to_close_help": "Press H again to close help",
     "how_to_open_inventory": "Press I to Open/Close inventory",
+    "how_to_open_shop": "Press S to Open/Close shop",
     "how_to_move": "Press WASD to move",
     "how_to_shoot": "Press SPACE to fire",
     "interact_with_bombs": "Move over a bomb to detonate it",
-    "how_to_use_buttons": "Use mouse to press buttons"
+    "shop_title": "Shop inventory:",
+    "how_to_use_buttons": "Use mouse to press buttons",
+    "player_coins": "Coins: {}",
+    "health_potions": "Health potions price: {} nr: {}"
 }

@@ -48,6 +48,7 @@ class Enemies:
         self._crete_enemy_swarm()
         self.enemy_boss.is_alive = True
         self.enemy_boss.health = self.enemy_boss.max_health
+        self.game_settings.player_coins = self.game_settings.player_coins + self.game_settings.total_enemies_defeated
 
     def retry_level(self):
         self.attack.bullets = []

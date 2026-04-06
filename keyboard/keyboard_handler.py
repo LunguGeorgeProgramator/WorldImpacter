@@ -11,7 +11,7 @@ class KeyboardHandler:
         self.direction = MovingDirection.NONE
         self.last_stopped_moving_direction = MovingDirection.DOWN
         self.last_stopped_left_right_moving_direction = MovingDirection.RIGHT
-        self.tracked_keys = [pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i, pygame.K_h, pygame.K_r]
+        self.tracked_keys = [pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i, pygame.K_h, pygame.K_r, pygame.K_b]
         self.pressed_last = {key: False for key in self.tracked_keys}
         self.space_pressed = False
         self.w_pressed = False
@@ -63,8 +63,10 @@ class KeyboardHandler:
                     self.game_settings.state = GameState.NEXT_LEVEL
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.enemy_boss_alive = True
-                if key == pygame.K_i and self.game_settings.state == GameState.RUN and self.game_settings.player_action in [EntitiesActions.OPEN_INVENTORY, None]:
+                if key == pygame.K_i and self.game_settings.state in [GameState.RUN, GameState.PAUSE] and self.game_settings.player_action in [EntitiesActions.OPEN_INVENTORY, None]:
                     self.game_settings.player_action = EntitiesActions.OPEN_INVENTORY if self.game_settings.player_action != EntitiesActions.OPEN_INVENTORY else None
+                if key == pygame.K_b and self.game_settings.state in [GameState.RUN, GameState.PAUSE] and self.game_settings.player_action in [EntitiesActions.OPEN_SHOP, None]:
+                    self.game_settings.player_action = EntitiesActions.OPEN_SHOP if self.game_settings.player_action != EntitiesActions.OPEN_SHOP else None
                 if key == pygame.K_h:
                     self.game_settings.player_action = EntitiesActions.OPEN_HELP if self.game_settings.player_action != EntitiesActions.OPEN_HELP else None
                 if self.keys[pygame.K_r] and self.game_settings.player_is_alive == False:

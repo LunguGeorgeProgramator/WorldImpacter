@@ -7,12 +7,12 @@ class InventoryItem:
         self.count = count
         self.description = description
 
-    def incease_item_count(sef, count = 0):
-        if count == 0:
+    def incease_item_count(self, count = 0):
+        if count != 0:
             self.count += 1
         else:
             self.count = count
     
-    def set_item_description(sef, description):
+    def set_item_description(self, description):
         self.description = description
         

@@ -2,6 +2,7 @@ import pygame
 from translate.translator import Translator
 from data_models.game_state import GameState
 from data_models.entities_actions import EntitiesActions
+from game_interface.shop import Shop
 
 class GameInterface(pygame.sprite.Sprite):
 
@@ -36,6 +37,7 @@ class GameInterface(pygame.sprite.Sprite):
         self.help_overlay = surface = pygame.Surface((self.screen_width / 2, self.screen_height), pygame.SRCALPHA)
         self.help_overlay.fill((255, 0, 0, 204)) # color with 50% transparency, red
         self.help_window = pygame.Rect(self.screen_width / 2 / 2, 0, self.screen_width / 2, self.screen_height)
+        self.shop = Shop(player)
 
     def _create_menu_buttons(self):
         self.button_exit_rect = self._create_menu_button(-200, 0, 120, 50)
@@ -69,6 +71,9 @@ class GameInterface(pygame.sprite.Sprite):
                 if event.key == pygame.K_c and (event.mod & pygame.KMOD_SHIFT):
                     print("Continue game by pressing Shift + C key")
                     self.game_settings.state = GameState.RUN
+                if event.key == pygame.K_a and self.game_settings.player_action == EntitiesActions.OPEN_SHOP:
+                    # print("Sell healing potion by pressing A key")
+                    self.game_settings.player_coins = self.shop.make_sell_transaction(self.game_settings.player_coins, self.shop.healing_potion)
                 if event.key == pygame.K_n and (event.mod & pygame.KMOD_SHIFT) and self.game_settings.state != GameState.GAME_OVER:
                     print("Next level by pressing Shift + N key")
                     self.game_settings.game_level = self.game_settings.game_level + 1
@@ -86,6 +91,7 @@ class GameInterface(pygame.sprite.Sprite):
             self.draw_pause_menu()
         self.draw_player_inventory()
         self.draw_help_window()
+        self.draw_shop_window()
 
     def draw_help_window(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_HELP:
@@ -103,6 +109,16 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('interact_with_bombs', None, 0, half_screen_h - 400)
         self._set_text_on_screen('how_to_use_buttons', None, 0, half_screen_h - 450)  
         self._set_text_on_screen('retry_level_key_message', None, 0, half_screen_h - 500)
+        self._set_text_on_screen('how_to_open_shop', None, 0, half_screen_h - 550)
+
+    def draw_shop_window(self):
+        if self.game_settings.player_action != EntitiesActions.OPEN_SHOP:
+            return
+        self.screen.blit(self.help_overlay, self.help_window.topleft)
+        half_screen_h = self.screen_height / 2
+        self._set_text_on_screen('shop_title', None, 0, half_screen_h)
+        self._set_text_on_screen('health_potions', None, 0, half_screen_h - 50, [self.shop.number_of_healing_potion, self.shop.healing_potion_price])
+        self._set_text_on_screen('player_coins', None, 0, half_screen_h - self.screen_height + 50, [self.game_settings.player_coins])
 
     def draw_player_inventory(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_INVENTORY:
@@ -168,6 +184,8 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('win')
         self.draw_next_level_button()
         self.draw_exit_button()
+        if self.game_settings.game_level in self.game_settings.levels_when_shop_is_restocked:
+            self.shop.restock_shop_inventory()
 
     def draw_game_over(self):
         self._set_text_on_screen('total_enemies_defeated', None, 0, 180, [self.game_settings.total_enemies_defeated])

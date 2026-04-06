@@ -6,4 +6,7 @@ class EntitiesActions(Enum):
     DEFEND_ACTION = 2
     OPEN_INVENTORY = 3
     OPEN_HELP = 4
-    MOVE_ACTION = 5
+    OPEN_SHOP = 5
+    MOVE_ACTION = 6
+    BUYING_HEALING_POTION = 7
+    NOT_BUYING = 8
