@@ -79,6 +79,8 @@ class Player:
             if inventoryItem.count <= 0:
                 return
             self.player_inventory.remove_from_inventory(self.shop.healing_potion, 1)
+            if self.health >= self.max_health:
+                return
             self.health = self.health + (self.max_health / 3)
 
     def consume_flower_attack(self):
