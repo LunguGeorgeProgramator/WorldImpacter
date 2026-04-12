@@ -16,23 +16,50 @@ class EnemyBoss(Enemy):
     max_health = 1000
     screen = None
     damage_to_player = 5
-    images_animation_loader = ImagesAnimationLoader()
+    heaven_animation = ImagesAnimationLoader()
+    injured_heaven_animation = ImagesAnimationLoader()
+    fire_pit_animation = ImagesAnimationLoader()
 
     def __init__(self, x, y, radius, screen, images_assets_loader, game_settings):
         super().__init__(x, y, radius, screen, images_assets_loader, game_settings)
-        self.images_animation_loader.set_frames_assets([
+        self.heaven_animation.set_frames_assets([
+            self.images_assets_loader.enemy_boss_heavan_frame_one_image, 
+            self.images_assets_loader.enemy_boss_heavan_frame_two_image
+        ])
+        self.injured_heaven_animation.set_frames_assets([
+            self.images_assets_loader.injured_enemy_boss_heavan_frame_one_image, 
+            self.images_assets_loader.injured_enemy_boss_heavan_frame_two_image
+        ])
+        self.fire_pit_animation.set_frames_assets([
             self.images_assets_loader.enemy_boss_image, 
             self.images_assets_loader.enemy_boss_frame_two_image,
             self.images_assets_loader.enemy_boss_frame_three_image,
             self.images_assets_loader.enemy_boss_frame_four_image
             
         ])
-        self.images_animation_loader.set_animation_speed(20)
+        self.fire_pit_animation.set_animation_speed(20)
+        self.heaven_animation.set_animation_speed(20)
+        self.injured_heaven_animation.set_animation_speed(20)
         self.screen = screen
+
+    def update(self):
+        super().update()
+        self.fire_pit_animation.update_frame()
+        if self.health <= self.max_health / 2:
+            self.injured_heaven_animation.update_frame()
+        else:
+            self.heaven_animation.update_frame()
+        
 
     def draw(self, win):
         if self.is_alive:
-            image_asset = self.images_animation_loader.get_frame()
+            if self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels:
+                if self.health <= self.max_health / 2:
+                    image_asset = self.injured_heaven_animation.get_frame()
+                else:   
+                    image_asset = self.heaven_animation.get_frame()
+            else:
+                image_asset = self.fire_pit_animation.get_frame()
             self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
             self._draw_health_bar()
     

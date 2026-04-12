@@ -62,7 +62,7 @@ class Attack:
                     Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, facing)
                 )
 
-        if self.explosion.is_new_explosion and self.game_settings.game_level not in self.game_settings.eneny_boss_levels:
+        if self.explosion.is_new_explosion and self.game_settings.is_enemy_boss_level() is False:
             player_colision_circle = (self.player.x, self.player.y, self.player.radius)
             bomb_colision_circle = (self.explosion.x - self.explosion.bomb_width, self.explosion.y - self.explosion.bomb_height, self.explosion.bomb_radius)
             if self.colision_detection(player_colision_circle, bomb_colision_circle) and self.explosion.has_to_draw_explosion is False:
@@ -91,7 +91,7 @@ class Attack:
         self.explosion.y = random.randint(0 + 100, self.screen_height - 100)
 
     def draw(self):
-        if self.game_settings.game_level not in self.game_settings.eneny_boss_levels:
+        if self.game_settings.is_enemy_boss_level() is False:
             wait_for_timer_to_finish = self.five_seconds_timer.check_cronometer()
 
             if self.explosion.is_new_explosion:

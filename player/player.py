@@ -79,10 +79,8 @@ class Player:
             if inventoryItem.count <= 0:
                 return
             self.player_inventory.remove_from_inventory(self.shop.healing_potion, 1)
-            new_health = self.health + (self.max_health / 3)
-            if new_health >= self.max_health:
-                return
-            self.health = new_health
+            healing_amount = self.max_health / 3
+            self.health = min(self.health + healing_amount, self.max_health)
 
     def consume_flower_attack(self):
         if self.game_settings.player_action is not None and self.game_settings.player_action == EntitiesActions.CONSUME_FLOWER_ATTACK:
@@ -94,7 +92,7 @@ class Player:
             self.game_settings.player_action = EntitiesActions.FLOWER_ATTACK
 
     def draw(self):
-        if self.game_settings.game_level in self.game_settings.haven_levels:
+        if self.game_settings.game_level in self.game_settings.haven_levels or self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels:
             player_image = self._get_player_grim_image()
         else:
             player_image = self._get_player_default_image()

@@ -45,7 +45,7 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     # screen.fill("green")
-    if game_settings.game_level in game_settings.haven_levels:
+    if game_settings.game_level in game_settings.haven_levels or game_settings.game_level in game_settings.heaven_eneny_boss_levels:
         bg_image = images_assets_loader.haven_bg
     else:
         bg_image = images_assets_loader.fire_pit_bg

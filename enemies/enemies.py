@@ -25,14 +25,14 @@ class Enemies:
         self.enemy_boss = EnemyBoss(400, 400, 100, self.screen, self.images_assets_loader, self.game_settings)
 
     def _crete_enemy_swarm(self):
-        if self.game_settings.game_level not in self.game_settings.eneny_boss_levels:
+        if self.game_settings.is_enemy_boss_level() is False:
             for i in range(self.max_enemies):
                 multiplier_x = random.randint(0, self.screen.get_width())
                 multiplier_y = random.randint(0, self.screen.get_height())
                 self.enemies.append(Enemy(10 + multiplier_x, 10 + multiplier_y, 25, self.screen, self.images_assets_loader, self.game_settings))
 
     def _increase_max_enemies_by_level(self):
-        if self.game_settings.game_level not in self.game_settings.eneny_boss_levels:
+        if self.game_settings.is_enemy_boss_level() is False:
             self.max_enemies = self.game_settings.game_level * self.max_enemies_per_level
         else:
             self.max_enemies = 1
@@ -68,7 +68,7 @@ class Enemies:
     def update(self):
         player_colision_circle = (self.player.x + self.player.radius, self.player.y + self.player.radius, self.player.radius)
         # pygame.draw.circle(self.screen, (255, 0, 0), (self.player.x + self.player.radius, self.player.y + self.player.radius), self.player.radius)
-        if self.game_settings.game_level in self.game_settings.eneny_boss_levels:
+        if self.game_settings.is_enemy_boss_level():
             self._update_boss_enemies(player_colision_circle)
         else:
             self._update_none_boss_enemies(player_colision_circle)
@@ -130,7 +130,7 @@ class Enemies:
         self.game_settings.enemies_alive = len(self.enemies)
 
     def draw(self):
-        if self.game_settings.game_level in self.game_settings.eneny_boss_levels:
+        if self.game_settings.is_enemy_boss_level():
             self._draw_boss_enemies()
         else:
             self._draw_none_boss_enemies()
