@@ -10,3 +10,4 @@ class EntitiesActions(Enum):
     MOVE_ACTION = 6
     BUYING_HEALING_POTION = 7
     NOT_BUYING = 8
+    CONSUME_HEALING_POTION = 9

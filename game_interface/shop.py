@@ -5,13 +5,14 @@ class Shop:
         self.player = player
         self.transaction_status = True
         self.healing_potion = "healing_potion"
+        self.healing_potion_inventory_id = 1
         self.number_of_healing_potion = 10
         self.healing_potion_price = 10
 
     def sell_healing_potion(self):
         self.number_of_healing_potion -= 1
 
-    def make_sell_transaction(self, coins, sell_item):
+    def make_buy_transaction(self, coins, sell_item):
         self.transaction_status = True
         if sell_item == self.healing_potion and coins >= self.healing_potion_price and self.number_of_healing_potion > 0:
             self.sell_healing_potion()

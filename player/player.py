@@ -1,6 +1,8 @@
 import pygame
 from data_models.moving_direction import MovingDirection
 from data_models.game_state import GameState
+from data_models.entities_actions import EntitiesActions
+from game_interface.shop import Shop
 
 class Player:
 
@@ -34,6 +36,7 @@ class Player:
         self.height_p = screen.get_height() / 2
         self.pos = pygame.Vector2(self.player_pos.x, self.player_pos.y)
         self.screen_x, self.screen_y = screen.get_size()
+        self.shop = Shop(self)
 
     def _move_vector_x_y(self, vector_pos, direction, speed):
         is_out_of_scrren_left = self.player_pos.x < 0
@@ -66,6 +69,16 @@ class Player:
             self.is_alive = False
             self.game_settings.player_is_alive = False
             self.game_settings.state = GameState.GAME_OVER
+        self.consume_healing_potion()
+
+    def consume_healing_potion(self):
+        if self.game_settings.player_action == EntitiesActions.CONSUME_HEALING_POTION:
+            self.game_settings.player_action = None
+            inventoryItem = self.player_inventory.get_item_by_name(self.shop.healing_potion)
+            if inventoryItem.count <= 0:
+                return
+            self.player_inventory.remove_from_inventory(self.shop.healing_potion, 1)
+            self.health = self.health + (self.max_health / 3)
 
     def draw(self):
         if self.game_settings.game_level in self.game_settings.haven_levels:

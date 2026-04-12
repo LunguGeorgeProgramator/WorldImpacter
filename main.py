@@ -27,8 +27,8 @@ pygame.display.set_caption(translator.get_message('title'))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-text_size = game_settings.text_size if translator.locale == 'en' else game_settings.text_size_small
-game_settings.game_text_font = pygame.font.SysFont(game_settings.font_name, text_size)
+game_settings.text_size = game_settings.text_size if translator.locale == 'en' else game_settings.text_size_small
+game_settings.game_text_font = pygame.font.SysFont(game_settings.font_name, game_settings.text_size)
 
 player_inventory = Inventory()
 images_assets_loader = ImagesAssetsLoader(screen)

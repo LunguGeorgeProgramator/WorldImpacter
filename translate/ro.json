@@ -28,5 +28,9 @@
     "interact_with_bombs": "Mai jos pe o bomba pentru a o detonati",
     "how_to_use_buttons": "Foloseste mouse pentru a apasa butoanele",
     "player_coins": "Monede: {}",
-    "health_potions": "Elexire de sanatate pret: {} nr: {}"
+    "health_potions": "Elexire de sanatate pret: {} nr: {}",
+    "buy": "Cumpara",
+    "sell": "Vinde",
+    "no_money": "Nu ai monede suficiente",
+    "how_to_consume_health_potions": "Apasa 1 pentru a consuma potiuni de sanatate"
 }

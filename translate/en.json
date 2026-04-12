@@ -28,5 +28,9 @@
     "shop_title": "Shop inventory:",
     "how_to_use_buttons": "Use mouse to press buttons",
     "player_coins": "Coins: {}",
-    "health_potions": "Health potions price: {} nr: {}"
+    "health_potions": "Health potions price: {} nr: {}",
+    "buy_label": "Buy",
+    "sell_label": "Sell",
+    "no_money": "You don't have enough coins",
+    "how_to_consume_health_potions": "Press 1 to consume healing potions"
 }

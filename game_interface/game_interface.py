@@ -3,12 +3,14 @@ from translate.translator import Translator
 from data_models.game_state import GameState
 from data_models.entities_actions import EntitiesActions
 from game_interface.shop import Shop
+from helper.timer import Timer
 
 class GameInterface(pygame.sprite.Sprite):
 
     def __init__(self, screen, font, player, enemies, translator, game_settings):
-        self.continue_button_color = (0, 255, 0)
-        self.button_color = (200, 0, 0)
+        self.text_size = game_settings.text_size
+        self.green_button_color = (0, 255, 0)
+        self.red_button_color = (200, 0, 0)
         self.button_hover = (255, 0, 0)
         self.health_colors_dict = {
             "full_health": (100, 0, 0),
@@ -38,15 +40,19 @@ class GameInterface(pygame.sprite.Sprite):
         self.help_overlay.fill((255, 0, 0, 204)) # color with 50% transparency, red
         self.help_window = pygame.Rect(self.screen_width / 2 / 2, 0, self.screen_width / 2, self.screen_height)
         self.shop = Shop(player)
+        self.five_seconds_timer_show_no_money_notification = Timer(20)
 
     def _create_menu_buttons(self):
-        self.button_exit_rect = self._create_menu_button(-200, 0, 120, 50)
-        self.button_continue_rect = self._create_menu_button(-200, -75, 170, 50)
-        self.button_next_level_rect = self._create_menu_button(-200, -125, 170, 50)
-        self.button_retry_rect = self._create_menu_button(-200, -125, 170, 50)
+        possiont_center_screen_x = self.screen_width / 2
+        self.button_exit_rect = self._create_menu_button(possiont_center_screen_x, 0, 120, 50)
+        self.button_continue_rect = self._create_menu_button(possiont_center_screen_x, -75, 170, 50)
+        self.button_next_level_rect = self._create_menu_button(possiont_center_screen_x, -125, 170, 50)
+        self.button_retry_rect = self._create_menu_button(possiont_center_screen_x, -125, 170, 50)
+        self.button_buy_health_potion_rect = self._create_menu_button(possiont_center_screen_x + 255, 40, 100, 50, False)
 
-    def _create_menu_button(self, position_x, position_y, width, height):
-        final_possition_y =  position_y + self.screen_height / 2
+    def _create_menu_button(self, position_x, position_y, width, height, use_screen_h = True):
+        position_x = position_x - width / 2
+        final_possition_y =  position_y + self.screen_height / 2 if use_screen_h else position_y
         return pygame.Rect(position_x, final_possition_y, width, height)
 
     def not_exit_game(self):
@@ -62,7 +68,10 @@ class GameInterface(pygame.sprite.Sprite):
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.state = GameState.NEXT_LEVEL
                 if self.button_retry_rect.collidepoint(event.pos):
-                    self.game_settings.state = GameState.GameState.RETRY_LEVEL
+                    self.game_settings.state = GameState.RETRY_LEVEL
+                if self.button_buy_health_potion_rect.collidepoint(event.pos):
+                    self.game_settings.player_coins = self.shop.make_buy_transaction(self.game_settings.player_coins, self.shop.healing_potion)
+                    self.five_seconds_timer_show_no_money_notification.start_time = self.shop.transaction_status is False
             if event.type == pygame.KEYDOWN:
                 # secret keys for testing
                 if event.key == pygame.K_x and (event.mod & pygame.KMOD_SHIFT):
@@ -73,7 +82,8 @@ class GameInterface(pygame.sprite.Sprite):
                     self.game_settings.state = GameState.RUN
                 if event.key == pygame.K_a and self.game_settings.player_action == EntitiesActions.OPEN_SHOP:
                     # print("Sell healing potion by pressing A key")
-                    self.game_settings.player_coins = self.shop.make_sell_transaction(self.game_settings.player_coins, self.shop.healing_potion)
+                    self.game_settings.player_coins = self.shop.make_buy_transaction(self.game_settings.player_coins, self.shop.healing_potion)
+                    self.five_seconds_timer_show_no_money_notification.start_time = self.shop.transaction_status is False
                 if event.key == pygame.K_n and (event.mod & pygame.KMOD_SHIFT) and self.game_settings.state != GameState.GAME_OVER:
                     print("Next level by pressing Shift + N key")
                     self.game_settings.game_level = self.game_settings.game_level + 1
@@ -92,6 +102,9 @@ class GameInterface(pygame.sprite.Sprite):
         self.draw_player_inventory()
         self.draw_help_window()
         self.draw_shop_window()
+        wait_for_timer_to_finish = self.five_seconds_timer_show_no_money_notification.check_cronometer()
+        if wait_for_timer_to_finish is True:
+            self._set_text_on_screen('no_money', None, 0, self.screen_height / 2 - self.screen_height + 30)
 
     def draw_help_window(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_HELP:
@@ -99,18 +112,21 @@ class GameInterface(pygame.sprite.Sprite):
         self.screen.blit(self.help_overlay, self.help_window.topleft)
         half_screen_h = self.screen_height / 2
         self._set_text_on_screen('help_title', None, 0, half_screen_h)
+        self.font = pygame.font.SysFont(self.game_settings.font_name, 18)
         self._set_text_on_screen('exit_key_message', None, 0, half_screen_h - 50)
-        self._set_text_on_screen('pause', None, 0, half_screen_h - 100)
-        self._set_text_on_screen('next_level_key_message', None, 0, half_screen_h - 150)
-        self._set_text_on_screen('how_to_close_help', None, 0, half_screen_h - 200)
-        self._set_text_on_screen('how_to_open_inventory', None, 0, half_screen_h - 250)
-        self._set_text_on_screen('how_to_move', None, 0, half_screen_h - 300)
-        self._set_text_on_screen('how_to_shoot', None, 0, half_screen_h - 350)
-        self._set_text_on_screen('interact_with_bombs', None, 0, half_screen_h - 400)
-        self._set_text_on_screen('how_to_use_buttons', None, 0, half_screen_h - 450)  
-        self._set_text_on_screen('retry_level_key_message', None, 0, half_screen_h - 500)
-        self._set_text_on_screen('how_to_open_shop', None, 0, half_screen_h - 550)
-        self._set_text_on_screen('how_to_buy_health_potions', None, 0, half_screen_h - 600)
+        self._set_text_on_screen('pause', None, 0, half_screen_h - 70)
+        self._set_text_on_screen('next_level_key_message', None, 0, half_screen_h - 90)
+        self._set_text_on_screen('how_to_close_help', None, 0, half_screen_h - 110)
+        self._set_text_on_screen('how_to_open_inventory', None, 0, half_screen_h - 130)
+        self._set_text_on_screen('how_to_move', None, 0, half_screen_h - 150)
+        self._set_text_on_screen('how_to_shoot', None, 0, half_screen_h - 170)
+        self._set_text_on_screen('interact_with_bombs', None, 0, half_screen_h - 190)
+        self._set_text_on_screen('how_to_use_buttons', None, 0, half_screen_h - 210)  
+        self._set_text_on_screen('retry_level_key_message', None, 0, half_screen_h - 230)
+        self._set_text_on_screen('how_to_open_shop', None, 0, half_screen_h - 250)
+        self._set_text_on_screen('how_to_buy_health_potions', None, 0, half_screen_h - 270)
+        self._set_text_on_screen('how_to_consume_health_potions', None, 0, half_screen_h - 290)
+        self.font = pygame.font.SysFont(self.game_settings.font_name, self.text_size)
 
     def draw_shop_window(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_SHOP:
@@ -119,6 +135,7 @@ class GameInterface(pygame.sprite.Sprite):
         half_screen_h = self.screen_height / 2
         self._set_text_on_screen('shop_title', None, 0, half_screen_h)
         self._set_text_on_screen('health_potions', None, 0, half_screen_h - 50, [self.shop.number_of_healing_potion, self.shop.healing_potion_price])
+        self.draw_button(self.button_buy_health_potion_rect, 'buy_label', self.green_button_color)
         self._set_text_on_screen('player_coins', None, 0, half_screen_h - self.screen_height + 50, [self.game_settings.player_coins])
 
     def draw_player_inventory(self):
@@ -139,60 +156,33 @@ class GameInterface(pygame.sprite.Sprite):
             text_surface = self.game_settings.game_text_font.render(item.name + " " + str(item.count), True, self.game_settings.text_color)
             self.screen.blit(text_surface, (r_x + 10, r_y + ((i + 1) * 50)))
 
+    def draw_button(self, button_rect, button_label, main_button_color = None):
+        mouse_pos = pygame.mouse.get_pos()
+        if button_rect.collidepoint(mouse_pos):
+            color = self.button_hover
+        else:
+            color = main_button_color if main_button_color else self.red_button_color
+        pygame.draw.rect(self.screen, color, button_rect)
+        self._set_text_on_screen(button_label, button_rect)
+
     def draw_pause_menu(self):
         self._set_text_on_screen('how_to_access_help', None, 0, 150)
-        self.draw_continue_button()
-        self.draw_exit_button()
-
-    def draw_next_level_button(self):
-        mouse_pos = pygame.mouse.get_pos()
-        if self.button_next_level_rect.collidepoint(mouse_pos):
-            color = self.button_hover
-        else:
-            color = self.button_color
-        pygame.draw.rect(self.screen, color, self.button_next_level_rect)
-        self._set_text_on_screen('next_level', self.button_next_level_rect)
-    
-    def draw_retry_button(self):
-        mouse_pos = pygame.mouse.get_pos()
-        if self.button_retry_rect.collidepoint(mouse_pos):
-            color = self.button_hover
-        else:
-            color = self.button_color
-        pygame.draw.rect(self.screen, color, self.button_retry_rect)
-        self._set_text_on_screen('retry_level', self.button_retry_rect)
-
-    def draw_continue_button(self):
-        mouse_pos = pygame.mouse.get_pos()
-        if self.button_continue_rect.collidepoint(mouse_pos):
-            color = self.button_hover
-        else:
-            color = self.continue_button_color
-        pygame.draw.rect(self.screen, color, self.button_continue_rect)
-        self._set_text_on_screen('continue', self.button_continue_rect)
-
-    def draw_exit_button(self):
-        mouse_pos = pygame.mouse.get_pos()
-        if self.button_exit_rect.collidepoint(mouse_pos):
-            color = self.button_hover
-        else:
-            color = self.button_color
-        pygame.draw.rect(self.screen, color, self.button_exit_rect)
-        self._set_text_on_screen('exit', self.button_exit_rect)
+        self.draw_button(self.button_continue_rect, 'continue', self.green_button_color)
+        self.draw_button(self.button_exit_rect, 'exit')
 
     def draw_win(self):
         self._set_text_on_screen('how_to_access_help', None, 0, 180)
         self._set_text_on_screen('win')
-        self.draw_next_level_button()
-        self.draw_exit_button()
+        self.draw_button(self.button_next_level_rect, 'next_level')
+        self.draw_button(self.button_exit_rect, 'exit')
         if self.game_settings.game_level in self.game_settings.levels_when_shop_is_restocked:
             self.shop.restock_shop_inventory()
 
     def draw_game_over(self):
         self._set_text_on_screen('total_enemies_defeated', None, 0, 180, [self.game_settings.total_enemies_defeated])
         self._set_text_on_screen('lose')
-        self.draw_retry_button()
-        self.draw_exit_button()
+        self.draw_button(self.button_retry_rect, 'retry_level')
+        self.draw_button(self.button_exit_rect, 'exit')
 
     def _set_text_on_screen(self, textKey, inside_rect = None, x = None, y = None, text_params = [], use_screen_dimensions = True):
         if text_params:
@@ -212,7 +202,6 @@ class GameInterface(pygame.sprite.Sprite):
             text_y = y
         if inside_rect:
             text_rect = text_surface.get_rect(center=inside_rect.center)
-            inside_rect.x = self.screen_width / 2 - inside_rect.width / 2
         self.screen.blit(text_surface, text_rect if inside_rect else (text_x, text_y))
 
     def draw_health_bar(self):

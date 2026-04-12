@@ -13,6 +13,12 @@ class InventoryItem:
         else:
             self.count = count
     
+    def decrease_item_count(self, count = 0):
+        if count != 0 and self.count > 0:
+            self.count -= 1
+        else:
+            self.count = count
+    
     def set_item_description(self, description):
         self.description = description
         
