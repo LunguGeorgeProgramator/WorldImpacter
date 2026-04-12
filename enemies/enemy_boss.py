@@ -45,11 +45,11 @@ class EnemyBoss(Enemy):
     def update(self):
         super().update()
         self.fire_pit_animation.update_frame()
-        if self.health <= self.max_health / 2:
-            self.injured_heaven_animation.update_frame()
-        else:
-            self.heaven_animation.update_frame()
-        
+        if self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels:
+            if self.health <= self.max_health / 2:
+                self.injured_heaven_animation.update_frame()
+            else:
+                self.heaven_animation.update_frame()
 
     def draw(self, win):
         if self.is_alive:
