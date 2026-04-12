@@ -23,14 +23,17 @@
     "how_to_open_inventory": "Apasa I pentru a deschide/inchide inventarul",
     "how_to_open_shop": "Apasa S pentru a deschide/inchide magazinul",
     "how_to_buy_health_potions": "Apasa A pentru a cumpara potiuni de sanatate, cand magazinul este deschis",
+    "how_to_buy_flower_attacks": "Apasa Q pentru a cumpara atacurile cu floare, cand magazinul este deschis",
     "how_to_move": "Apasa WASD pentru a te deplasa",
     "how_to_shoot": "Apasa SPACE pentru a trage",
     "interact_with_bombs": "Mai jos pe o bomba pentru a o detonati",
     "how_to_use_buttons": "Foloseste mouse pentru a apasa butoanele",
     "player_coins": "Monede: {}",
-    "health_potions": "Elexire de sanatate pret: {} nr: {}",
-    "buy": "Cumpara",
-    "sell": "Vinde",
+    "health_potions": "Poțiune de viață nr: {} pret: {}",
+    "flower_attacks": "Atac model floare nr: {} pret: {}",
+    "buy_label": "Cumpar",
+    "sell_label": "Vinde",
     "no_money": "Nu ai monede suficiente",
-    "how_to_consume_health_potions": "Apasa 1 pentru a consuma potiuni de sanatate"
+    "how_to_consume_health_potions": "Apasa 1 pentru a consuma potiuni de sanatate",
+    "how_to_consume_flower_attacks": "Apasa 2 pentru a consuma atacurile cu floare"
 }

@@ -70,15 +70,25 @@ class Player:
             self.game_settings.player_is_alive = False
             self.game_settings.state = GameState.GAME_OVER
         self.consume_healing_potion()
+        self.consume_flower_attack()
 
     def consume_healing_potion(self):
-        if self.game_settings.player_action == EntitiesActions.CONSUME_HEALING_POTION:
+        if self.game_settings.player_action is not None and self.game_settings.player_action == EntitiesActions.CONSUME_HEALING_POTION:
             self.game_settings.player_action = None
             inventoryItem = self.player_inventory.get_item_by_name(self.shop.healing_potion)
             if inventoryItem.count <= 0:
                 return
             self.player_inventory.remove_from_inventory(self.shop.healing_potion, 1)
             self.health = self.health + (self.max_health / 3)
+
+    def consume_flower_attack(self):
+        if self.game_settings.player_action is not None and self.game_settings.player_action == EntitiesActions.CONSUME_FLOWER_ATTACK:
+            inventoryItem = self.player_inventory.get_item_by_name(self.shop.flower_attack)
+            if inventoryItem.count <= 0:
+                self.game_settings.player_action = None
+                return
+            self.player_inventory.remove_from_inventory(self.shop.flower_attack, 1)
+            self.game_settings.player_action = EntitiesActions.FLOWER_ATTACK
 
     def draw(self):
         if self.game_settings.game_level in self.game_settings.haven_levels:

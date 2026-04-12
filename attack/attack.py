@@ -3,6 +3,7 @@ from attack.bullet import Bullet
 from attack.explosion import Explosion
 from helper.timer import Timer 
 from helper.collision_checker import CollisionChecKer
+from data_models.entities_actions import EntitiesActions
 import random, math
 from datetime import datetime
 
@@ -11,6 +12,7 @@ class Attack:
 
     def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion, game_settings):
         self.bullets = []
+        self.flower_attask_bullets = []
         self.has_to_draw_explosion = False
         self.bullet_radius = 6
         self.max_bullets_per_attack = 2
@@ -26,11 +28,19 @@ class Attack:
         self.game_settings = game_settings
         self.percentage_of_bullets_number_per_level = 10
         self.percentage_of_bullets_range_per_level = 120
+        self.num_bullets_flower_attack = 12
+        self.speed_flower_attack = 3
 
     def _level_attack_multiplier(self, percentage = 10):
         return  self.game_settings.game_level * (percentage / 100)
 
     def update(self):
+        for bullet in self.flower_attask_bullets:
+            bullet.x += bullet.vx
+            bullet.y += bullet.vy
+            if bullet.x > self.screen_width or bullet.x < 0 or bullet.y > self.screen_height or bullet.y < 0:
+                self.flower_attask_bullets.pop(self.flower_attask_bullets.index(bullet))
+
         for bullet in self.bullets:
             max_range = bullet.bullet_max_range + self._level_attack_multiplier(self.percentage_of_bullets_range_per_level)
             if   bullet.x > self.player.x and bullet.x < (self.player.x + max_range):
@@ -59,6 +69,23 @@ class Attack:
                 self.explosion.has_to_draw_explosion = True
                 self.five_seconds_timer.start_time = True
 
+        self.detect_flower_attack()
+
+    def detect_flower_attack(self):
+        if self.game_settings.player_action == EntitiesActions.FLOWER_ATTACK:
+            self.game_settings.player_action = None
+            center_x = self.player.x + self.player.radius
+            center_y = self.player.y + self.player.radius / 2
+            for i in range(self.num_bullets_flower_attack):
+                bullet = Bullet(self.player.x, self.player.y + self.player.radius, self.bullet_radius, 0)
+                angle = i * (2 * math.pi / self.num_bullets_flower_attack)
+                bullet = Bullet()
+                bullet.x = center_x
+                bullet.y = center_y
+                bullet.vx = math.cos(angle) * self.speed_flower_attack
+                bullet.vy = math.sin(angle) * self.speed_flower_attack
+                self.flower_attask_bullets.append(bullet)
+
     def move_explosion_to_random_position(self):
         self.explosion.x = random.randint(0 + 100, self.screen_width - 100) # -100 just to not create the explosion too close to the edge of the screen
         self.explosion.y = random.randint(0 + 100, self.screen_height - 100)
@@ -79,4 +106,7 @@ class Attack:
                 self.move_explosion_to_random_position()
 
         for bullet in self.bullets:
+            bullet.draw(self.screen)
+
+        for bullet in self.flower_attask_bullets:
             bullet.draw(self.screen)

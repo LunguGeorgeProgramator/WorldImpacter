@@ -11,7 +11,10 @@ class KeyboardHandler:
         self.direction = MovingDirection.NONE
         self.last_stopped_moving_direction = MovingDirection.DOWN
         self.last_stopped_left_right_moving_direction = MovingDirection.RIGHT
-        self.tracked_keys = [pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i, pygame.K_h, pygame.K_r, pygame.K_b, pygame.K_1]
+        self.tracked_keys = [
+            pygame.K_p, pygame.K_n, pygame.K_m, pygame.K_i, pygame.K_h, 
+            pygame.K_r, pygame.K_b, pygame.K_1, pygame.K_2
+            ]
         self.pressed_last = {key: False for key in self.tracked_keys}
         self.space_pressed = False
         self.w_pressed = False
@@ -73,6 +76,8 @@ class KeyboardHandler:
                     self.game_settings.state = GameState.RETRY_LEVEL
                 if key == pygame.K_1:
                     self.game_settings.player_action = EntitiesActions.CONSUME_HEALING_POTION
+                if key == pygame.K_2:
+                    self.game_settings.player_action = EntitiesActions.CONSUME_FLOWER_ATTACK
             self.pressed_last[key] = self.keys[key]
 
     def get_movement_direction(self):

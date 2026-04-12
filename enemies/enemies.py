@@ -39,6 +39,7 @@ class Enemies:
 
     def next_level(self):
         self.attack.bullets = []
+        self.attack.flower_attask_bullets = []
         self.enemies = []
         self.player.x = self.screen.get_width() / 2
         self.player.y = self.screen.get_height() / 2
@@ -72,15 +73,19 @@ class Enemies:
         else:
             self._update_none_boss_enemies(player_colision_circle)
 
-    def _update_boss_enemies(self, player_colision_circle):
-        self.enemy_boss.update()
-        # pygame.draw.circle(self.screen, (255, 0, 0), (self.enemy_boss.x + self.enemy_boss.radius, self.enemy_boss.y + self.enemy_boss.radius), self.enemy_boss.radius)
-        enemy_boss_colision_circle = (self.enemy_boss.x + self.enemy_boss.radius, self.enemy_boss.y + self.enemy_boss.radius, self.enemy_boss.radius)
-        for bullet in self.attack.bullets:
+    def _detect_bullets_attack_on_boss_enemy(self, enemy_boss_colision_circle, bullets_list):
+        for bullet in bullets_list:
             bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
             if self.colision_detection(bullet_colision_circle, enemy_boss_colision_circle):
                 if self.enemy_boss.is_alive:
                     self.enemy_boss.health -= 1
+
+    def _update_boss_enemies(self, player_colision_circle):
+        self.enemy_boss.update()
+        # pygame.draw.circle(self.screen, (255, 0, 0), (self.enemy_boss.x + self.enemy_boss.radius, self.enemy_boss.y + self.enemy_boss.radius), self.enemy_boss.radius)
+        enemy_boss_colision_circle = (self.enemy_boss.x + self.enemy_boss.radius, self.enemy_boss.y + self.enemy_boss.radius, self.enemy_boss.radius)
+        self._detect_bullets_attack_on_boss_enemy(enemy_boss_colision_circle, self.attack.bullets)
+        self._detect_bullets_attack_on_boss_enemy(enemy_boss_colision_circle, self.attack.flower_attask_bullets)
         if self.enemy_boss.health <= 0:
             self.enemy_boss.is_alive = False
             self.game_settings.enemy_boss_alive = False
@@ -89,6 +94,19 @@ class Enemies:
         if not self.enemy_boss.is_alive:
             self.game_settings.state = GameState.GAME_OVER
     
+    def _detect_bullets_attack_on_none_boss_enemies(self, enemy, enemy_colision_circle, bullets_list):
+        for bullet in bullets_list:
+            bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
+            if self.colision_detection(bullet_colision_circle, enemy_colision_circle):
+                if enemy.is_alive:
+                    enemy.is_alive = False
+                    self.enemies_dead += 1
+                    self.game_settings.total_enemies_defeated += 1
+                    # if bullet is removed at collision that will make the fire rate faster at close range, makes the game easyer
+                    # self.attack.bullets.remove(bullet) 
+                    return enemy
+        return enemy
+
     def _update_none_boss_enemies(self, player_colision_circle):
         for enemy in self.enemies:
             enemy.update()
@@ -103,15 +121,8 @@ class Enemies:
                     self.game_settings.total_enemies_defeated += 1
             if self.colision_detection(enemy_colision_circle, player_colision_circle) and enemy.is_alive and self.player.is_alive:
                 self.player.health -= enemy.damage_to_player
-            for bullet in self.attack.bullets:
-                bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
-                if self.colision_detection(bullet_colision_circle, enemy_colision_circle):
-                    if enemy.is_alive:
-                        enemy.is_alive = False
-                        self.enemies_dead += 1
-                        self.game_settings.total_enemies_defeated += 1
-                        # if bullet is removed at collision that will make the fire rate faster at close range, makes the game easyer
-                        # self.attack.bullets.remove(bullet) 
+            enemy = self._detect_bullets_attack_on_none_boss_enemies(enemy, enemy_colision_circle, self.attack.bullets)
+            enemy = self._detect_bullets_attack_on_none_boss_enemies(enemy, enemy_colision_circle, self.attack.flower_attask_bullets)
             if not enemy.is_alive:
                 self.enemies.remove(enemy)
         if len(self.enemies) == 0:

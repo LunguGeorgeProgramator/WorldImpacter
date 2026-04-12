@@ -11,6 +11,9 @@ class Bullet:
         self.radius = radius
         self.facing = facing
         self.vel = self.bullet_speed * facing
+        self.angle = 0
+        self.vy = 0
+        self.vx = 0
 
     def draw(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)

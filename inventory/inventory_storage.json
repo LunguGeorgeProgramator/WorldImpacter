@@ -4,5 +4,11 @@
         "name": "healing_potion",
         "count": 0,
         "description": ""
+    },
+    {
+        "id": 2,
+        "name": "flower_attack",
+        "count": 0,
+        "description": ""
     }
 ]

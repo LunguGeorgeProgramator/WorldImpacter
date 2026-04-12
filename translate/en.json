@@ -24,13 +24,16 @@
     "how_to_move": "Press WASD to move",
     "how_to_shoot": "Press SPACE to fire",
     "how_to_buy_health_potions": "Press A to buy health potions, when shop is open",
+    "how_to_buy_flower_attacks": "Press Q to buy flower attacks, when shop is open",
     "interact_with_bombs": "Move over a bomb to detonate it",
     "shop_title": "Shop inventory:",
     "how_to_use_buttons": "Use mouse to press buttons",
     "player_coins": "Coins: {}",
-    "health_potions": "Health potions price: {} nr: {}",
+    "health_potions": "Health potions nr: {} price: {}",
+    "flower_attacks": "Flower Attacks nr: {} price: {}",
     "buy_label": "Buy",
     "sell_label": "Sell",
     "no_money": "You don't have enough coins",
-    "how_to_consume_health_potions": "Press 1 to consume healing potions"
+    "how_to_consume_health_potions": "Press 1 to consume healing potions",
+    "how_to_consume_flower_attacks": "Press 2 to consume flower attacks"
 }
