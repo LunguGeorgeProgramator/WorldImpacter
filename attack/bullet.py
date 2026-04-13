@@ -2,8 +2,8 @@ import pygame
 
 class Bullet:
 
-    def __init__(self, x = 0, y = 0, radius = 5, facing = 0):
-        self.color = (255, 0, 0)
+    def __init__(self, x = 0, y = 0, radius = 5, facing = 0, color = (255, 0, 0)):
+        self.color = color
         self.bullet_speed = 12
         self.bullet_max_range = 300
         self.x = x + 1

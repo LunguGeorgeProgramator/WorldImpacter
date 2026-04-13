@@ -55,17 +55,20 @@ class EnemyBoss(Enemy):
         self.injured_heaven_animation.set_animation_speed(20)
         self.screen = screen
 
+    def _is_heaven_level(self):
+        return self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels
+
     def update(self):
         super().update()
         self.fire_pit_animation.update_frame()
-        if self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels:
+        if self._is_heaven_level():
             if self.health <= self.max_health / 2:
                 self.injured_heaven_animation.update_frame()
             else:
                 self.heaven_animation.update_frame()
 
         if self.time_between_attacks_timer.start_time is False:
-            self.boss_attack()
+            self.create_boss_attack()
             self.time_between_attacks_timer.start_time = True
 
         self.time_between_attacks_timer.start_time = self.time_between_attacks_timer.check_cronometer()
@@ -77,13 +80,16 @@ class EnemyBoss(Enemy):
                 self.spread_bullets_attack.pop(self.spread_bullets_attack.index(bullet))
 
         self.boos_attack_colision()
+        
+        if self.is_alive is False:
+            self.spread_bullets_attack = []
 
     def draw(self, win):
         if self.is_alive:
             for bullet in self.spread_bullets_attack:
                 bullet.draw(self.screen)
 
-            if self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels:
+            if self._is_heaven_level():
                 if self.health <= self.max_health / 2:
                     image_asset = self.injured_heaven_animation.get_frame()
                 else:   
@@ -101,11 +107,12 @@ class EnemyBoss(Enemy):
         pygame.draw.rect(self.screen, self.health_colors_dict["low_health"], (x, y, self.bar_width * ratio, self.bar_height))
         pygame.draw.rect(self.screen, self.health_colors_dict["border"], (x, y, self.bar_width, self.bar_height), 2)
 
-    def boss_attack(self):
+    def create_boss_attack(self):
         center_x = self.x + self.radius
         center_y = self.y + self.radius / 2
+        bullet_color = (255, 0, 0) if self._is_heaven_level() is False else (255, 165, 0)
         for i in range(self.num_bullets_per_attack):
-            bullet = Bullet(self.x, (self.y + self.boss_bullet_radius), self.boss_bullet_radius, 0)
+            bullet = Bullet(self.x, (self.y + self.boss_bullet_radius), self.boss_bullet_radius, 0, bullet_color)
             angle = i * (2 * math.pi / self.num_bullets_per_attack)
             bullet.x = center_x
             bullet.y = center_y
