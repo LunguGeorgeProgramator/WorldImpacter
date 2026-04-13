@@ -28,6 +28,7 @@ class EnemyBoss(Enemy):
     boss_bullet_radius = 10
     boss_bullet_speed = 1
     time_between_attacks_timer = Timer(500)
+    boss_bullet_damage = 5
 
     def __init__(self, x, y, radius, screen, images_assets_loader, game_settings, player):
         super().__init__(x, y, radius, screen, images_assets_loader, game_settings)
@@ -125,4 +126,4 @@ class EnemyBoss(Enemy):
             bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
             player_colision_circle = (self.player.x + self.player.radius, self.player.y + self.player.radius, self.player.radius)
             if self.colision_detection(bullet_colision_circle, player_colision_circle):
-                self.player.health -= 1
+                self.player.health -= self.boss_bullet_damage
