@@ -12,7 +12,7 @@ class Attack:
 
     def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion, game_settings):
         self.bullets = []
-        self.flower_attask_bullets = []
+        self.flower_attack_bullets = []
         self.has_to_draw_explosion = False
         self.bullet_radius = 6
         self.max_bullets_per_attack = 2
@@ -35,11 +35,11 @@ class Attack:
         return  self.game_settings.game_level * (percentage / 100)
 
     def update(self):
-        for bullet in self.flower_attask_bullets:
+        for bullet in self.flower_attack_bullets:
             bullet.x += bullet.vx
             bullet.y += bullet.vy
             if bullet.x > self.screen_width or bullet.x < 0 or bullet.y > self.screen_height or bullet.y < 0:
-                self.flower_attask_bullets.pop(self.flower_attask_bullets.index(bullet))
+                self.flower_attack_bullets.pop(self.flower_attack_bullets.index(bullet))
 
         for bullet in self.bullets:
             max_range = bullet.bullet_max_range + self._level_attack_multiplier(self.percentage_of_bullets_range_per_level)
@@ -84,7 +84,7 @@ class Attack:
                 bullet.y = center_y
                 bullet.vx = math.cos(angle) * self.speed_flower_attack
                 bullet.vy = math.sin(angle) * self.speed_flower_attack
-                self.flower_attask_bullets.append(bullet)
+                self.flower_attack_bullets.append(bullet)
 
     def move_explosion_to_random_position(self):
         self.explosion.x = random.randint(0 + 100, self.screen_width - 100) # -100 just to not create the explosion too close to the edge of the screen
@@ -108,5 +108,5 @@ class Attack:
         for bullet in self.bullets:
             bullet.draw(self.screen)
 
-        for bullet in self.flower_attask_bullets:
+        for bullet in self.flower_attack_bullets:
             bullet.draw(self.screen)

@@ -22,6 +22,7 @@ class ImagesAssetsLoader:
         self.haven_enemies_image_frame_four = pygame.image.load("assets/enemies/little-angel-frame-two.png")
         self.enemies_image = pygame.image.load("assets/enemies/evil-sphere.png")
         self.enemies_image_frame_two = pygame.image.load("assets/enemies/evil-sphere-frame-two.png")
+        self.exploded_enemies_image = pygame.image.load("assets/enemies/exploded-evil-shere.png")
         self.enemy_boss_image = pygame.image.load("assets/enemies/boos-shere-1.png")
         self.enemy_boss_frame_two_image = pygame.image.load("assets/enemies/boos-shere-2.png")
         self.enemy_boss_frame_three_image = pygame.image.load("assets/enemies/boos-shere-3.png")

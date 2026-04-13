@@ -1,5 +1,6 @@
 import pygame
 from assets.images_animation_loader import ImagesAnimationLoader
+from helper.timer import Timer
 
 
 class Enemy:
@@ -36,6 +37,7 @@ class Enemy:
             self.images_assets_loader.haven_enemies_image_frame_four
         ])
         self.haven_images_animation_loader.set_animation_speed(10)
+        self.seconds_before_death_timer = Timer(10)
         
 
     def update(self):
@@ -73,5 +75,7 @@ class Enemy:
                 image_asset = self.haven_images_animation_loader.get_frame()
             else:
                 image_asset = self.images_animation_loader.get_frame()
-            self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
+        else:
+            image_asset = self.images_assets_loader.exploded_enemies_image
+        self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
     
