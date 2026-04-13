@@ -76,6 +76,9 @@ class Enemy:
             else:
                 image_asset = self.images_animation_loader.get_frame()
         else:
-            image_asset = self.images_assets_loader.exploded_enemies_image
+            if self.game_settings.game_level in self.game_settings.haven_levels:
+                image_asset = self.images_assets_loader.haven_exploded_enemies_image
+            else:
+                image_asset = self.images_assets_loader.exploded_enemies_image
         self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
     
