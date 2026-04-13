@@ -12,6 +12,10 @@ class ImagesAssetsLoader:
         self.player_down_image = pygame.image.load("assets/player/player-down.png")
         self.player_left_image = pygame.image.load("assets/player/player-left.png")
         self.player_right_image = pygame.image.load("assets/player/player-right.png")
+        self.underwater_player_down_left_image = pygame.image.load("assets/player/underwatter-left-back.png")
+        self.underwater_player_down_right_image = pygame.image.load("assets/player/underwatter-right-back.png")
+        self.underwater_player_up_left_image = pygame.image.load("assets/player/underwatter-left.png")
+        self.underwater_player_up_right_image = pygame.image.load("assets/player/underwatter-right.png")
         self.grim_player_up_left_image = pygame.image.load("assets/player/new-player-left-front.png")
         self.grim_player_up_right_image = pygame.image.load("assets/player/new-player-right-front.png")
         self.grim_player_down_left_image = pygame.image.load("assets/player/new-player-left-back.png")
@@ -24,6 +28,12 @@ class ImagesAssetsLoader:
         self.enemies_image = pygame.image.load("assets/enemies/evil-sphere.png")
         self.enemies_image_frame_two = pygame.image.load("assets/enemies/evil-sphere-frame-two.png")
         self.exploded_enemies_image = pygame.image.load("assets/enemies/exploded-evil-shere.png")
+        self.underwater_enemy_image = pygame.image.load("assets/enemies/angry-fish-right-side.png")
+        self.underwater_enemy_image_frame_two = pygame.image.load("assets/enemies/angry-fish-right-side-two.png")
+        self.underwater_exploded_enemy_image = pygame.image.load("assets/enemies/exploded-angry-fish-right-side.png")
+        self.underwater_enemy_image_left = pygame.image.load("assets/enemies/angry-fish-left-side.png")
+        self.underwater_enemy_image_frame_two_left = pygame.image.load("assets/enemies/angry-fish-left-side-two.png")
+        self.underwater_exploded_enemy_image_left = pygame.image.load("assets/enemies/exploded-angry-fish-left-side.png")
         self.enemy_boss_image = pygame.image.load("assets/enemies/boos-shere-1.png")
         self.enemy_boss_frame_two_image = pygame.image.load("assets/enemies/boos-shere-2.png")
         self.enemy_boss_frame_three_image = pygame.image.load("assets/enemies/boos-shere-3.png")
@@ -38,6 +48,7 @@ class ImagesAssetsLoader:
         self.haven_bomb = pygame.image.load("assets/attacks/gold-bomb.png")
         self.fire_pit_bg = self.draw_game_background("assets/fire-pit-bg.png")
         self.haven_bg = self.draw_game_background("assets/haven-bg.png")
+        self.underwater_bg = self.draw_game_background("assets/underwater-bg.png")
 
     def draw(self, loaded_image, x = 0, y = 0, width = None, height = None):
         width = width if width else self.default_image_width

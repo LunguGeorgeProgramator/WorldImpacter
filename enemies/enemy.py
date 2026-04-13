@@ -1,5 +1,6 @@
 import pygame
 from assets.images_animation_loader import ImagesAnimationLoader
+from data_models.moving_direction import MovingDirection
 from helper.timer import Timer
 
 
@@ -17,6 +18,8 @@ class Enemy:
         self.damage_to_player = 1
         self.images_animation_loader = ImagesAnimationLoader()
         self.haven_images_animation_loader = ImagesAnimationLoader()
+        self.underwater_right_loader = ImagesAnimationLoader()
+        self.underwater_left_loader = ImagesAnimationLoader()
         self.x = x + 1
         self.y = y
         self.radius = radius
@@ -36,8 +39,19 @@ class Enemy:
             self.images_assets_loader.haven_enemies_image_frame_three,
             self.images_assets_loader.haven_enemies_image_frame_four
         ])
-        self.haven_images_animation_loader.set_animation_speed(10)
+        self.underwater_right_loader.set_frames_assets([
+            self.images_assets_loader.underwater_enemy_image, 
+            self.images_assets_loader.underwater_enemy_image_frame_two
+        ])
+        self.underwater_left_loader.set_frames_assets([
+            self.images_assets_loader.underwater_enemy_image_left, 
+            self.images_assets_loader.underwater_enemy_image_frame_two_left
+        ])
         self.seconds_before_death_timer = Timer(10)
+        self.haven_images_animation_loader.set_animation_speed(10)
+        self.underwater_right_loader.set_animation_speed(10)
+        self.underwater_left_loader.set_animation_speed(10)
+        self.moving_direction = MovingDirection.NONE
         
 
     def update(self):
@@ -55,8 +69,10 @@ class Enemy:
             self.is_min_y_reached = False
 
         if self.is_min_x_reached and not self.is_max_x_reached:
+            self.moving_direction = MovingDirection.RIGHT
             self.x += self.vel
         else:
+            self.moving_direction = MovingDirection.LEFT
             self.x -= self.vel
 
         if self.is_min_y_reached and not self.is_max_y_reached:
@@ -66,6 +82,11 @@ class Enemy:
             
         if self.game_settings.game_level in self.game_settings.haven_levels:
             self.haven_images_animation_loader.update_frame()
+        elif self.game_settings.game_level in self.game_settings.underwater_levels:
+            if self.moving_direction == MovingDirection.LEFT:
+                self.underwater_left_loader.update_frame()
+            else:
+                self.underwater_right_loader.update_frame()
         else:
             self.images_animation_loader.update_frame()
 
@@ -73,11 +94,21 @@ class Enemy:
         if self.is_alive:
             if self.game_settings.game_level in self.game_settings.haven_levels:
                 image_asset = self.haven_images_animation_loader.get_frame()
+            elif self.game_settings.game_level in self.game_settings.underwater_levels:
+                if self.moving_direction == MovingDirection.LEFT:
+                    image_asset = self.underwater_left_loader.get_frame()
+                else:
+                    image_asset = self.underwater_right_loader.get_frame()
             else:
-                image_asset = self.images_animation_loader.get_frame()
+                image_asset = self.images_animation_loader.get_frame() 
         else:
             if self.game_settings.game_level in self.game_settings.haven_levels:
                 image_asset = self.images_assets_loader.haven_exploded_enemies_image
+            elif self.game_settings.game_level in self.game_settings.underwater_levels:
+                if self.moving_direction == MovingDirection.LEFT:
+                    image_asset = self.images_assets_loader.underwater_exploded_enemy_image_left
+                else:
+                    image_asset = self.images_assets_loader.underwater_exploded_enemy_image
             else:
                 image_asset = self.images_assets_loader.exploded_enemies_image
         self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)

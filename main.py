@@ -47,6 +47,8 @@ while running:
     # screen.fill("green")
     if game_settings.game_level in game_settings.haven_levels or game_settings.game_level in game_settings.heaven_eneny_boss_levels:
         bg_image = images_assets_loader.haven_bg
+    elif game_settings.game_level in game_settings.underwater_levels:   
+        bg_image = images_assets_loader.underwater_bg 
     else:
         bg_image = images_assets_loader.fire_pit_bg
     screen.blit(bg_image, (0, 0))
