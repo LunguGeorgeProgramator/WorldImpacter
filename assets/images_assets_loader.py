@@ -42,6 +42,8 @@ class ImagesAssetsLoader:
         self.enemy_boss_heavan_frame_two_image = pygame.image.load("assets/enemies/heaven-boss-frame-two.png")
         self.injured_enemy_boss_heavan_frame_one_image = pygame.image.load("assets/enemies/injured-heaven-boss.png")
         self.injured_enemy_boss_heavan_frame_two_image = pygame.image.load("assets/enemies/injured-heaven-boss-frame-two.png")
+        self.enemy_boss_underwater_frame_one_image = pygame.image.load("assets/enemies/octopus-boss.png")
+        self.enemy_boss_underwater_frame_two_image = pygame.image.load("assets/enemies/octopus-boss-frame-two.png")
         self.explosion = pygame.image.load("assets/attacks/explosion-s.png")
         self.haven_explosion = pygame.image.load("assets/attacks/holly_explosion_mini.png")
         self.bomb = pygame.image.load("assets/attacks/red-bomb.png")

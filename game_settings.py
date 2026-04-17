@@ -14,8 +14,9 @@ class GameSettings:
     haven_level_text_color = (58, 51, 38) 
     game_level = 1
     enemies_alive = 1
-    eneny_boss_levels = [10, 30, 50, 70, 90]
-    heaven_eneny_boss_levels = [20, 40, 60, 80, 100]
+    eneny_boss_levels = [10, 40, 70, 100, 130]
+    heaven_eneny_boss_levels = [20, 50, 80, 110, 140]
+    underwater_enemy_boss_levels = [30, 60, 90, 120, 150]
     fire_pit_levels = [1, 5, 8, 12, 15, 18, 22, 25, 28, 32, 35, 38, 42, 45, 48, 52, 55, 58, 62, 65, 68, 72, 75, 78, 82, 85, 88, 92, 95, 98, 102]
     haven_levels = [2, 4, 6, 9, 13, 16, 19, 23, 26, 29, 33, 36, 39, 43, 46, 49, 53, 56, 59, 63, 66, 69, 73, 76, 79, 83, 86, 89, 93, 96, 99, 103]
     underwater_levels = [3, 7, 11, 14, 17, 21, 24, 27, 31, 34, 37, 41, 44, 47, 51, 54, 57, 61, 64, 67, 71, 74, 77, 81, 84, 87, 91, 94, 97, 101, 104]
@@ -27,4 +28,4 @@ class GameSettings:
     player_coins = 0
 
     def is_enemy_boss_level(self):
-        return self.game_level in self.eneny_boss_levels or self.game_level in self.heaven_eneny_boss_levels
+        return self.game_level in self.eneny_boss_levels + self.heaven_eneny_boss_levels + self.underwater_enemy_boss_levels

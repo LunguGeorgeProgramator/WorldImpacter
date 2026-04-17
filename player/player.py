@@ -92,13 +92,16 @@ class Player:
             self.game_settings.player_action = EntitiesActions.FLOWER_ATTACK
 
     def draw(self):
-        if self.game_settings.game_level in self.game_settings.haven_levels or self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels:
+        if self._is_level_in_list(self.game_settings.haven_levels + self.game_settings.heaven_eneny_boss_levels):
             player_image = self._get_player_grim_image()
-        elif self.game_settings.game_level in self.game_settings.underwater_levels:
+        elif self._is_level_in_list(self.game_settings.underwater_levels + self.game_settings.underwater_enemy_boss_levels):
             player_image = self._get_player_underwater_image()
         else:
             player_image = self._get_player_default_image()
         self.images_assets_loader.draw(player_image, self.player_pos.x, self.player_pos.y)
+
+    def _is_level_in_list(self, levels_list):
+        return self.game_settings.game_level in levels_list
 
     def _get_player_default_image(self):
         if self.last_moving_direction == MovingDirection.UP:

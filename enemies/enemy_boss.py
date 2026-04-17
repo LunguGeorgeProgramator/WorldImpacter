@@ -23,6 +23,7 @@ class EnemyBoss(Enemy):
     heaven_animation = ImagesAnimationLoader()
     injured_heaven_animation = ImagesAnimationLoader()
     fire_pit_animation = ImagesAnimationLoader()
+    underwater_enemy_boss_animation = ImagesAnimationLoader()
     spread_bullets_attack = []
     num_bullets_per_attack = 10
     boss_bullet_radius = 10
@@ -51,17 +52,28 @@ class EnemyBoss(Enemy):
             self.images_assets_loader.enemy_boss_frame_four_image
             
         ])
+        self.underwater_enemy_boss_animation.set_frames_assets([
+            self.images_assets_loader.enemy_boss_underwater_frame_one_image,
+            self.images_assets_loader.enemy_boss_underwater_frame_two_image
+        ])
         self.fire_pit_animation.set_animation_speed(20)
         self.heaven_animation.set_animation_speed(20)
         self.injured_heaven_animation.set_animation_speed(20)
+        self.underwater_enemy_boss_animation.set_animation_speed(20)
         self.screen = screen
 
     def _is_heaven_level(self):
         return self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels
 
+    def _is_underwater_level(self):
+        return self.game_settings.game_level in self.game_settings.underwater_enemy_boss_levels
+
     def update(self):
         super().update()
-        self.fire_pit_animation.update_frame()
+        if not self._is_underwater_level() and not self._is_heaven_level():
+            self.fire_pit_animation.update_frame()
+        if self._is_underwater_level():
+            self.underwater_enemy_boss_animation.update_frame()
         if self._is_heaven_level():
             if self.health <= self.max_health / 2:
                 self.injured_heaven_animation.update_frame()
@@ -95,6 +107,8 @@ class EnemyBoss(Enemy):
                     image_asset = self.injured_heaven_animation.get_frame()
                 else:   
                     image_asset = self.heaven_animation.get_frame()
+            elif self._is_underwater_level():
+                image_asset = self.underwater_enemy_boss_animation.get_frame()
             else:
                 image_asset = self.fire_pit_animation.get_frame()
             self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
@@ -111,7 +125,12 @@ class EnemyBoss(Enemy):
     def create_boss_attack(self):
         center_x = self.x + self.radius
         center_y = self.y + self.radius / 2
-        bullet_color = (255, 0, 0) if self._is_heaven_level() is False else (255, 165, 0)
+        if self._is_heaven_level():
+            bullet_color = (255, 165, 0)
+        elif self._is_underwater_level():
+            bullet_color = (0, 0, 139)
+        else:
+            bullet_color = (255, 0, 0)
         for i in range(self.num_bullets_per_attack):
             bullet = Bullet(self.x, (self.y + self.boss_bullet_radius), self.boss_bullet_radius, 0, bullet_color)
             angle = i * (2 * math.pi / self.num_bullets_per_attack)
