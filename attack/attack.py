@@ -15,7 +15,7 @@ class Attack:
         self.flower_attack_bullets = []
         self.has_to_draw_explosion = False
         self.bullet_radius = 6
-        self.max_bullets_per_attack = 2
+        self.max_bullets_per_attack = 1
         self.images_assets_loader = images_assets_loader
         self.screen = screen
         self.player = player
@@ -26,15 +26,17 @@ class Attack:
         self.colision_detection = CollisionChecKer().colision_detection
         self.five_seconds_timer = Timer(20)
         self.game_settings = game_settings
-        self.percentage_of_bullets_number_per_level = 10
-        self.percentage_of_bullets_range_per_level = 120
+        self.percentage_of_player_bullets_multiplier_per_level = 5
         self.num_bullets_flower_attack = 12
         self.speed_flower_attack = 3
 
-    def _level_attack_multiplier(self, percentage = 10):
+    def get_level_attack_multiplier(self, percentage = None):
+        if percentage is None:
+            percentage = self.percentage_of_player_bullets_multiplier_per_level
         return  self.game_settings.game_level * (percentage / 100)
 
     def update(self):
+        level_multiplier = self.get_level_attack_multiplier()
         for bullet in self.flower_attack_bullets:
             bullet.x += bullet.vx
             bullet.y += bullet.vy
@@ -42,25 +44,27 @@ class Attack:
                 self.flower_attack_bullets.pop(self.flower_attack_bullets.index(bullet))
 
         for bullet in self.bullets:
-            max_range = bullet.bullet_max_range + self._level_attack_multiplier(self.percentage_of_bullets_range_per_level)
-            if   bullet.x > self.player.x and bullet.x < (self.player.x + max_range):
+            max_range = bullet.bullet_max_range
+            bullet.vel = math.floor(bullet.bullet_speed + level_multiplier)    
+            if bullet.left_right_direction is None:
+                bullet.left_right_direction = self.player.last_moving_direction_left_right
+            if bullet.left_right_direction == MovingDirection.RIGHT:
                 bullet.x += bullet.vel
-            elif bullet.x < self.player.x and bullet.x > (self.player.x + (self.player.radius * 2) - max_range):
-                bullet.x += bullet.vel
-            else:
+            else:   
+                bullet.x -= bullet.vel
+            if bullet.x > (self.player.x + (self.player.radius * 2) + max_range) or bullet.x < (self.player.x - max_range) or bullet.x > self.screen_width or bullet.x < 0:
                 self.bullets.pop(self.bullets.index(bullet))
 
         if self.keyboard_handler.space_pressed:
             if self.player.last_moving_direction_left_right == MovingDirection.LEFT:
-                facing = -1
                 initial_x = self.player.x
             else:
-                facing = 1
                 initial_x = self.player.x + (self.player.radius * 2)
-            if len(self.bullets) < self.max_bullets_per_attack * self._level_attack_multiplier(self.percentage_of_bullets_number_per_level):
-                self.bullets.append(
-                    Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, facing)
-                )
+            if len(self.bullets) <= 0:
+                for i in range(math.floor(self.max_bullets_per_attack + level_multiplier)):
+                    self.bullets.append(
+                        Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, 0)
+                    )
 
         if self.explosion.is_new_explosion and self.game_settings.is_enemy_boss_level() is False:
             player_colision_circle = (self.player.x, self.player.y, self.player.radius)
@@ -106,7 +110,8 @@ class Attack:
                 self.move_explosion_to_random_position()
 
         for bullet in self.bullets:
-            bullet.draw(self.screen)
+            if bullet.destroied is False:
+                bullet.draw(self.screen)
 
         for bullet in self.flower_attack_bullets:
             bullet.draw(self.screen)

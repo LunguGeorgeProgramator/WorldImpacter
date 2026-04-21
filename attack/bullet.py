@@ -14,6 +14,8 @@ class Bullet:
         self.angle = 0
         self.vy = 0
         self.vx = 0
+        self.left_right_direction = None
+        self.destroied = False
 
     def draw(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)

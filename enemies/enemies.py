@@ -9,10 +9,12 @@ import pygame
 class Enemies:
 
     def __init__(self, screen, images_assets_loader, player, attack, explosion, game_settings):
+        self.player_damage_to_enemy_boos = 10
+        self.player_damage_percentage_multiplier = 1
         self.enemies = []
         self.enemies_dead = 0
         self.max_enemies = 300
-        self.max_enemies_per_level = 10
+        self.max_enemies_per_level = 5
         self.game_settings = game_settings
         self.attack = attack
         self.images_assets_loader = images_assets_loader
@@ -22,7 +24,7 @@ class Enemies:
         self._crete_enemy_swarm()
         self.colision_detection = CollisionChecKer().colision_detection
         self.player = player
-        self.enemy_boss = EnemyBoss(400, 400, 100, self.screen, self.images_assets_loader, self.game_settings, player)
+        self.enemy_boss = EnemyBoss(400, 400, 100, self.screen, self.images_assets_loader, self.game_settings, player, attack)
 
     def _crete_enemy_swarm(self):
         if self.game_settings.is_enemy_boss_level() is False:
@@ -78,8 +80,9 @@ class Enemies:
         for bullet in bullets_list:
             bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
             if self.colision_detection(bullet_colision_circle, enemy_boss_colision_circle):
-                if self.enemy_boss.is_alive:
-                    self.enemy_boss.health -= 1
+                if self.enemy_boss.is_alive and not bullet.destroied:
+                    self.enemy_boss.health -= math.floor(self.player_damage_to_enemy_boos + self.attack.get_level_attack_multiplier(self.player_damage_percentage_multiplier))
+                    bullet.destroied = True
 
     def _update_boss_enemies(self, player_colision_circle):
         self.enemy_boss.update()
@@ -99,12 +102,13 @@ class Enemies:
         for bullet in bullets_list:
             bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
             if self.colision_detection(bullet_colision_circle, enemy_colision_circle):
-                if enemy.is_alive:
+                if enemy.is_alive and not bullet.destroied:
                     enemy.is_alive = False
                     self.enemies_dead += 1
                     self.game_settings.total_enemies_defeated += 1
                     # if bullet is removed at collision that will make the fire rate faster at close range, makes the game easyer
                     # self.attack.bullets.remove(bullet) 
+                    bullet.destroied = True
                     return enemy
         return enemy
 
