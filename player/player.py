@@ -96,12 +96,31 @@ class Player:
             player_image = self._get_player_grim_image()
         elif self._is_level_in_list(self.game_settings.underwater_levels + self.game_settings.underwater_enemy_boss_levels):
             player_image = self._get_player_underwater_image()
+        elif self._is_level_in_list(self.game_settings.void_levels):
+            player_image = self._get_void_player_image()
         else:
             player_image = self._get_player_default_image()
         self.images_assets_loader.draw(player_image, self.player_pos.x, self.player_pos.y)
 
     def _is_level_in_list(self, levels_list):
         return self.game_settings.game_level in levels_list
+
+    def _get_void_player_image(self):
+        if self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.LEFT:
+            player_image = self.images_assets_loader.player_void_up_right_image
+        elif self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.RIGHT:
+            player_image = self.images_assets_loader.player_void_up_left_image
+        elif self.last_moving_direction == MovingDirection.LEFT:
+            player_image = self.images_assets_loader.player_void_down_right_image
+        elif self.last_moving_direction == MovingDirection.RIGHT:
+            player_image = self.images_assets_loader.player_void_down_left_image
+        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.LEFT:
+            player_image = self.images_assets_loader.player_void_down_right_image
+        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.RIGHT:
+            player_image = self.images_assets_loader.player_void_down_left_image
+        else:
+            player_image = self.images_assets_loader.player_void_down_left_image
+        return player_image
 
     def _get_player_default_image(self):
         if self.last_moving_direction == MovingDirection.UP:

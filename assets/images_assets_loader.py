@@ -8,6 +8,10 @@ class ImagesAssetsLoader:
         self.default_image_width = 100
         self.screen = screen
         self.screen_width, self.screen_height = self.screen.get_size()
+        self.player_void_up_left_image = pygame.image.load("assets/player/void-warrior-left-back.png")
+        self.player_void_up_right_image = pygame.image.load("assets/player/void-warrior-right-back.png")
+        self.player_void_down_left_image = pygame.image.load("assets/player/void-warrior-left.png")
+        self.player_void_down_right_image = pygame.image.load("assets/player/void-warrior-right.png")
         self.player_up_image = pygame.image.load("assets/player/player-up.png")
         self.player_down_image = pygame.image.load("assets/player/player-down.png")
         self.player_left_image = pygame.image.load("assets/player/player-left.png")
@@ -46,6 +50,9 @@ class ImagesAssetsLoader:
         self.enemy_boss_underwater_frame_two_image = pygame.image.load("assets/enemies/shark-boos-left-two.png")
         self.enemy_boss_underwater_frame_one_right_image = pygame.image.load("assets/enemies/shark-boos-right.png")
         self.enemy_boss_underwater_frame_two_right_image = pygame.image.load("assets/enemies/shark-boos-right-two.png")
+        self.void_enemy_one = pygame.image.load("assets/enemies/void-enemy.png")
+        self.void_enemy_two = pygame.image.load("assets/enemies/void-enemy-two.png")
+        self.void_enemy_exploded = pygame.image.load("assets/enemies/void-enemy-exploded.png")
         self.explosion = pygame.image.load("assets/attacks/explosion-s.png")
         self.haven_explosion = pygame.image.load("assets/attacks/holly_explosion_mini.png")
         self.bomb = pygame.image.load("assets/attacks/red-bomb.png")
@@ -53,6 +60,7 @@ class ImagesAssetsLoader:
         self.fire_pit_bg = self.draw_game_background("assets/fire-pit-bg.png")
         self.haven_bg = self.draw_game_background("assets/haven-bg.png")
         self.underwater_bg = self.draw_game_background("assets/underwater-bg.png")
+        self.void_bg = self.draw_game_background("assets/dark-void-bg.png")
 
     def draw(self, loaded_image, x = 0, y = 0, width = None, height = None):
         width = width if width else self.default_image_width

@@ -35,5 +35,7 @@
     "sell_label": "Sell",
     "no_money": "You don't have enough coins",
     "how_to_consume_health_potions": "Press 1 to consume healing potions",
-    "how_to_consume_flower_attacks": "Press 2 to consume flower attacks"
+    "how_to_consume_flower_attacks": "Press 2 to consume flower attacks",
+    "healing_potion": "Healing potion",
+    "flower_attack": "Flower attack"
 }

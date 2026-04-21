@@ -20,6 +20,7 @@ class Enemy:
         self.haven_images_animation_loader = ImagesAnimationLoader()
         self.underwater_right_loader = ImagesAnimationLoader()
         self.underwater_left_loader = ImagesAnimationLoader()
+        self.void_enemiy_animation_loader = ImagesAnimationLoader()
         self.x = x + 1
         self.y = y
         self.radius = radius
@@ -47,10 +48,15 @@ class Enemy:
             self.images_assets_loader.underwater_enemy_image_left, 
             self.images_assets_loader.underwater_enemy_image_frame_two_left
         ])
-        self.seconds_before_death_timer = Timer(10)
+        self.void_enemiy_animation_loader.set_frames_assets([
+            self.images_assets_loader.void_enemy_one, 
+            self.images_assets_loader.void_enemy_two
+        ])
+        self.seconds_before_death_timer = Timer(15)
         self.haven_images_animation_loader.set_animation_speed(10)
         self.underwater_right_loader.set_animation_speed(10)
         self.underwater_left_loader.set_animation_speed(10)
+        self.void_enemiy_animation_loader.set_animation_speed(20)
         self.moving_direction = MovingDirection.NONE
         
 
@@ -87,6 +93,8 @@ class Enemy:
                 self.underwater_left_loader.update_frame()
             else:
                 self.underwater_right_loader.update_frame()
+        elif self.game_settings.game_level in self.game_settings.void_levels:
+            self.void_enemiy_animation_loader.update_frame()
         else:
             self.images_animation_loader.update_frame()
 
@@ -99,6 +107,8 @@ class Enemy:
                     image_asset = self.underwater_left_loader.get_frame()
                 else:
                     image_asset = self.underwater_right_loader.get_frame()
+            elif self.game_settings.game_level in self.game_settings.void_levels:
+                image_asset = self.void_enemiy_animation_loader.get_frame()
             else:
                 image_asset = self.images_animation_loader.get_frame() 
         else:
@@ -109,6 +119,8 @@ class Enemy:
                     image_asset = self.images_assets_loader.underwater_exploded_enemy_image_left
                 else:
                     image_asset = self.images_assets_loader.underwater_exploded_enemy_image
+            elif self.game_settings.game_level in self.game_settings.void_levels:
+                image_asset = self.images_assets_loader.void_enemy_exploded
             else:
                 image_asset = self.images_assets_loader.exploded_enemies_image
         self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)

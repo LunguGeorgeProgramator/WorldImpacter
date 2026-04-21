@@ -49,6 +49,8 @@ while running:
         bg_image = images_assets_loader.haven_bg
     elif game_settings.game_level in game_settings.underwater_levels or game_settings.game_level in game_settings.underwater_enemy_boss_levels:   
         bg_image = images_assets_loader.underwater_bg 
+    elif game_settings.game_level in game_settings.void_levels:
+        bg_image = images_assets_loader.void_bg
     else:
         bg_image = images_assets_loader.fire_pit_bg
     screen.blit(bg_image, (0, 0))

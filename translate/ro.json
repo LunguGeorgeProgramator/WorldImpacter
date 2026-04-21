@@ -35,5 +35,7 @@
     "sell_label": "Vinde",
     "no_money": "Nu ai monede suficiente",
     "how_to_consume_health_potions": "Apasa 1 pentru a consuma potiuni de sanatate",
-    "how_to_consume_flower_attacks": "Apasa 2 pentru a consuma atacurile cu floare"
+    "how_to_consume_flower_attacks": "Apasa 2 pentru a consuma atacurile cu floare",
+    "healing_potion": "Poțiune de viață",
+    "flower_attack": "Atac model floare"
 }

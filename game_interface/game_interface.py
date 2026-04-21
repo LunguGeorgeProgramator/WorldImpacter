@@ -49,7 +49,7 @@ class GameInterface(pygame.sprite.Sprite):
         self.button_next_level_rect = self._create_menu_button(possiont_center_screen_x, -125, 170, 50)
         self.button_retry_rect = self._create_menu_button(possiont_center_screen_x, -125, 170, 50)
         self.button_buy_health_potion_rect = self._create_menu_button(possiont_center_screen_x + 255, 40, 100, 50, False)
-        self.button_buy_flower_attack_rect = self._create_menu_button(possiont_center_screen_x + 255, 190, 100, 50, False)
+        self.button_buy_flower_attack_rect = self._create_menu_button(possiont_center_screen_x + 255, 120, 100, 50, False)
 
     def _create_menu_button(self, position_x, position_y, width, height, use_screen_h = True):
         position_x = position_x - width / 2
@@ -144,9 +144,9 @@ class GameInterface(pygame.sprite.Sprite):
         self.screen.blit(self.help_overlay, self.help_window.topleft)
         half_screen_h = self.screen_height / 2
         self._set_text_on_screen('shop_title', None, 0, half_screen_h)
-        self._set_text_on_screen('health_potions', None, 0, half_screen_h - 50, [self.shop.number_of_healing_potion, self.shop.healing_potion_price])
+        self._set_text_on_screen('health_potions', None, -100, half_screen_h - 50, [self.shop.number_of_healing_potion, self.shop.healing_potion_price])
         self.draw_button(self.button_buy_health_potion_rect, 'buy_label', self.green_button_color)
-        self._set_text_on_screen('flower_attacks', None, 0, half_screen_h - 200, [self.shop.number_of_flower_attack, self.shop.flower_attack_price])
+        self._set_text_on_screen('flower_attacks', None, -100, half_screen_h - 130, [self.shop.number_of_flower_attack, self.shop.flower_attack_price])
         self.draw_button(self.button_buy_flower_attack_rect, 'buy_label', self.green_button_color)
         self._set_text_on_screen('player_coins', None, 0, half_screen_h - self.screen_height + 50, [self.game_settings.player_coins])
 
@@ -165,7 +165,8 @@ class GameInterface(pygame.sprite.Sprite):
         self.screen.blit(scaled_surface, self.inventory_window.topleft)
         self._set_text_on_screen('inventory_title', None, r_x + 10, r_y, [], False)
         for i, item in enumerate(items_on_screen):
-            text_surface = self.game_settings.game_text_font.render(item.name + " " + str(item.count), True, self.game_settings.text_color)
+            item_label_text = self.translator.get_message(item.name)
+            text_surface = self.game_settings.game_text_font.render(item_label_text + " " + str(item.count), True, self.game_settings.text_color)
             self.screen.blit(text_surface, (r_x + 10, r_y + ((i + 1) * 50)))
 
     def draw_button(self, button_rect, button_label, main_button_color = None):
