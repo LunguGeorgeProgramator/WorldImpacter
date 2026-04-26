@@ -4,6 +4,7 @@ from data_models.game_state import GameState
 from data_models.entities_actions import EntitiesActions
 from game_interface.shop import Shop
 
+
 class Player:
 
     def __init__(self, screen, keyboard_handler, images_assets_loader, game_settings, player_inventory):
@@ -37,6 +38,7 @@ class Player:
         self.pos = pygame.Vector2(self.player_pos.x, self.player_pos.y)
         self.screen_x, self.screen_y = screen.get_size()
         self.shop = Shop(self)
+        self.player_skins = images_assets_loader.player_skins
 
     def _move_vector_x_y(self, vector_pos, direction, speed):
         is_out_of_scrren_left = self.player_pos.x < 0
@@ -93,78 +95,44 @@ class Player:
 
     def draw(self):
         if self._is_level_in_list(self.game_settings.haven_levels + self.game_settings.heaven_eneny_boss_levels):
-            player_image = self._get_player_grim_image()
+            player_image = self._get_player_skin_type_plain(self.player_skins.grim_skin)
         elif self._is_level_in_list(self.game_settings.underwater_levels + self.game_settings.underwater_enemy_boss_levels):
-            player_image = self._get_player_underwater_image()
+            player_image = self._get_player_skin_type_plain(self.player_skins.diver_skin)
         elif self._is_level_in_list(self.game_settings.void_levels):
-            player_image = self._get_void_player_image()
+            player_image = self._get_player_skin_type_plain(self.player_skins.void_skin)
         else:
-            player_image = self._get_player_default_image()
+            player_image = self._get_player_default_image(self.player_skins.default_skin)
         self.images_assets_loader.draw(player_image, self.player_pos.x, self.player_pos.y)
 
     def _is_level_in_list(self, levels_list):
         return self.game_settings.game_level in levels_list
 
-    def _get_void_player_image(self):
-        if self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.player_void_up_right_image
-        elif self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.player_void_up_left_image
-        elif self.last_moving_direction == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.player_void_down_right_image
-        elif self.last_moving_direction == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.player_void_down_left_image
-        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.player_void_down_right_image
-        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.player_void_down_left_image
-        else:
-            player_image = self.images_assets_loader.player_void_down_left_image
-        return player_image
-
-    def _get_player_default_image(self):
+    def _get_player_default_image(self, player_skin):
         if self.last_moving_direction == MovingDirection.UP:
-            player_image = self.images_assets_loader.player_up_image
+            player_image = player_skin[MovingDirection.UP]
         elif self.last_moving_direction == MovingDirection.DOWN:
-            player_image = self.images_assets_loader.player_down_image
+            player_image = player_skin[MovingDirection.DOWN]
         elif self.last_moving_direction == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.player_left_image
+            player_image = player_skin[MovingDirection.LEFT]
         elif self.last_moving_direction == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.player_right_image
+            player_image = player_skin[MovingDirection.RIGHT]
         else:
-            player_image = self.images_assets_loader.player_down_image
-        return player_image
-
-    def _get_player_grim_image(self):
-        if self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.grim_player_down_left_image
-        elif self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.grim_player_down_right_image
-        elif self.last_moving_direction == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.grim_player_up_left_image
-        elif self.last_moving_direction == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.grim_player_up_right_image
-        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.grim_player_up_left_image
-        elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.grim_player_up_right_image
-        else:
-            player_image = self.images_assets_loader.grim_player_up_right_image
+            player_image = player_skin[MovingDirection.DOWN]
         return player_image
     
-    def _get_player_underwater_image(self):
+    def _get_player_skin_type_plain(self, player_skin):
         if self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.underwater_player_down_left_image
+            player_image = player_skin[MovingDirection.LEFT]
         elif self.last_moving_direction == MovingDirection.UP and self.last_moving_direction_left_right == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.underwater_player_down_right_image
+            player_image = player_skin[MovingDirection.RIGHT]
         elif self.last_moving_direction == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.underwater_player_up_left_image
+            player_image = player_skin[MovingDirection.DOWN]
         elif self.last_moving_direction == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.underwater_player_up_right_image
+            player_image = player_skin[MovingDirection.UP]
         elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.LEFT:
-            player_image = self.images_assets_loader.underwater_player_up_left_image
+            player_image = player_skin[MovingDirection.DOWN]
         elif self.last_moving_direction == MovingDirection.DOWN and self.last_moving_direction_left_right == MovingDirection.RIGHT:
-            player_image = self.images_assets_loader.underwater_player_up_right_image
+            player_image = player_skin[MovingDirection.UP]
         else:
-            player_image = self.images_assets_loader.underwater_player_up_right_image
+            player_image = player_skin[MovingDirection.UP]
         return player_image

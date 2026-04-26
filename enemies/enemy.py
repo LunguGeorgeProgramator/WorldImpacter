@@ -29,29 +29,13 @@ class Enemy:
         self.screen_x, self.screen_y = screen.get_size()
         self.default_image_height = radius * 2
         self.default_image_width = radius * 2
-        self.images_animation_loader.set_frames_assets([
-            self.images_assets_loader.enemies_image, 
-            self.images_assets_loader.enemies_image_frame_two
-        ])
+        self.enemy_skin = images_assets_loader.enemies_skins
+        self.images_animation_loader.set_frames_assets(self.enemy_skin.fire_pit_shere_demon_frames)
         self.images_animation_loader.set_animation_speed(30)
-        self.haven_images_animation_loader.set_frames_assets([
-            self.images_assets_loader.haven_enemies_image, 
-            self.images_assets_loader.haven_enemies_image_frame_two,
-            self.images_assets_loader.haven_enemies_image_frame_three,
-            self.images_assets_loader.haven_enemies_image_frame_four
-        ])
-        self.underwater_right_loader.set_frames_assets([
-            self.images_assets_loader.underwater_enemy_image, 
-            self.images_assets_loader.underwater_enemy_image_frame_two
-        ])
-        self.underwater_left_loader.set_frames_assets([
-            self.images_assets_loader.underwater_enemy_image_left, 
-            self.images_assets_loader.underwater_enemy_image_frame_two_left
-        ])
-        self.void_enemiy_animation_loader.set_frames_assets([
-            self.images_assets_loader.void_enemy_one, 
-            self.images_assets_loader.void_enemy_two
-        ])
+        self.haven_images_animation_loader.set_frames_assets(self.enemy_skin.haven_little_angel_frames)
+        self.underwater_right_loader.set_frames_assets(self.enemy_skin.underwatter_angry_fish_right_side_frames)
+        self.underwater_left_loader.set_frames_assets(self.enemy_skin.underwatter_angry_fish_left_side_frames)
+        self.void_enemiy_animation_loader.set_frames_assets(self.enemy_skin.void_spectral_frames)
         self.seconds_before_death_timer = Timer(15)
         self.haven_images_animation_loader.set_animation_speed(10)
         self.underwater_right_loader.set_animation_speed(10)
@@ -113,15 +97,15 @@ class Enemy:
                 image_asset = self.images_animation_loader.get_frame() 
         else:
             if self.game_settings.game_level in self.game_settings.haven_levels:
-                image_asset = self.images_assets_loader.haven_exploded_enemies_image
+                image_asset = self.enemy_skin.haven_exploded_enemies_image
             elif self.game_settings.game_level in self.game_settings.underwater_levels:
                 if self.moving_direction == MovingDirection.LEFT:
-                    image_asset = self.images_assets_loader.underwater_exploded_enemy_image_left
+                    image_asset = self.enemy_skin.underwater_exploded_enemy_image_left
                 else:
-                    image_asset = self.images_assets_loader.underwater_exploded_enemy_image
+                    image_asset = self.enemy_skin.underwater_exploded_enemy_image
             elif self.game_settings.game_level in self.game_settings.void_levels:
-                image_asset = self.images_assets_loader.void_enemy_exploded
+                image_asset = self.enemy_skin.void_enemy_exploded
             else:
-                image_asset = self.images_assets_loader.exploded_enemies_image
+                image_asset = self.enemy_skin.exploded_enemies_image
         self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)
     

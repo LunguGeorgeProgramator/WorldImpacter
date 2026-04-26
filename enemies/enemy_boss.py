@@ -41,29 +41,12 @@ class EnemyBoss(Enemy):
         self.colision_detection = CollisionChecKer().colision_detection
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
-        self.heaven_animation.set_frames_assets([
-            self.images_assets_loader.enemy_boss_heavan_frame_one_image, 
-            self.images_assets_loader.enemy_boss_heavan_frame_two_image
-        ])
-        self.injured_heaven_animation.set_frames_assets([
-            self.images_assets_loader.injured_enemy_boss_heavan_frame_one_image, 
-            self.images_assets_loader.injured_enemy_boss_heavan_frame_two_image
-        ])
-        self.fire_pit_animation.set_frames_assets([
-            self.images_assets_loader.enemy_boss_image, 
-            self.images_assets_loader.enemy_boss_frame_two_image,
-            self.images_assets_loader.enemy_boss_frame_three_image,
-            self.images_assets_loader.enemy_boss_frame_four_image
-            
-        ])
-        self.underwater_enemy_boss_animation.set_frames_assets([
-            self.images_assets_loader.enemy_boss_underwater_frame_one_image,
-            self.images_assets_loader.enemy_boss_underwater_frame_two_image
-        ])
-        self.underwater_enemy_boss_right_animation.set_frames_assets([
-            self.images_assets_loader.enemy_boss_underwater_frame_one_right_image,
-            self.images_assets_loader.enemy_boss_underwater_frame_two_right_image
-        ])
+        self.boss_skin = images_assets_loader.enemies_skins
+        self.heaven_animation.set_frames_assets(self.boss_skin.haven_angel_boss_frames)
+        self.injured_heaven_animation.set_frames_assets(self.boss_skin.haven_angel_injured_boss_frames)
+        self.fire_pit_animation.set_frames_assets(self.enemy_skin.fire_pit_boss_frames)
+        self.underwater_enemy_boss_animation.set_frames_assets(self.enemy_skin.underwater_shark_boss_frames_left)
+        self.underwater_enemy_boss_right_animation.set_frames_assets(self.enemy_skin.underwater_shark_boss_frames_right)
         self.fire_pit_animation.set_animation_speed(20)
         self.heaven_animation.set_animation_speed(20)
         self.injured_heaven_animation.set_animation_speed(20)

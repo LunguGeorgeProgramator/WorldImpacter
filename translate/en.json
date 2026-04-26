@@ -28,6 +28,7 @@
     "interact_with_bombs": "Move over a bomb to detonate it",
     "shop_title": "Shop inventory:",
     "how_to_use_buttons": "Use mouse to press buttons",
+    "how_to_use_ui_buttons": "Left click mouse over the wanted button",
     "player_coins": "Coins: {}",
     "health_potions": "Health potions nr: {} price: {}",
     "flower_attacks": "Flower Attacks nr: {} price: {}",
@@ -37,5 +38,6 @@
     "how_to_consume_health_potions": "Press 1 to consume healing potions",
     "how_to_consume_flower_attacks": "Press 2 to consume flower attacks",
     "healing_potion": "Healing potion",
-    "flower_attack": "Flower attack"
+    "flower_attack": "Flower attack",
+    "close_label": "Close window"
 }

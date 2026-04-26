@@ -44,6 +44,7 @@ class GameInterface(pygame.sprite.Sprite):
 
     def _create_menu_buttons(self):
         possiont_center_screen_x = self.screen_width / 2
+        self.button_close_rect = self._create_menu_button(possiont_center_screen_x, self.screen_height - 70, 220, 50, False)
         self.button_exit_rect = self._create_menu_button(possiont_center_screen_x, 0, 120, 50)
         self.button_continue_rect = self._create_menu_button(possiont_center_screen_x, -75, 170, 50)
         self.button_next_level_rect = self._create_menu_button(possiont_center_screen_x, -125, 170, 50)
@@ -76,13 +77,15 @@ class GameInterface(pygame.sprite.Sprite):
                 if self.button_buy_flower_attack_rect.collidepoint(event.pos):
                     self.game_settings.player_coins = self.shop.make_buy_transaction(self.game_settings.player_coins, self.shop.flower_attack)
                     self.five_seconds_timer_show_no_money_notification.start_time = self.shop.transaction_status is False
+                if self.button_close_rect.collidepoint(event.pos):
+                    self.game_settings.player_action = None
             if event.type == pygame.KEYDOWN:
                 # secret keys for testing
                 if event.key == pygame.K_x and (event.mod & pygame.KMOD_SHIFT):
-                    print("Exit game by pressing Shift + X key")
+                    # print("Exit game by pressing Shift + X key")
                     return False
                 if event.key == pygame.K_c and (event.mod & pygame.KMOD_SHIFT):
-                    print("Continue game by pressing Shift + C key")
+                    # print("Continue game by pressing Shift + C key")
                     self.game_settings.state = GameState.RUN
                 if event.key == pygame.K_a and self.game_settings.player_action == EntitiesActions.OPEN_SHOP:
                     # print("Sell healing potion by pressing A key")
@@ -93,7 +96,7 @@ class GameInterface(pygame.sprite.Sprite):
                     self.game_settings.player_coins = self.shop.make_buy_transaction(self.game_settings.player_coins, self.shop.flower_attack)
                     self.five_seconds_timer_show_no_money_notification.start_time = self.shop.transaction_status is False
                 if event.key == pygame.K_n and (event.mod & pygame.KMOD_SHIFT) and self.game_settings.state != GameState.GAME_OVER:
-                    print("Next level by pressing Shift + N key")
+                    # print("Next level by pressing Shift + N key")
                     self.game_settings.game_level = self.game_settings.game_level + 1
                     self.game_settings.state = GameState.NEXT_LEVEL
         return True
@@ -136,7 +139,9 @@ class GameInterface(pygame.sprite.Sprite):
         self._set_text_on_screen('how_to_buy_flower_attacks', None, 0, half_screen_h - 290)
         self._set_text_on_screen('how_to_consume_health_potions', None, 0, half_screen_h - 310)
         self._set_text_on_screen('how_to_consume_flower_attacks', None, 0, half_screen_h - 330)
+        self._set_text_on_screen('how_to_use_ui_buttons', None, 0, half_screen_h - 350)
         self.font = pygame.font.SysFont(self.game_settings.font_name, self.text_size)
+        self.draw_button(self.button_close_rect, 'close_label', self.green_button_color)
 
     def draw_shop_window(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_SHOP:
@@ -148,7 +153,8 @@ class GameInterface(pygame.sprite.Sprite):
         self.draw_button(self.button_buy_health_potion_rect, 'buy_label', self.green_button_color)
         self._set_text_on_screen('flower_attacks', None, -100, half_screen_h - 130, [self.shop.number_of_flower_attack, self.shop.flower_attack_price])
         self.draw_button(self.button_buy_flower_attack_rect, 'buy_label', self.green_button_color)
-        self._set_text_on_screen('player_coins', None, 0, half_screen_h - self.screen_height + 50, [self.game_settings.player_coins])
+        self._set_text_on_screen('player_coins', None, 0, half_screen_h - self.screen_height + 120, [self.game_settings.player_coins])
+        self.draw_button(self.button_close_rect, 'close_label', self.green_button_color)
 
     def draw_player_inventory(self):
         if self.game_settings.player_action != EntitiesActions.OPEN_INVENTORY:
