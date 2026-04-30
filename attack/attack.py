@@ -24,7 +24,7 @@ class Attack:
         self.screen_height = screen.get_height()
         self.colision_detection = CollisionChecKer().colision_detection
         self.wait_time_until_hide_explosion = Timer(20)
-        self.wait_time_between_draw_bomb = Timer(500)
+        self.wait_time_between_draw_next_bomb = Timer(500)
         self.game_settings = game_settings
         self.percentage_of_player_bullets_multiplier_per_level = 5
         self.num_bullets_flower_attack = 12
@@ -74,13 +74,13 @@ class Attack:
         if self.game_settings.is_enemy_boss_level() is False:
             self.wait_time_until_hide_explosion.check_cronometer()
             if self.wait_time_until_hide_explosion.trigger_action_at_the_end:
-                self.wait_time_between_draw_bomb.start_time = True
+                self.wait_time_between_draw_next_bomb.start_time = True
                 self.explosion.has_to_draw_explosion = False
                 self.wait_time_until_hide_explosion.start_time = False
 
-            self.wait_time_between_draw_bomb.check_cronometer()
-            if self.wait_time_between_draw_bomb.trigger_action_at_the_end:
-                self.wait_time_between_draw_bomb.start_time = False
+            self.wait_time_between_draw_next_bomb.check_cronometer()
+            if self.wait_time_between_draw_next_bomb.trigger_action_at_the_end:
+                self.wait_time_between_draw_next_bomb.start_time = False
                 self.move_bomb_to_random_position()
                 self.explosion.has_to_draw_bomb = True
                 self.explosion.has_to_draw_explosion = False
