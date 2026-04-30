@@ -35,13 +35,17 @@ class Attack:
             percentage = self.percentage_of_player_bullets_multiplier_per_level
         return  self.game_settings.game_level * (percentage / 100)
 
+    def move_bomb_to_random_position(self):
+        self.explosion.x = random.randint(0 + 100, self.screen_width - 100) # -100 just to not create the explosion too close to the edge of the screen
+        self.explosion.y = random.randint(0 + 100, self.screen_height - 100)
+
     def update(self):
+        self._update_shooting_attack()
+        self._update_bomb_explotion_attack()
+        self._update_flower_attack()
+
+    def _update_shooting_attack(self):
         level_multiplier = self.get_level_attack_multiplier()
-        for bullet in self.flower_attack_bullets:
-            bullet.x += bullet.vx
-            bullet.y += bullet.vy
-            if bullet.x > self.screen_width or bullet.x < 0 or bullet.y > self.screen_height or bullet.y < 0:
-                self.flower_attack_bullets.pop(self.flower_attack_bullets.index(bullet))
 
         for bullet in self.bullets:
             max_range = bullet.bullet_max_range
@@ -66,6 +70,7 @@ class Attack:
                         Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, 0)
                     )
 
+    def _update_bomb_explotion_attack(self):
         if self.game_settings.is_enemy_boss_level() is False:
             self.wait_time_until_hide_explosion.check_cronometer()
             if self.wait_time_until_hide_explosion.trigger_action_at_the_end:
@@ -76,7 +81,7 @@ class Attack:
             self.wait_time_between_draw_bomb.check_cronometer()
             if self.wait_time_between_draw_bomb.trigger_action_at_the_end:
                 self.wait_time_between_draw_bomb.start_time = False
-                self.move_explosion_to_random_position()
+                self.move_bomb_to_random_position()
                 self.explosion.has_to_draw_bomb = True
                 self.explosion.has_to_draw_explosion = False
                 
@@ -88,9 +93,13 @@ class Attack:
                     self.explosion.has_to_draw_bomb = False
                     self.wait_time_until_hide_explosion.start_time = True
 
-        self.detect_flower_attack()
+    def _update_flower_attack(self):
+        for bullet in self.flower_attack_bullets:
+            bullet.x += bullet.vx
+            bullet.y += bullet.vy
+            if bullet.x > self.screen_width or bullet.x < 0 or bullet.y > self.screen_height or bullet.y < 0:
+                self.flower_attack_bullets.pop(self.flower_attack_bullets.index(bullet))
 
-    def detect_flower_attack(self):
         if self.game_settings.player_action == EntitiesActions.FLOWER_ATTACK:
             self.game_settings.player_action = None
             center_x = self.player.x + self.player.radius
@@ -105,21 +114,19 @@ class Attack:
                 bullet.vy = math.sin(angle) * self.speed_flower_attack
                 self.flower_attack_bullets.append(bullet)
 
-    def move_explosion_to_random_position(self):
-        self.explosion.x = random.randint(0 + 100, self.screen_width - 100) # -100 just to not create the explosion too close to the edge of the screen
-        self.explosion.y = random.randint(0 + 100, self.screen_height - 100)
-
     def draw(self):
+        # Draw explosion/bomb
         if self.game_settings.is_enemy_boss_level() is False:
             if self.explosion.has_to_draw_bomb:
                 self.explosion.draw_bomb()
-            
             if self.explosion.has_to_draw_explosion:
                 self.explosion.draw_explosion()
 
+        # Draw bullets from shooting attack
         for bullet in self.bullets:
             if bullet.destroied is False:
                 bullet.draw(self.screen)
 
+        # Draw bullets from flower attack
         for bullet in self.flower_attack_bullets:
             bullet.draw(self.screen)
