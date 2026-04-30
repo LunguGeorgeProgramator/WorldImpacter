@@ -11,8 +11,8 @@ class Explosion:
         self.bomb_width = 50
         self.bomb_radius = 25
         self.explosion_radius = 200
-        self.is_new_explosion = True
         self.has_to_draw_explosion = False
+        self.has_to_draw_bomb = True
         self.x = x
         self.y = y
         self.images_assets_loader = images_assets_loader

@@ -13,7 +13,6 @@ class Attack:
     def __init__(self, player, keyboard_handler, screen, images_assets_loader, explosion, game_settings):
         self.bullets = []
         self.flower_attack_bullets = []
-        self.has_to_draw_explosion = False
         self.bullet_radius = 6
         self.max_bullets_per_attack = 1
         self.images_assets_loader = images_assets_loader
@@ -24,7 +23,8 @@ class Attack:
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
         self.colision_detection = CollisionChecKer().colision_detection
-        self.five_seconds_timer = Timer(20)
+        self.wait_time_until_hide_explosion = Timer(20)
+        self.wait_time_between_draw_bomb = Timer(500)
         self.game_settings = game_settings
         self.percentage_of_player_bullets_multiplier_per_level = 5
         self.num_bullets_flower_attack = 12
@@ -66,12 +66,27 @@ class Attack:
                         Bullet(initial_x, self.player.y + self.player.radius, self.bullet_radius, 0)
                     )
 
-        if self.explosion.is_new_explosion and self.game_settings.is_enemy_boss_level() is False:
-            player_colision_circle = (self.player.x, self.player.y, self.player.radius)
-            bomb_colision_circle = (self.explosion.x - self.explosion.bomb_width, self.explosion.y - self.explosion.bomb_height, self.explosion.bomb_radius)
-            if self.colision_detection(player_colision_circle, bomb_colision_circle) and self.explosion.has_to_draw_explosion is False:
-                self.explosion.has_to_draw_explosion = True
-                self.five_seconds_timer.start_time = True
+        if self.game_settings.is_enemy_boss_level() is False:
+            self.wait_time_until_hide_explosion.check_cronometer()
+            if self.wait_time_until_hide_explosion.trigger_action_at_the_end:
+                self.wait_time_between_draw_bomb.start_time = True
+                self.explosion.has_to_draw_explosion = False
+                self.wait_time_until_hide_explosion.start_time = False
+
+            self.wait_time_between_draw_bomb.check_cronometer()
+            if self.wait_time_between_draw_bomb.trigger_action_at_the_end:
+                self.wait_time_between_draw_bomb.start_time = False
+                self.move_explosion_to_random_position()
+                self.explosion.has_to_draw_bomb = True
+                self.explosion.has_to_draw_explosion = False
+                
+            if self.explosion.has_to_draw_bomb:
+                player_colision_circle = (self.player.x, self.player.y, self.player.radius)
+                bomb_colision_circle = (self.explosion.x - self.explosion.bomb_width, self.explosion.y - self.explosion.bomb_height, self.explosion.bomb_radius)
+                if self.colision_detection(player_colision_circle, bomb_colision_circle):
+                    self.explosion.has_to_draw_explosion = True
+                    self.explosion.has_to_draw_bomb = False
+                    self.wait_time_until_hide_explosion.start_time = True
 
         self.detect_flower_attack()
 
@@ -96,18 +111,11 @@ class Attack:
 
     def draw(self):
         if self.game_settings.is_enemy_boss_level() is False:
-            wait_for_timer_to_finish = self.five_seconds_timer.check_cronometer()
-
-            if self.explosion.is_new_explosion:
+            if self.explosion.has_to_draw_bomb:
                 self.explosion.draw_bomb()
-
-            if self.explosion.has_to_draw_explosion and wait_for_timer_to_finish:
+            
+            if self.explosion.has_to_draw_explosion:
                 self.explosion.draw_explosion()
-            else:
-                self.explosion.has_to_draw_explosion = False
-                
-            if self.five_seconds_timer.trigger_action_at_the_end:
-                self.move_explosion_to_random_position()
 
         for bullet in self.bullets:
             if bullet.destroied is False:
