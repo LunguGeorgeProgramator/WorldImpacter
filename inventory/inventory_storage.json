@@ -2,13 +2,13 @@
     {
         "id": 1,
         "name": "healing_potion",
-        "count": 38,
+        "count": 0,
         "description": ""
     },
     {
         "id": 2,
         "name": "flower_attack",
-        "count": 38,
+        "count": 0,
         "description": ""
     }
 ]
