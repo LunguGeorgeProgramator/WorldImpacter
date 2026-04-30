@@ -36,6 +36,14 @@ class EnemiesSkins:
             pygame.image.load("assets/enemies/boos-shere-3.png"),
             pygame.image.load("assets/enemies/boos-shere-3.png")
         ]
+        self.void_boss_left_frames = [
+            pygame.image.load("assets/enemies/void-boss-one-left.png"),
+            pygame.image.load("assets/enemies/void-boss-two-left.png"),
+        ]
+        self.void_boss_right_frames = [
+            pygame.image.load("assets/enemies/void-boss-one-right.png"),
+            pygame.image.load("assets/enemies/void-boss-two-right.png"),
+        ]
         self.haven_angel_boss_frames = [
             pygame.image.load("assets/enemies/heaven-boss.png"),
             pygame.image.load("assets/enemies/heaven-boss-frame-two.png")

@@ -26,6 +26,8 @@ class EnemyBoss(Enemy):
     fire_pit_animation = ImagesAnimationLoader()
     underwater_enemy_boss_animation = ImagesAnimationLoader()
     underwater_enemy_boss_right_animation = ImagesAnimationLoader()
+    void_enemy_boss_left_animation = ImagesAnimationLoader()
+    void_enemy_boss_right_animation = ImagesAnimationLoader()
     spread_bullets_attack = []
     num_bullets_per_attack = 10
     boss_bullet_radius = 10
@@ -47,11 +49,15 @@ class EnemyBoss(Enemy):
         self.fire_pit_animation.set_frames_assets(self.enemy_skin.fire_pit_boss_frames)
         self.underwater_enemy_boss_animation.set_frames_assets(self.enemy_skin.underwater_shark_boss_frames_left)
         self.underwater_enemy_boss_right_animation.set_frames_assets(self.enemy_skin.underwater_shark_boss_frames_right)
+        self.void_enemy_boss_left_animation.set_frames_assets(self.enemy_skin.void_boss_left_frames)
+        self.void_enemy_boss_right_animation.set_frames_assets(self.enemy_skin.void_boss_right_frames)
         self.fire_pit_animation.set_animation_speed(20)
         self.heaven_animation.set_animation_speed(20)
         self.injured_heaven_animation.set_animation_speed(20)
         self.underwater_enemy_boss_animation.set_animation_speed(20)
         self.underwater_enemy_boss_right_animation.set_animation_speed(20)
+        self.void_enemy_boss_left_animation.set_animation_speed(50)
+        self.void_enemy_boss_right_animation.set_animation_speed(50)
         self.screen = screen
 
     def _is_heaven_level(self):
@@ -59,6 +65,9 @@ class EnemyBoss(Enemy):
 
     def _is_underwater_level(self):
         return self.game_settings.game_level in self.game_settings.underwater_enemy_boss_levels
+
+    def _is_void_level(self):
+        return self.game_settings.game_level in self.game_settings.void_enemy_boss_levels
 
     def update(self):
         super().update()
@@ -74,6 +83,11 @@ class EnemyBoss(Enemy):
                 self.injured_heaven_animation.update_frame()
             else:
                 self.heaven_animation.update_frame()
+        if self._is_void_level():
+            if self.moving_direction == MovingDirection.LEFT:
+                self.void_enemy_boss_left_animation.update_frame()
+            else:
+                self.void_enemy_boss_right_animation.update_frame()
 
         if self.time_between_attacks_timer.start_time is False:
             self.create_boss_attack()
@@ -107,6 +121,11 @@ class EnemyBoss(Enemy):
                     image_asset = self.underwater_enemy_boss_animation.get_frame()
                 else:
                     image_asset = self.underwater_enemy_boss_right_animation.get_frame()
+            elif self._is_void_level():
+                if self.moving_direction == MovingDirection.LEFT:
+                    image_asset = self.void_enemy_boss_left_animation.get_frame()
+                else:
+                    image_asset = self.void_enemy_boss_right_animation.get_frame()
             else:
                 image_asset = self.fire_pit_animation.get_frame()
             self.images_assets_loader.draw(image_asset, self.x, self.y, self.default_image_width, self.default_image_height)

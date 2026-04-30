@@ -98,7 +98,7 @@ class Player:
             player_image = self._get_player_skin_type_plain(self.player_skins.grim_skin)
         elif self._is_level_in_list(self.game_settings.underwater_levels + self.game_settings.underwater_enemy_boss_levels):
             player_image = self._get_player_skin_type_plain(self.player_skins.diver_skin)
-        elif self._is_level_in_list(self.game_settings.void_levels):
+        elif self._is_level_in_list(self.game_settings.void_levels) + self._is_level_in_list(self.game_settings.void_enemy_boss_levels):
             player_image = self._get_player_skin_type_plain(self.player_skins.void_skin)
         else:
             player_image = self._get_player_default_image(self.player_skins.default_skin)
