@@ -5,7 +5,7 @@ from helper.collision_checker import CollisionChecKer
 from data_models.moving_direction import MovingDirection
 from attack.bullet import Bullet
 from helper.timer import Timer
-from data_models.enemy_boss_attaks import BossAttackPattern
+from data_models.enemy_boss_attacks import BossAttackPattern
 import math
 
 
