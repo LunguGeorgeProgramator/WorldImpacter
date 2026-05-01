@@ -30,12 +30,12 @@ class Attack:
         self.num_bullets_flower_attack = 12
         self.speed_flower_attack = 3
 
-    def get_level_attack_multiplier(self, percentage = None):
+    def _get_level_attack_multiplier(self, percentage = None):
         if percentage is None:
             percentage = self.percentage_of_player_bullets_multiplier_per_level
         return  self.game_settings.game_level * (percentage / 100)
 
-    def move_bomb_to_random_position(self):
+    def _move_bomb_to_random_position(self):
         self.explosion.x = random.randint(0 + 100, self.screen_width - 100) # -100 just to not create the explosion too close to the edge of the screen
         self.explosion.y = random.randint(0 + 100, self.screen_height - 100)
 
@@ -45,7 +45,7 @@ class Attack:
         self._update_flower_attack()
 
     def _update_shooting_attack(self):
-        level_multiplier = self.get_level_attack_multiplier()
+        level_multiplier = self._get_level_attack_multiplier()
 
         for bullet in self.bullets:
             max_range = bullet.bullet_max_range
@@ -81,7 +81,7 @@ class Attack:
             self.wait_time_between_draw_next_bomb.check_cronometer()
             if self.wait_time_between_draw_next_bomb.trigger_action_at_the_end:
                 self.wait_time_between_draw_next_bomb.start_time = False
-                self.move_bomb_to_random_position()
+                self._move_bomb_to_random_position()
                 self.explosion.has_to_draw_bomb = True
                 self.explosion.has_to_draw_explosion = False
                 

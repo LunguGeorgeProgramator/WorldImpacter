@@ -19,3 +19,20 @@ class Bullet:
 
     def draw(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+
+    # def update(self):
+    #     # move
+    #     self.x += self.vx
+    #     self.y += self.vy
+
+    #     # rotate velocity (this creates spiral motion)
+    #     angle = 0.05  # rotation speed (tweak this)
+
+    #     cos_a = math.cos(angle)
+    #     sin_a = math.sin(angle)
+
+    #     new_vx = self.vx * cos_a - self.vy * sin_a
+    #     new_vy = self.vx * sin_a + self.vy * cos_a
+
+    #     self.vx = new_vx
+    #     self.vy = new_vy

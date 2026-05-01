@@ -5,6 +5,7 @@ from helper.collision_checker import CollisionChecKer
 from data_models.moving_direction import MovingDirection
 from attack.bullet import Bullet
 from helper.timer import Timer
+from data_models.enemy_boss_attaks import BossAttackPattern
 import math
 
 
@@ -29,6 +30,7 @@ class EnemyBoss(Enemy):
     void_enemy_boss_left_animation = ImagesAnimationLoader()
     void_enemy_boss_right_animation = ImagesAnimationLoader()
     spread_bullets_attack = []
+    spiral_bullets_attack = []
     num_bullets_per_attack = 10
     boss_bullet_radius = 10
     boss_bullet_speed = 1
@@ -59,6 +61,7 @@ class EnemyBoss(Enemy):
         self.void_enemy_boss_left_animation.set_animation_speed(50)
         self.void_enemy_boss_right_animation.set_animation_speed(50)
         self.screen = screen
+        self.attack_pattern = BossAttackPattern.SPREED
 
     def _is_heaven_level(self):
         return self.game_settings.game_level in self.game_settings.heaven_eneny_boss_levels
@@ -89,25 +92,35 @@ class EnemyBoss(Enemy):
             else:
                 self.void_enemy_boss_right_animation.update_frame()
 
+        # boss attack update logic
         if self.time_between_attacks_timer.start_time is False:
-            self.create_boss_attack()
+            bullets = self.spread_bullets_attack if self.attack_pattern == BossAttackPattern.SPREED else self.spiral_bullets_attack
+            self.create_boss_attack(bullets)
             self.time_between_attacks_timer.start_time = True
 
-        self.time_between_attacks_timer.start_time = self.time_between_attacks_timer.check_cronometer()
-        
-        for bullet in self.spread_bullets_attack:
-            bullet.x += bullet.vx
-            bullet.y += bullet.vy
-            if bullet.x > self.screen_width or bullet.x < 0 or bullet.y > self.screen_height or bullet.y < 0:
-                self.spread_bullets_attack.pop(self.spread_bullets_attack.index(bullet))
+        self.time_between_attacks_timer.check_cronometer()
 
-        self.boos_attack_colision()
+        if self.time_between_attacks_timer.trigger_action_at_the_end:
+            self.attack_pattern = BossAttackPattern.SPIRAL if self.attack_pattern == BossAttackPattern.SPREED else BossAttackPattern.SPREED
+        
+        self.spread_attack_bullets_movement()
+        self.spiral_attack_bullets_movement()
+        
+        self.destroy_bullets_outside_screen(self.spread_bullets_attack)
+        self.destroy_bullets_outside_screen(self.spiral_bullets_attack)
+    
+        self.boos_attack_colision(self.spread_bullets_attack)
+        self.boos_attack_colision(self.spiral_bullets_attack)
         
         if self.is_alive is False:
             self.spread_bullets_attack = []
+            self.spiral_bullets_attack = []
 
     def draw(self, win):
         if self.is_alive:
+            for bullet in self.spiral_bullets_attack:
+                bullet.draw(self.screen)
+
             for bullet in self.spread_bullets_attack:
                 bullet.draw(self.screen)
 
@@ -139,7 +152,7 @@ class EnemyBoss(Enemy):
         pygame.draw.rect(self.screen, self.health_colors_dict["low_health"], (x, y, self.bar_width * ratio, self.bar_height))
         pygame.draw.rect(self.screen, self.health_colors_dict["border"], (x, y, self.bar_width, self.bar_height), 2)
 
-    def create_boss_attack(self):
+    def create_boss_attack(self, bullets):
         center_x = self.x + self.radius
         center_y = self.y + self.radius / 2
         if self._is_heaven_level():
@@ -155,11 +168,35 @@ class EnemyBoss(Enemy):
             bullet.y = center_y
             bullet.vx = math.cos(angle) * self.boss_bullet_speed
             bullet.vy = math.sin(angle) * self.boss_bullet_speed
-            self.spread_bullets_attack.append(bullet)
+            bullets.append(bullet)
     
-    def boos_attack_colision(self):
-        boss_bullet_damage = math.floor(self.enemy_boos_damage_to_player + self.attack.get_level_attack_multiplier(self.enemy_boos_damage_percentage_multiplier))
+    def spiral_attack_bullets_movement(self):
+        for bullet in self.spiral_bullets_attack:
+            bullet.x += bullet.vx
+            bullet.y += bullet.vy
+            # rotation (spiral turning)
+            angle = 0.05
+            cos_a = math.cos(angle)
+            sin_a = math.sin(angle)
+            new_vx = bullet.vx * cos_a - bullet.vy * sin_a
+            new_vy = bullet.vx * sin_a + bullet.vy * cos_a
+            growth = 1.01   # tweak this (1.0 = no spiral expansion)
+            bullet.vx = new_vx * growth
+            bullet.vy = new_vy * growth
+
+    def spread_attack_bullets_movement(self):
         for bullet in self.spread_bullets_attack:
+            bullet.x += bullet.vx
+            bullet.y += bullet.vy
+
+    def destroy_bullets_outside_screen(self, bullets):
+        for bullet in bullets:
+            if bullet.x > self.screen_width or bullet.x < 0 or bullet.y > self.screen_height or bullet.y < 0:
+                bullets.pop(bullets.index(bullet))
+
+    def boos_attack_colision(self, bullets):
+        boss_bullet_damage = math.floor(self.enemy_boos_damage_to_player + self.attack._get_level_attack_multiplier(self.enemy_boos_damage_percentage_multiplier))
+        for bullet in bullets:
             bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
             player_colision_circle = (self.player.x + self.player.radius, self.player.y + self.player.radius, self.player.radius)
             if self.colision_detection(bullet_colision_circle, player_colision_circle):

@@ -53,6 +53,7 @@ class Enemies:
         self.enemy_boss.health = self.enemy_boss.max_health
         self.game_settings.player_coins = self.game_settings.player_coins + self.game_settings.total_enemies_defeated
         self.enemy_boss.spread_bullets_attack = []
+        self.enemy_boss.spiral_bullets_attack = []
 
     def retry_level(self):
         self.attack.bullets = []
@@ -81,7 +82,7 @@ class Enemies:
             bullet_colision_circle = (bullet.x, bullet.y, bullet.radius)
             if self.colision_detection(bullet_colision_circle, enemy_boss_colision_circle):
                 if self.enemy_boss.is_alive and not bullet.destroied:
-                    self.enemy_boss.health -= math.floor(self.player_damage_to_enemy_boos + self.attack.get_level_attack_multiplier(self.player_damage_percentage_multiplier))
+                    self.enemy_boss.health -= math.floor(self.player_damage_to_enemy_boos + self.attack._get_level_attack_multiplier(self.player_damage_percentage_multiplier))
                     bullet.destroied = True
 
     def _update_boss_enemies(self, player_colision_circle):
